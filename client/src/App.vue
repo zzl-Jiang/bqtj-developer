@@ -1,5 +1,4 @@
 <template>
-  <!-- n-config-provider 用于全局主题配置 -->
   <n-config-provider :theme="darkTheme">
     <n-loading-bar-provider>
       <n-message-provider>
@@ -9,7 +8,8 @@
             <n-layout style="height: 100vh">
               <n-layout-header bordered style="height: 64px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between;">
                 <div style="font-size: 18px; font-weight: bold;">爆枪突击开发者工具</div>
-                <n-menu mode="horizontal" :options="menuOptions" v-model:value="activeKey" />
+                <!-- 核心修改：将 v-model:value 换成 :value -->
+                <n-menu mode="horizontal" :options="menuOptions" :value="activeKey" />
                 <div>用户登录(待接)</div>
               </n-layout-header>
 
@@ -26,14 +26,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, h } from 'vue'
+import { h, computed } from 'vue' // 引入 computed
+import { useRoute } from 'vue-router' // 引入 useRoute
 import { darkTheme } from 'naive-ui'
 import { RouterLink } from 'vue-router'
 import type { MenuOption } from 'naive-ui'
 
-const activeKey = ref('Hall')
+const route = useRoute()
+
+const activeKey = computed(() => {
+  // 返回当前路由配置里的 name (例如 'Editor' 或 'Hall')
+  return route.name as string
+})
 
 // 定义导航菜单项
+// 注意：这里的 key 必须和 router/index.ts 中定义的 name 完全一致
 const menuOptions: MenuOption[] = [
   {
     label: () => h(RouterLink, { to: '/' }, { default: () => '大厅' }),
@@ -49,7 +56,3 @@ const menuOptions: MenuOption[] = [
   }
 ]
 </script>
-
-<style>
-body { margin: 0; }
-</style>

@@ -2,7 +2,7 @@
   <n-space vertical size="large">
     <n-h2 prefix="bar">Mod 数据概览</n-h2>
 
-    <n-grid :cols="3" :x-gap="12">
+    <n-grid :cols="3" :x-gap="12" style="margin-left: 30px;">
       <n-gi>
         <n-statistic label="图片资源 (PNG)" :value="modStore.pngList.length" />
       </n-gi>
@@ -69,7 +69,7 @@ const errorCount = computed(() => errorList.value.length);
 
 // 生成全量 XML
 const fullXml = computed(() => {
-  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<data>\n';
+  let xml = '<data>\n';
   
   // 汇总 PNG 模块
   if (modStore.pngList.length > 0) {

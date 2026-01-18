@@ -54,11 +54,11 @@ export class SkillDefine {
 
   /** 条件范围 */
   @Expose()
-  public conditionRange: number = 0;
+  public conditionRange: number | undefined = undefined;
 
   /** 条件字符串 */
   @Expose()
-  public conditionString: string = "";
+  public conditionString: string | undefined = undefined;
 
   /** 学习所需等级 */
   @Expose()
@@ -86,23 +86,23 @@ export class SkillDefine {
 
   /** 技能数值 */
   @Expose()
-  public value: number = 0;
+  public value: number | undefined = undefined;
 
   /** 技能主要倍率 */
   @Expose()
-  public mul: number = 1;
+  public mul: number | undefined = undefined;
 
   /** 技能次要倍率 */
   @Expose()
-  public secMul: number = 1;
+  public secMul: number | undefined = undefined;
 
   /** 技能主要效果字符串 */
   @Expose()
-  public valueString: string = "";
+  public valueString: string | undefined = undefined;
 
   /** 技能次要效果字符串 */
   @Expose()
-  public secString: string = "";
+  public secString: string | undefined = undefined;
 
   /** 附加数值类型 */
   @Expose()
@@ -110,54 +110,54 @@ export class SkillDefine {
 
   /** 冷却时间 */
   @Expose()
-  public cd: number = 0;
+  public cd: number | undefined = undefined;
 
   /** 
    * 初始冷却时间。
    * 若保持初始值，则初始化时自动设为 cd 的 2/3 
    */
   @Expose()
-  public firstCd: number = -1;
+  public firstCd: number | undefined = undefined;
 
   /** 持续时间 */
   @Expose()
-  public duration: number = 0;
+  public duration: number | undefined = undefined;
 
   /** 自动触发间隔 */
   @Expose()
-  public intervalT: number = 0;
+  public intervalT: number | undefined = undefined;
 
   /** 最小触发间隔 */
   @Expose()
-  public minTriggerT: number = 0;
+  public minTriggerT: number | undefined = undefined;
 
   /** 首次触发间隔 */
   @Expose()
-  public firstTriggerT: number = 0;
+  public firstTriggerT: number | undefined = undefined;
 
   /** 配合主动技能，前摇一类的 */
   @Expose()
-  public delay: number = 0;
+  public delay: number | undefined = undefined;
 
   /** 状态效果的触发间隔 */
   @Expose()
-  public doGap: number = 0;
+  public doGap: number | undefined = undefined;
 
   /** 随机冷却延迟增加，从0到这个值 */
   @Expose()
-  public cdRandomRange: number = 0;
+  public cdRandomRange: number | undefined = undefined;
 
   /** 最大连续使用次数，点名恐怖盒子 */
   @Expose()
-  public continueNum: number = 1;
+  public continueNum: number | undefined = undefined;
 
   /** 生效范围 */
   @Expose()
-  public range: number = 0;
+  public range: number | undefined = undefined;
 
   /** 最小生效范围 */
   @Expose()
-  public minRange: number = 0;
+  public minRange: number | undefined = undefined;
 
   // 状态标志位
   /** 是否在生命条上方显示 */
@@ -260,7 +260,7 @@ export class SkillDefine {
 
   /** 对应单位使用的动作标签。需要和 swf 动画对应 */
   @Expose()
-  public meActionLabel: string = "";
+  public meActionLabel: string | undefined = undefined;
 
   /** 光波专用，好像也是个类似前摇的，专门用于控制图像效果 */
   @Expose()
@@ -268,7 +268,7 @@ export class SkillDefine {
 
   /** 其他条件生效列表 */
   @Expose()
-  public otherConditionArr: string[] = [];
+  public otherConditionArr: string[] | undefined = undefined;
 
   /** 生效需要的攻击动画标签列表 */
   @Expose()
@@ -276,15 +276,15 @@ export class SkillDefine {
 
   /** 技能概率列表 */
   @Expose()
-  public effectProArr: number[] = [];
+  public effectProArr: number[] | undefined = undefined;
 
   /** 被动技能引用列表 */
   @Expose()
-  public passiveSkillArr: string[] = [];
+  public passiveSkillArr: string[] | undefined = undefined;
 
   /** 技能链接列表 */
   @Expose()
-  public linkArr: string[] = [];
+  public linkArr: string[] | undefined = undefined;
 
   /** 动作特效预处理列表 */
   @Expose()
@@ -297,7 +297,7 @@ export class SkillDefine {
 
   /** 额外参数对象 (源码中以 JSON 字符串形式存储在 <obj> 节点) */
   @Expose()
-  public obj: Record<string, any> = {};
+  public obj: string | undefined = undefined;
   
   /** 技能添加图像 */
   @Expose()
@@ -354,21 +354,27 @@ export class SkillDefine {
     if (this.conditionType) xml += `      <conditionType>${this.conditionType}</conditionType>\n`;
     xml += `      <effectType>${this.effectType}</effectType>\n`;
     if (this.condition) xml += `      <condition>${this.condition}</condition>\n`;
+    if (this.conditionString) xml += `      <conditionString>${this.conditionString}</conditionString>\n`;
+    if (this.conditionRange) xml += `      <conditionRange>${this.conditionRange}</conditionRange>\n`;
     if (this.doCondition) xml += `      <doCondition>${this.doCondition}</doCondition>\n`;
     if (this.effectFather) xml += `      <effectFather>${this.effectFather}</effectFather>\n`;
     if (this.addType) xml += `      <addType>${this.addType}</addType>\n`;
     if (this.stateType) xml += `      <stateType>${this.stateType}</stateType>\n`;
 
     // 数值与时间
-    if (this.value !== 0) xml += `      <value>${this.value}</value>\n`;
-    if (this.mul !== 1) xml += `      <mul>${this.mul}</mul>\n`;
-    if (this.secMul !== 1) xml += `      <secMul>${this.secMul}</secMul>\n`;
-    if (this.cd !== 0) xml += `      <cd>${this.cd}</cd>\n`;
-    if (this.firstCd !== -1) xml += `      <firstCd>${this.firstCd}</firstCd>\n`;
-    if (this.duration !== 0) xml += `      <duration>${this.duration}</duration>\n`;
-    if (this.intervalT !== 0) xml += `      <intervalT>${this.intervalT}</intervalT>\n`;
-    if (this.range !== 0) xml += `      <range>${this.range}</range>\n`;
-    if (this.delay !== 0) xml += `      <delay>${this.delay}</delay>\n`;
+    if (this.value) xml += `      <value>${this.value}</value>\n`;
+    if (this.mul) xml += `      <mul>${this.mul}</mul>\n`;
+    if (this.secMul) xml += `      <secMul>${this.secMul}</secMul>\n`;
+    if (this.cd) xml += `      <cd>${this.cd}</cd>\n`;
+    if (this.firstCd) xml += `      <firstCd>${this.firstCd}</firstCd>\n`;
+    if (this.duration) xml += `      <duration>${this.duration}</duration>\n`;
+    if (this.intervalT) xml += `      <intervalT>${this.intervalT}</intervalT>\n`;
+    if (this.range) xml += `      <range>${this.range}</range>\n`;
+    if (this.delay) xml += `      <delay>${this.delay}</delay>\n`;
+    if (this.doGap) xml += `      <doGap>${this.doGap}</doGap>\n`;
+    if (this.valueString) xml += `      <valueString>${this.valueString}</valueString>\n`;
+    if (this.secString) xml += `      <secString>${this.secString}</secString>\n`;
+    if (this.meActionLabel) xml += `      <meActionLabel>${this.meActionLabel}</meActionLabel>\n`;
 
     if (this.noEffectLevelModel) xml += `      <noEffectLevelModel>${this.noEffectLevelModel}</noEffectLevelModel>\n`;
     if (this.createByArmsTypePro) xml += `      <createByArmsTypePro>${this.createByArmsTypePro}</createByArmsTypePro>\n`;
@@ -399,15 +405,14 @@ export class SkillDefine {
     });
 
     // 数组类 (逗号分隔)
-    if (this.passiveSkillArr.length > 0) xml += `      <passiveSkillArr>${this.passiveSkillArr.join(',')}</passiveSkillArr>\n`;
-    if (this.linkArr.length > 0) xml += `      <linkArr>${this.linkArr.join(',')}</linkArr>\n`;
+    if ((this.otherConditionArr?.length ?? 0) > 0) xml += `      <otherConditionArr>${(this.otherConditionArr ?? []).join(',')}</otherConditionArr>\n`;
+    if ((this.effectProArr?.length ?? 0) > 0) xml += `      <effectProArr>${(this.effectProArr ?? []).join(',')}</effectProArr>\n`;
+    if ((this.passiveSkillArr?.length ?? 0) > 0) xml += `      <passiveSkillArr>${(this.passiveSkillArr ?? []).join(',')}</passiveSkillArr>\n`;
+    if ((this.linkArr?.length ?? 0) > 0) xml += `      <linkArr>${(this.linkArr ?? []).join(',')}</linkArr>\n`;
     if (this.preEffectArr.length > 0) xml += `      <preEffectArr>${this.preEffectArr.join(',')}</preEffectArr>\n`;
 
     // 动态对象 Obj
-    if (Object.keys(this.obj).length > 0) {
-      const objStr = JSON.stringify(this.obj).replace(/^\{|\}$/g, "");
-      xml += `      <obj>${objStr}</obj>\n`;
-    }
+    if (this.obj) xml += `      <obj>${this.obj}</obj>\n`;
 
     xml += `    </skill>`;
     return xml;

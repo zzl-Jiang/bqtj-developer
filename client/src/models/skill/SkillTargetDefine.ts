@@ -16,7 +16,7 @@ export class SkillTargetDefine {
 
   /** 目标限制数量 */
   @Expose()
-  public limitNum: number = 0;
+  public limitNum: number | undefined = undefined;
 
   /** 目标是否必须存在 */
   @Expose()
@@ -36,7 +36,7 @@ export class SkillTargetDefine {
 
   /** 指定单位生效 */
   @Expose()
-  public bodyName: string = "";
+  public bodyName: string | undefined = undefined;
 
   /** 是否排除载具 */
   @Expose()
