@@ -91,7 +91,13 @@ export const LOGIC_META: SkillMetaItem[] = [
     type: 'select',
     options: Opts.EFFECT_TYPE_OPTIONS,
     group: 'logic',
-    desc: '这里其实是调用实际 as3 代码中的函数名称。\n每种效果详情见右边“AS3 效果说明”。'
+    desc: `这里其实是调用实际 as3 代码中的函数名称。\n每种效果详情见右边“AS3 效果说明”。
+    注意部分效果会随着 addType 的选项而发生改变。
+    【即时】效果对应 instant 生效；
+    【状态】效果对应 state 生效；
+    instantAndState 同时生效【即时】与【状态】。
+    请注意：range 属性是否需要依赖目标选择-选择模式 (chooseType) 的配置，与本属性关系不大。
+    另，若期望条件判定实现后技能概率生效，请自行添加 effectProArr 属性，在选项说明中不再特别指出。`
   },
   {
     key: 'value',
@@ -248,7 +254,7 @@ export const LOGIC_META: SkillMetaItem[] = [
     type: 'multi_select',
     isOptional: true,
     group: 'logic',
-    desc: '效果触发所需的部分概率存储。\n可以部分参考 effectType 的选项说明决定是否需要。\n在多选框中输入数值、按下回车，即可创建对应选项。'
+    desc: '效果触发所需的部分概率存储。\n可以部分参考 effectType 的选项说明或者根据实现期望自行决定是否需要。\n在多选框中输入数值、按下回车，即可创建对应选项。'
   },
   {
     key: 'passiveSkillArr',

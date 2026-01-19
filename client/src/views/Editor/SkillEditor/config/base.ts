@@ -22,6 +22,6 @@ export const BASE_META: SkillMetaItem[] = [
     label: '图标URL',
     type: 'select_png',
     group: 'base',
-    desc: '游戏内技能栏显示的图标。\n可选，也可以使用游戏已有素材。'
+    desc: '游戏内技能栏显示的图标。\n可选，也可以使用游戏已有素材。\n输入后按下回车创建新标签。'
   },
 ];

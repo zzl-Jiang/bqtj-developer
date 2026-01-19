@@ -3,27 +3,25 @@ import { ref, computed } from 'vue';
 import { useModStore } from '../../../../store/useModStore';
 import { useMessage } from 'naive-ui';
 
-// 将状态定义在 Hook 外部，使其在所有引入该 Hook 的组件间共享（单例模式）
+// 保持单例，确保切换 Tab 后选中的技能不丢失
 const selectedIndex = ref<number | null>(null);
 
 export function useSkillState() {
   const modStore = useModStore();
   const message = useMessage();
 
-  // 计算当前选中的技能对象
-  const selectedSkill = computed(() => 
-    selectedIndex.value !== null ? modStore.skillList[selectedIndex.value] : null
-  );
+  const selectedSkill = computed(() => {
+    if (selectedIndex.value === null) return null;
+    return modStore.skillList[selectedIndex.value] || null;
+  });
 
-  // 左侧菜单选项
   const menuOptions = computed(() => 
     modStore.skillList.map((s, i) => ({
       label: s.cnName || s.name || `未命名_${i}`,
-      key: i.toString()
+      key: i.toString() // 必须是 string，因为 n-menu 的 key 是 string
     }))
   );
 
-  // 核心交互方法
   const addSkill = () => {
     modStore.addSkill();
     selectedIndex.value = modStore.skillList.length - 1;
@@ -32,23 +30,21 @@ export function useSkillState() {
 
   const removeSkill = (index: number) => {
     modStore.removeSkill(index);
-    if (selectedIndex.value === index) {
-      selectedIndex.value = modStore.skillList.length > 0 ? 0 : null;
+    // 处理删除后的索引复位逻辑
+    if (modStore.skillList.length === 0) {
+      selectedIndex.value = null;
+    } else if (selectedIndex.value === index) {
+      selectedIndex.value = 0;
     } else if (selectedIndex.value !== null && selectedIndex.value > index) {
       selectedIndex.value--;
     }
   };
 
-  const selectSkill = (key: string) => {
-    selectedIndex.value = parseInt(key);
-  };
-
   return {
-    selectedIndex,
+    selectedIndex, // 直接返回 ref，方便 v-model 绑定
     selectedSkill,
     menuOptions,
     addSkill,
-    removeSkill,
-    selectSkill
+    removeSkill
   };
 }

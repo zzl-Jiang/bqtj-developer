@@ -25,6 +25,8 @@
       v-if="meta.type === 'select_png'" 
       v-model:value="modelValue" 
       :options="pngOptions" 
+      filterable
+      tag
       clearable 
       placeholder="选择图片资源..." 
     />

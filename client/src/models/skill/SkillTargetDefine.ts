@@ -6,6 +6,7 @@ import { Expose } from "class-transformer";
  * 技能目标定义类
  */
 export class SkillTargetDefine {
+  [key: string]: any; 
   /** 是否计入本体 */
   @Expose()
   public noMeB: boolean = false;

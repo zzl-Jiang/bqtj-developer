@@ -112,21 +112,22 @@ const coreMetas = computed(() =>
 
 // 已激活的可选属性：是可选 且 符合 vIf 且 不为 undefined
 const activeOptionalMetas = computed(() => 
-  visibleLogicMetas.value.filter(m => m.isOptional && selectedSkill.value[m.key] !== undefined)
+  visibleLogicMetas.value.filter(m => m.isOptional && selectedSkill.value?.[m.key] !== undefined)
 );
 
 // 可添加列表：是可选 且 符合 vIf 且 当前是 undefined
 const addableOptions = computed(() => 
   visibleLogicMetas.value
-    .filter(m => m.isOptional && selectedSkill.value[m.key] === undefined)
+    .filter(m => m.isOptional && selectedSkill.value?.[m.key] === undefined)
     .map(m => ({ label: m.label, value: m.key }))
 );
 
 const confirmAddProperty = () => {
+  const skill = selectedSkill.value;
   const key = pendingPropKey.value;
-  if (!key) return;
+  if (!skill || !key) return;
 
-  // 执行真正的添加逻辑
+  // 执行添加逻辑
   else if (key.endsWith('B')) selectedSkill.value[key] = false;
   else selectedSkill.value[key] = null;
 
@@ -142,7 +143,7 @@ const confirmAddProperty = () => {
 };
 
 const removeProperty = (key: string) => {
-  selectedSkill.value[key] = undefined;
+  if (selectedSkill.value) selectedSkill.value[key] = undefined;
   
   // 如果移除的是 doGap，触发一次效验
   if (key === 'doGap') {
@@ -156,25 +157,32 @@ const removeProperty = (key: string) => {
 
 // 处理复杂的联动逻辑
 const handleUpdate = (key: string, val: any) => {
+  const skill = selectedSkill.value;
+  if (!skill) return;
+
   if (key.startsWith('obj_')) {
     const realKey = key.replace('obj_', '');
+    
+    const targetObj = skill.obj as any; 
+    
     if (val === undefined || val === '') {
-      delete selectedSkill.value.obj[realKey];
+      delete targetObj[realKey];
     } else {
-      selectedSkill.value.obj[realKey] = val;
+      targetObj[realKey] = val;
     }
   } else {
+    const targetSkill = skill as any; 
     if (key === 'conditionType') handleConditionTypeChange(val);
     else if (key === 'addType') handleAddTypeChange(val);
-    else selectedSkill.value[key] = val;
+    else targetSkill[key] = val;
   }
 };
 
 // 动态获取 Props
 const getProps = (meta: any) => {
-  const base = { meta, modelValue: selectedSkill.value[meta.key] };
+  const base = { meta, modelValue: selectedSkill.value?.[meta.key] };
   if (meta.key === 'effectType') return { ...base, meta: { ...meta, options: filteredEffectOptions.value } };
-  if (meta.key === 'condition') return { ...base, meta: { ...meta, options: currentConditionOptions.value }, disabled: !selectedSkill.value.conditionType };
+  if (meta.key === 'condition') return { ...base, meta: { ...meta, options: currentConditionOptions.value }, disabled: !selectedSkill.value?.conditionType };
   return base;
 };
 

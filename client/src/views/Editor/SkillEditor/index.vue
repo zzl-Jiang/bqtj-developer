@@ -1,74 +1,94 @@
 <!-- src/views/Editor/SkillEditor/index.vue -->
 <template>
-  <!-- 注意：设置 position="absolute" 以填满父容器 -->
-  <n-layout has-sider position="absolute">
-    
-    <!-- 左侧技能列表 -->
-    <SkillSidebar />
-
-    <!-- 中央内容区 -->
-    <n-layout-content content-style="padding: 24px;">
-      <div v-if="selectedSkill" class="editor-inner-wrapper">
-        <n-grid :cols="24" :x-gap="24">
-          
-          <!-- 中间：表单编辑区 -->
-          <n-gi :span="16">
-            <n-tabs type="card" animated>
-              <n-tab-pane name="basic" tab="核心配置">
-                <BasicSection />
-              </n-tab-pane>
-              <n-tab-pane name="effects" tab="技能效果">
-                <EffectSection />
-              </n-tab-pane>
-              <n-tab-pane name="target" tab="目标选择">
-                <TargetSection />
-              </n-tab-pane>
-              <n-tab-pane name="visuals" tab="视觉资源">
-                <VisualSection />
-              </n-tab-pane>
-            </n-tabs>
-          </n-gi>
-
-          <!-- 右侧：XML预览与说明 -->
-          <n-gi :span="8">
-            <SkillXmlPreview />
-          </n-gi>
-
-        </n-grid>
-      </div>
-      
-      <!-- 未选择技能时的空状态 -->
-      <n-empty 
-        v-else 
-        description="请在左侧选择技能或点击新增" 
-        style="margin-top: 100px" 
+  <EditorLayout 
+    :has-selection="!!selectedSkill" 
+    empty-text="请在左侧选择技能或点击新增"
+  >
+    <!-- 侧边栏 -->
+    <template #sidebar>
+      <ModuleSidebar 
+        title="技能定义"
+        :menu-options="menuOptions"
+        v-model:model-value="selectedIndex"
+        @add="addSkill"
       />
-    </n-layout-content>
+    </template>
 
-  </n-layout>
+    <!-- 中央编辑区 -->
+    <template #content>
+      <n-tabs type="card" animated>
+        <n-tab-pane name="basic" tab="核心配置">
+          <BasicSection />
+        </n-tab-pane>
+        <n-tab-pane name="effects" tab="技能效果">
+          <EffectSection />
+        </n-tab-pane>
+        <n-tab-pane name="target" tab="目标选择">
+          <TargetSection />
+        </n-tab-pane>
+        <n-tab-pane name="visuals" tab="视觉资源">
+          <VisualSection />
+        </n-tab-pane>
+      </n-tabs>
+    </template>
+
+    <!-- 右侧预览与操作 -->
+    <template #preview>
+      <ModuleXmlPreview 
+        v-if="selectedSkill"
+        :item="selectedSkill" 
+        @delete="handleDelete"
+      >
+        <!-- 技能特有的扩展说明 -->
+        <template #extra>
+          <n-card title="AS3 效果说明" size="small" status="info">
+            <div v-if="selectedSkill.effectType">
+              <n-tag type="info" size="small" style="margin-bottom: 8px">
+                {{ selectedSkill.effectType }}
+              </n-tag>
+              <p class="effect-desc-text">{{ currentEffectDesc }}</p>
+            </div>
+            <n-text v-else depth="3">未选择效果函数</n-text>
+          </n-card>
+        </template>
+      </ModuleXmlPreview>
+    </template>
+  </EditorLayout>
 </template>
 
 <script setup lang="ts">
 import { useSkillState } from './hooks/useSkillState';
-import SkillSidebar from './components/SkillSidebar.vue';
-import SkillXmlPreview from './components/SkillXmlPreview.vue';
+import { useEffectLogic } from './hooks/useEffectLogic';
+import { useMessage } from 'naive-ui';
+
+// 引入通用组件
+import EditorLayout from '../../components/EditorLayout.vue';
+import ModuleSidebar from '../..//components/ModuleSidebar.vue';
+import ModuleXmlPreview from '../..//components/ModuleXmlPreview.vue';
+
+// 引入业务 Section
 import BasicSection from './components/sections/BasicSection.vue';
 import EffectSection from './components/sections/EffectSection.vue';
 import TargetSection from './components/sections/TargetSection.vue';
 import VisualSection from './components/sections/VisualSection.vue';
 
-// 只需要引入状态，判断 selectedSkill 是否存在即可
-const { selectedSkill } = useSkillState();
+const message = useMessage();
+const { selectedSkill, selectedIndex, menuOptions, addSkill, removeSkill } = useSkillState();
+const { currentEffectDesc } = useEffectLogic(selectedSkill);
+
+const handleDelete = () => {
+  if (selectedIndex.value !== null) {
+    removeSkill(selectedIndex.value);
+    message.warning('技能已移除');
+  }
+};
 </script>
 
 <style scoped>
-.editor-inner-wrapper {
-  height: 100%;
-  overflow-x: hidden;
-}
-
-/* 统一 Tab 样式微调 */
-:deep(.n-tabs-nav) {
-  margin-bottom: 16px;
+.effect-desc-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #adbac7;
+  white-space: pre-line;
 }
 </style>

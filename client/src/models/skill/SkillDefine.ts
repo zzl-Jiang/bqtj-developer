@@ -14,11 +14,11 @@ export class SkillDefine {
 
   /** 内部名称 (ID)，不可重复。在 XML 中作为属性及子节点存在 */
   @Expose()
-  public name: string = "";
+  public name: string | undefined = undefined;
 
   /** 界面显示名称 */
   @Expose()
-  public cnName: string = "";
+  public cnName: string | undefined = undefined;
 
   /** 父级分类 (例如: heroSkill, enemySuper, equipSkill) */
   @Expose()
@@ -26,7 +26,7 @@ export class SkillDefine {
   
   /** 技能局外图标路径 */
   @Expose()
-  public iconUrl: string = "";
+  public iconUrl: string | undefined = undefined;
 
   /** 技能局内图标路径 (36x36 规格) */
   @Expose()
@@ -34,7 +34,7 @@ export class SkillDefine {
 
   /** 基础技能标签 */
   @Expose()
-  public baseLabel: string = "";
+  public baseLabel: string | undefined = undefined;
 
   /** 
    * 触发种类：
@@ -66,7 +66,7 @@ export class SkillDefine {
 
   /** 效果分类。这个使用需要严格的限制和已有定义对应 */
   @Expose()
-  public effectFather: string = "";
+  public effectFather: string | undefined = undefined;
 
   /** AS3 内部调用的函数名称 */
   @Expose()
@@ -78,7 +78,7 @@ export class SkillDefine {
 
   /** 状态类型，悬停沙漏专用 */
   @Expose()
-  public stateType: string = "";
+  public stateType: string | undefined = undefined;
 
   /** 状态移除时调用的效果 */
   @Expose()
@@ -339,45 +339,45 @@ export class SkillDefine {
    */
   public toXml(): string {
     let xml = `    <skill name="${this.name || 'empty'}"`;
-    if (this.cnName) xml += ` cnName="${this.cnName}"`;
+    if (this.cnName != null) xml += ` cnName="${this.cnName}"`;
     xml += `>\n`;
 
     // 基础识别与显示
     xml += `      <name>${this.name}</name>\n`;
-    if (this.cnName) xml += `      <cnName>${this.cnName}</cnName>\n`;
-    if (this.iconUrl) xml += `      <iconUrl>${this.iconUrl}</iconUrl>\n`;
-    if (this.iconUrl36) xml += `      <iconUrl36>${this.iconUrl36}</iconUrl36>\n`;
-    if (this.baseLabel) xml += `      <baseLabel>${this.baseLabel}</baseLabel>\n`;
-    if (this.description) xml += `      <description>${this.description}</description>\n`;
+    if (this.cnName != null) xml += `      <cnName>${this.cnName}</cnName>\n`;
+    if (this.iconUrl != null) xml += `      <iconUrl>${this.iconUrl}</iconUrl>\n`;
+    if (this.iconUrl36 != null) xml += `      <iconUrl36>${this.iconUrl36}</iconUrl36>\n`;
+    if (this.baseLabel != null) xml += `      <baseLabel>${this.baseLabel}</baseLabel>\n`;
+    if (this.description != null) xml += `      <description>${this.description}</description>\n`;
 
     // 核心逻辑
-    if (this.conditionType) xml += `      <conditionType>${this.conditionType}</conditionType>\n`;
+    if (this.conditionType != null) xml += `      <conditionType>${this.conditionType}</conditionType>\n`;
     xml += `      <effectType>${this.effectType}</effectType>\n`;
-    if (this.condition) xml += `      <condition>${this.condition}</condition>\n`;
-    if (this.conditionString) xml += `      <conditionString>${this.conditionString}</conditionString>\n`;
-    if (this.conditionRange) xml += `      <conditionRange>${this.conditionRange}</conditionRange>\n`;
-    if (this.doCondition) xml += `      <doCondition>${this.doCondition}</doCondition>\n`;
-    if (this.effectFather) xml += `      <effectFather>${this.effectFather}</effectFather>\n`;
-    if (this.addType) xml += `      <addType>${this.addType}</addType>\n`;
-    if (this.stateType) xml += `      <stateType>${this.stateType}</stateType>\n`;
+    if (this.condition != null) xml += `      <condition>${this.condition}</condition>\n`;
+    if (this.conditionString != null) xml += `      <conditionString>${this.conditionString}</conditionString>\n`;
+    if (this.conditionRange != null) xml += `      <conditionRange>${this.conditionRange}</conditionRange>\n`;
+    if (this.doCondition != null) xml += `      <doCondition>${this.doCondition}</doCondition>\n`;
+    if (this.effectFather != null) xml += `      <effectFather>${this.effectFather}</effectFather>\n`;
+    if (this.addType != null) xml += `      <addType>${this.addType}</addType>\n`;
+    if (this.stateType != null) xml += `      <stateType>${this.stateType}</stateType>\n`;
 
     // 数值与时间
-    if (this.value) xml += `      <value>${this.value}</value>\n`;
-    if (this.mul) xml += `      <mul>${this.mul}</mul>\n`;
-    if (this.secMul) xml += `      <secMul>${this.secMul}</secMul>\n`;
-    if (this.cd) xml += `      <cd>${this.cd}</cd>\n`;
-    if (this.firstCd) xml += `      <firstCd>${this.firstCd}</firstCd>\n`;
-    if (this.duration) xml += `      <duration>${this.duration}</duration>\n`;
-    if (this.intervalT) xml += `      <intervalT>${this.intervalT}</intervalT>\n`;
-    if (this.range) xml += `      <range>${this.range}</range>\n`;
-    if (this.delay) xml += `      <delay>${this.delay}</delay>\n`;
-    if (this.doGap) xml += `      <doGap>${this.doGap}</doGap>\n`;
-    if (this.valueString) xml += `      <valueString>${this.valueString}</valueString>\n`;
-    if (this.secString) xml += `      <secString>${this.secString}</secString>\n`;
-    if (this.meActionLabel) xml += `      <meActionLabel>${this.meActionLabel}</meActionLabel>\n`;
+    if (this.value != null) xml += `      <value>${this.value}</value>\n`;
+    if (this.mul != null) xml += `      <mul>${this.mul}</mul>\n`;
+    if (this.secMul != null) xml += `      <secMul>${this.secMul}</secMul>\n`;
+    if (this.cd != null) xml += `      <cd>${this.cd}</cd>\n`;
+    if (this.firstCd != null) xml += `      <firstCd>${this.firstCd}</firstCd>\n`;
+    if (this.duration != null) xml += `      <duration>${this.duration}</duration>\n`;
+    if (this.intervalT != null) xml += `      <intervalT>${this.intervalT}</intervalT>\n`;
+    if (this.range != null) xml += `      <range>${this.range}</range>\n`;
+    if (this.delay != null) xml += `      <delay>${this.delay}</delay>\n`;
+    if (this.doGap != null) xml += `      <doGap>${this.doGap}</doGap>\n`;
+    if (this.valueString != null) xml += `      <valueString>${this.valueString}</valueString>\n`;
+    if (this.secString != null) xml += `      <secString>${this.secString}</secString>\n`;
+    if (this.meActionLabel != null) xml += `      <meActionLabel>${this.meActionLabel}</meActionLabel>\n`;
 
-    if (this.noEffectLevelModel) xml += `      <noEffectLevelModel>${this.noEffectLevelModel}</noEffectLevelModel>\n`;
-    if (this.createByArmsTypePro) xml += `      <createByArmsTypePro>${this.createByArmsTypePro}</createByArmsTypePro>\n`;
+    if (this.noEffectLevelModel != null) xml += `      <noEffectLevelModel>${this.noEffectLevelModel}</noEffectLevelModel>\n`;
+    if (this.createByArmsTypePro != null) xml += `      <createByArmsTypePro>${this.createByArmsTypePro}</createByArmsTypePro>\n`;
 
     // 布尔标志位 (仅在非默认值 true 时导出)
     const boolProps = [
