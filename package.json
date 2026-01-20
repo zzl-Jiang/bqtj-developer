@@ -18,5 +18,8 @@
   },
   "dependencies": {
     "@vicons/ionicons5": "^0.13.0"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.55.2"
   }
 }
