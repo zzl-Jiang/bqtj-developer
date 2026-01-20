@@ -1,4 +1,4 @@
-<!-- src/views/components/ModuleXmlPreview.vue -->
+<!-- client/src/views/components/ModuleXmlPreview.vue -->
 <template>
   <n-space vertical size="large">
     <n-card title="XML 预览" size="small" segmented>

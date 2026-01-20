@@ -1,4 +1,4 @@
-<!-- src/views/Editor/SkillEditor/index.vue -->
+<!-- client/src/views/Editor/SkillEditor/index.vue -->
 <template>
   <EditorLayout 
     :has-selection="!!selectedSkill" 
@@ -67,10 +67,10 @@ import ModuleSidebar from '../..//components/ModuleSidebar.vue';
 import ModuleXmlPreview from '../..//components/ModuleXmlPreview.vue';
 
 // 引入业务 Section
-import BasicSection from './components/sections/BasicSection.vue';
-import EffectSection from './components/sections/EffectSection.vue';
-import TargetSection from './components/sections/TargetSection.vue';
-import VisualSection from './components/sections/VisualSection.vue';
+import BasicSection from './sections/BasicSection.vue';
+import EffectSection from './sections/EffectSection.vue';
+import TargetSection from './sections/TargetSection.vue';
+import VisualSection from './sections/VisualSection.vue';
 
 const message = useMessage();
 const { selectedSkill, selectedIndex, menuOptions, addSkill, removeSkill } = useSkillState();

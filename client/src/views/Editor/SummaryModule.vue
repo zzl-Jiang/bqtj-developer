@@ -21,7 +21,7 @@
           </n-gi>
         </n-grid>
       </n-form>
-      <n-form-item label="Mod 介绍 (支持 HTML/CDATA)">
+      <n-form-item label="Mod 介绍 (支持 htmlText, 自动包装 CDATA)">
         <n-input
           v-model:value="modStore.info.description"
           type="textarea"
@@ -32,13 +32,13 @@
     </n-card>
 
     <!-- 数据统计 -->
-    <n-grid :cols="4" :x-gap="12">
+    <n-grid :cols="4" :x-gap="12" :y-gap="12" style="padding: 10px;">
       <n-gi v-for="stat in statistics" :key="stat.label">
         <n-card embedded size="small">
           <n-statistic :label="stat.label" :value="stat.value" />
         </n-card>
       </n-gi>
-      <n-gi>
+      <n-gi :span="4">
         <n-card embedded size="small" style="background-color: rgba(24, 160, 88, 0.1)">
           <n-statistic label="异常检测" :value="errorCount">
             <template #suffix>
@@ -82,6 +82,7 @@ const statistics = computed(() => [
   { label: '子弹数量', value: modStore.bulletList.length },
   { label: '武器数量', value: modStore.armsList.length },
   { label: '对话数量', value: modStore.sayList.length },
+  { label: '掉落定义', value: modStore.dropList.length },
 ]);
 
 // 错误检查逻辑
@@ -124,15 +125,28 @@ const fullXml = computed(() => {
     res += `  </father>\n`;
     return res;
   };
+  
+  // 辅助函数：生成 Level (Say) 专用 Father 块
+  const buildFatherLevel = (name: string, cn: string, list: any[]) => {
+    if (list.length === 0) return `  <!-- <father name="${name}" cn="${cn}"> 暂无数据 </father> -->\n`;
+    let res = `  <father name="${name}" cn="${cn}">\n    <gather>\n`;
+    list.forEach(item => {
+      // 这里的 item.toXml() 会调用各个类里定义的 XML 生成逻辑
+      res += `${item.toXml()}\n`;
+    });
+    res += `    </gather>\n  </father>\n`;
+    return res;
+  };
 
   // 按顺序汇总所有模块
   xml += buildFather('png', '资源', modStore.pngList);
   xml += buildFather('skill', '技能', modStore.skillList);
-  xml += buildFather('level', '关卡', modStore.levelList);
+  xml += buildFatherLevel('level', '关卡', modStore.levelList);
   xml += buildFather('body', '单位', modStore.bodyList);
   xml += buildFather('bullet', '子弹', modStore.bulletList);
   xml += buildFather('arms', '武器', modStore.armsList);
-  xml += buildFather('say', '对话', modStore.sayList);
+  xml += buildFatherLevel('say', '对话', modStore.sayList);
+  xml += buildFather('drop', '掉落', modStore.dropList);
 
   xml += `</data>`;
   return xml;

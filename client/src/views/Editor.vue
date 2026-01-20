@@ -28,6 +28,7 @@ import { useModStore } from '../store/useModStore';
 import SummaryModule from './Editor/SummaryModule.vue';
 import PngModule from './Editor/PngModule.vue';
 import SkillEditor from './Editor/SkillEditor/index.vue';
+import LevelEditor from './Editor/LevelEitor/index.vue';
 import GenericModule from './Editor/GenericModule.vue';
 
 const modStore = useModStore();
@@ -37,12 +38,13 @@ const menuOptions = [
   { label: '显示汇总', key: 'summary' },
   { label: '资源模块 (PNG)', key: 'png' },
   { label: '技能模块', key: 'skill' },
-  { key: 'divider', type: 'divider' },
   { label: '关卡设计', key: 'level' },
+  { key: 'divider', type: 'divider' },
   { label: '单位定义', key: 'body' },
   { label: '子弹效果', key: 'bullet' },
   { label: '武器定义', key: 'arms' },
   { label: '剧情对话', key: 'say' },
+  { label: '效果掉落', key: 'drop' },
 ];
 
 // 使用渲染函数或包裹组件来复用 GenericModule
@@ -51,15 +53,9 @@ const currentModuleComponent = computed(() => {
     case 'summary': return SummaryModule;
     case 'png': return PngModule;
     case 'skill': return SkillEditor;
+    case 'level': return LevelEditor;
     
-    // 以下五个模块共用 GenericModule，但传入不同的 Props 和 Actions
-    case 'level': 
-      return h(GenericModule, { 
-        title: '关卡', 
-        dataList: modStore.levelList,
-        onAdd: () => modStore.addLevel(),
-        onRemove: (i: number) => modStore.removeLevel(i)
-      });
+    // 以下模块共用 GenericModule，但传入不同的 Props 和 Actions
     case 'body':
       return h(GenericModule, { 
         title: '单位', 
@@ -87,6 +83,13 @@ const currentModuleComponent = computed(() => {
         dataList: modStore.sayList,
         onAdd: () => modStore.addSay(),
         onRemove: (i: number) => modStore.removeSay(i)
+      });
+    case 'drop':
+      return h(GenericModule, { 
+        title: '掉落', 
+        dataList: modStore.dropList,
+        onAdd: () => modStore.addDrop(),
+        onRemove: (i: number) => modStore.removeDrop(i)
       });
 
     default: return SummaryModule;

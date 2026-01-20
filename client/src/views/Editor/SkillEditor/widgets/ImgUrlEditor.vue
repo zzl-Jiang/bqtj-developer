@@ -1,4 +1,4 @@
-<!-- client/src/views/Editor/components/ImgUrlEditor.vue -->
+<!-- client/src/views/Editor/SkillEditor/widgets/ImgUrlEditor.vue -->
 <template>
   <n-form label-placement="left" label-width="80" size="small">
     <n-grid :cols="2" :x-gap="12">

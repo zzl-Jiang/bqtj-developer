@@ -1,4 +1,4 @@
-// src/views/Editor/SkillEditor/hooks/useSkillState.ts
+// client/src/views/Editor/SkillEditor/hooks/useSkillState.ts
 import { ref, computed } from 'vue';
 import { useModStore } from '../../../../store/useModStore';
 import { useMessage } from 'naive-ui';

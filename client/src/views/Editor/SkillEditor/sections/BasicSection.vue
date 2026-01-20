@@ -1,4 +1,4 @@
-<!-- src/views/Editor/SkillEditor/components/sections/BasicSection.vue -->
+<!-- client/src/views/Editor/SkillEditor/sections/BasicSection.vue -->
 <template>
   <div class="section-container" v-if="selectedSkill">
     <n-space vertical size="large">
@@ -36,9 +36,9 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useSkillState } from '../../hooks/useSkillState';
-import { BASE_META, FLAG_META } from '../../config';
-import MetaFormItem from '../widgets/MetaFormItem.vue';
+import { useSkillState } from '../hooks/useSkillState';
+import { BASE_META, FLAG_META } from '../config';
+import MetaFormItem from '../../../components/MetaFormItem.vue';
 
 const { selectedSkill } = useSkillState();
 

@@ -1,4 +1,4 @@
-<!-- src/views/Editor/SkillEditor/components/sections/VisualSection.vue -->
+<!-- client/src/views/Editor/SkillEditor/sections/VisualSection.vue -->
 <template>
   <div class="visual-container" v-if="selectedSkill">
     <n-collapse arrow-placement="right" :default-expanded-names="[0]">
@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { useSkillState } from '../../hooks/useSkillState';
+import { useSkillState } from '../hooks/useSkillState';
 import ImgUrlEditor from '../widgets/ImgUrlEditor.vue';
 
 const { selectedSkill } = useSkillState();

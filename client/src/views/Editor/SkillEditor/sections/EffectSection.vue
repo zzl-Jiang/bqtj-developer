@@ -1,4 +1,4 @@
-<!-- src/views/Editor/SkillEditor/components/sections/EffectSection.vue -->
+<!-- client/src/views/Editor/SkillEditor/sections/EffectSection.vue -->
 <template>
   <n-space vertical size="large" v-if="selectedSkill">
     <n-card title="核心配置" size="small">
@@ -81,10 +81,10 @@
 
 <script setup lang="ts">
 import { ref, computed, nextTick } from 'vue';
-import { useSkillState } from '../../hooks/useSkillState';
-import { useEffectLogic } from '../../hooks/useEffectLogic';
-import { CONDITION_OPTIONS_MAP, LOGIC_META } from '../../config';
-import MetaFormItem from '../widgets/MetaFormItem.vue';
+import { useSkillState } from '../hooks/useSkillState';
+import { useEffectLogic } from '../hooks/useEffectLogic';
+import { CONDITION_OPTIONS_MAP, LOGIC_META } from '../config';
+import MetaFormItem from '../../../components/MetaFormItem.vue';
 
 const { selectedSkill } = useSkillState();
 const { 

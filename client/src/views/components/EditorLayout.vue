@@ -1,4 +1,4 @@
-<!-- src/views/components/EditorLayout.vue -->
+<!-- client/src/views/components/EditorLayout.vue -->
 <template>
   <n-layout has-sider position="absolute">
     <!-- 左侧槽位 -->

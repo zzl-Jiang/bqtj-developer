@@ -1,3 +1,4 @@
+<!-- client/src/views/components/ModuleSidebar.vue -->
 <template>
   <n-layout-sider
     bordered

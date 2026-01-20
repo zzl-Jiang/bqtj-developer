@@ -1,10 +1,14 @@
-<!-- src/views/Editor/SkillEditor/components/widgets/MetaFormItem.vue -->
+<!-- client/src/views/components/MetaFormItem.vue -->
 <template>
   <n-form-item :label="showLabel ? meta.label : ''" :show-label="showLabel">
     <!-- 使用 label 插槽自定义标题区域 -->
     <template #label v-if="showLabel">
       <n-space align="center" :size="4">
-        <span>{{ meta.label }}</span>
+        <span :style="meta.disabled ? 'color: var(--n-label-text-color); opacity: 0.6' : ''">
+          {{ meta.label }}
+        </span>
+        <!-- 如果是禁用项，显示一把小锁 -->
+        <n-text v-if="meta.disabled" depth="3" style="font-size: 12px">🔒</n-text>
         <!-- 只有当配置中存在 desc 时才显示详情按钮 -->
         <n-popover v-if="meta.desc" trigger="hover" :width="240" scrollable>
           <template #trigger>
@@ -25,6 +29,7 @@
       v-if="meta.type === 'select_png'" 
       v-model:value="modelValue" 
       :options="pngOptions" 
+      :disabled="meta.disabled"
       filterable
       tag
       clearable 
@@ -36,8 +41,10 @@
       v-else-if="meta.type === 'select'" 
       v-model:value="modelValue" 
       :options="meta.options" 
+      :disabled="meta.disabled"
       :render-label="renderLabel" 
       filterable
+      tag
       clearable 
       placeholder="请选择" 
     />
@@ -50,6 +57,7 @@
       filterable
       tag
       :options="meta.options || []"
+      :disabled="meta.disabled"
       :render-label="renderLabelLong" 
       :render-tag="renderTag" 
       placeholder="请选择 (支持多项)"
@@ -60,6 +68,7 @@
     <n-input-number 
       v-else-if="meta.type === 'number'" 
       v-model:value="modelValue" 
+      :disabled="meta.disabled"
       style="width: 100%" 
       placeholder="请输入数值" 
     />
@@ -68,6 +77,7 @@
     <n-switch 
       v-else-if="meta.type === 'switch'" 
       v-model:value="modelValue" 
+      :disabled="meta.disabled"
     />
 
     <!-- 默认文本输入 -->
@@ -75,13 +85,16 @@
       v-else 
       v-model:value="modelValue" 
       :placeholder="meta.desc || '请输入内容'" 
+      :disabled="meta.disabled"
+      clearable
+      @update:value="handleStringUpdate"
     />
   </n-form-item>
 </template>
 
 <script setup lang="ts">
 import { computed, h } from 'vue';
-import { useModStore } from '../../../../../store/useModStore';
+import { useModStore } from '../../store/useModStore';
 import { NTag } from 'naive-ui';
 
 const props = defineProps(['meta', 'modelValue', 'showLabel']);
@@ -133,5 +146,12 @@ const renderTag = ({ option, handleClose }: { option: any, handleClose: () => vo
       default: () => option.label 
     }
   );
+};
+
+// 如果用户清空了输入框，直接设为 undefined，以免输入空字符串残留
+const handleStringUpdate = (val: string | null) => {
+  // 这样在 toXml 遍历对象属性时，value === undefined 会跳过该属性
+  const finalValue = (val === '' || val === null) ? undefined : val;
+  emit('update:modelValue', finalValue);
 };
 </script>
