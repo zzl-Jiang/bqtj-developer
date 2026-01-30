@@ -396,6 +396,7 @@ export class SkillDefine {
     if (this.range != null) xml += `      <range>${this.range}</range>\n`;
     if (this.delay != null) xml += `      <delay>${this.delay}</delay>\n`;
     if (this.doGap != null) xml += `      <doGap>${this.doGap}</doGap>\n`;
+    if (this.extraValueType != null) xml += `      <extraValueType>${this.extraValueType}</extraValueType>\n`;
     if (this.valueString != null) xml += `      <valueString>${this.valueString}</valueString>\n`;
     if (this.secString != null) xml += `      <secString>${this.secString}</secString>\n`;
     if (this.meActionLabel != null) xml += `      <meActionLabel>${this.meActionLabel}</meActionLabel>\n`;
