@@ -239,6 +239,11 @@ export const ADD_TYPE_OPTIONS = [
     label: '混合 (instantAndState)',
     value: 'instantAndState',
     desc: '即时+状态'
+  },
+  {
+    label: '混合 (stateAndInstant)',
+    value: 'stateAndInstant',
+    desc: '状态+即时'
   }
 ];
 

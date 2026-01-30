@@ -83,7 +83,7 @@ export const LOGIC_META: SkillMetaItem[] = [
     type: 'select',
     options: Opts.ADD_TYPE_OPTIONS,
     group: 'logic',
-    desc: '分为三类：即时、状态、混合。\n即时生效/为目标添加状态/两者混合。'
+    desc: '分为三类：即时、状态、混合。\n即时生效/为目标添加状态/两者混合，其中混合按照生效次序分为两类。'
   },
   {
     key: 'effectType',

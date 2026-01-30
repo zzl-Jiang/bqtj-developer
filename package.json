@@ -11,13 +11,10 @@
     "build:client": "npm run build -w client",
     "build:server": "npm run build -w server",
     "build": "npm run build:client && npm run build:server",
-    "start": "node server/dist/index.js" 
+    "start": "node server/dist/index.js"
   },
   "devDependencies": {
     "concurrently": "^9.2.1"
-  },
-  "dependencies": {
-    "@vicons/ionicons5": "^0.13.0"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.55.2"

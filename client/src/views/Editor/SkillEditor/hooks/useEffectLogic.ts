@@ -10,7 +10,7 @@ export function useEffectLogic(selectedSkill: any) {
     
     // 检查是否开启了 doGap
     const hasDoGap = skill.doGap !== undefined;
-    const type = skill.addType; // 'instant', 'state', 或 'instantAndState'
+    const type = skill.addType; // 'instant', 'state', 'instantAndState', 或'stateAndInstant'
 
     return EFFECT_TYPE_OPTIONS.filter(opt => {
       // 如果开启了 doGap 且当前是状态类型
@@ -20,7 +20,7 @@ export function useEffectLogic(selectedSkill: any) {
       }
 
       // 如果用户选的是混合模式
-      if (type === 'instantAndState') {
+      if (type === 'instantAndState' || type === 'stateAndInstant') {
         // 同时搜寻 instant 和 state。显示那些【既有 instant 也有 state】的函数
         // 后期如果需要允许不存在的也可选择，把 && 换成 || 即可
         return opt.category.includes('instant') && opt.category.includes('state');

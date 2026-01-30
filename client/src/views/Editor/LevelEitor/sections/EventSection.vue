@@ -7,7 +7,7 @@
         <template #icon><n-icon><AddOutline /></n-icon></template>
         添加事件组 (Group)
       </n-button>
-      <span style="margin-left: 20px; justify-self: center;">事件组间同时运行，事件组内按顺序运行。</span>
+      <span style="margin-left: 20px; justify-self: center;">事件组间同时运行，事件组内按顺序运行。组内拖拽侧边按钮调整次序。</span>
     </div>
 
     <!-- 顶层：事件组 Collapse -->
@@ -28,30 +28,59 @@
 
         <template #header-extra>
           <n-button-group size="tiny" style="margin-right: 8px;">
-            <n-button @click.stop="handleAddEvent(group)">添加事件</n-button>
+            <n-button @click.stop="handleAddEvent(group, 0)">开头添加</n-button>
+            <n-button @click.stop="handleAddEvent(group)">末尾添加</n-button>
             <n-button type="error" ghost @click.stop="level.eventG.groups.splice(gIdx, 1)">删除组</n-button>
           </n-button-group>
         </template>
 
         <!-- 事件列表：每个组内的具体事件 -->
-        <n-list bordered clickable hoverable>
-          <n-list-item v-for="(event, eIdx) in group.events" :key="eIdx" @click="editEvent(event)">
-            <n-thing>
-              <template #header>
-                <n-tag size="small" type="primary" class="mr-2">{{ event.id || 'Unnamed Event' }}</n-tag>
-                <n-text depth="2" small>条件: {{ event.condition.xmlText || '(未设置)' }}</n-text>
-              </template>
-              <template #header-extra>
-                <n-button size="tiny" quaternary type="error" @click.stop="group.events.splice(eIdx, 1)">
-                  <template #icon><n-icon><TrashOutline /></n-icon></template>
-                </n-button>
-              </template>
-              <div class="order-preview">
-                指令数: <n-number-animation :from="0" :to="event.orders.length" /> 条
-              </div>
-            </n-thing>
-          </n-list-item>
-          <n-empty v-if="group.events.length === 0" size="small" description="该组暂无事件" />
+        <n-list bordered clickable hoverable class="event-list">
+          <draggable 
+            v-model="group.events" 
+            item-key="id" 
+            handle=".drag-handle" 
+            ghost-class="drag-ghost"
+            chosen-class="drag-chosen"
+            animation="300"
+          >
+            <template #item="{ element: event, index: eIdx }">
+              <n-list-item class="event-item-row" @click="editEvent(event)">
+                <n-thing>
+                  <template #header>
+                    <n-space align="center" :size="4">
+                      <!-- ✨ 拖动手柄 -->
+                      <n-icon class="drag-handle" size="18" style="cursor: grab; margin-right: 8px; color: #ccc;">
+                        <ReorderFourOutline />
+                      </n-icon>
+                      <n-tag size="small" type="primary" class="mr-2">{{ event.id || 'Unnamed' }}</n-tag>
+                      <n-text depth="3" style="font-size: 12px;">顺序: {{ eIdx + 1 }}</n-text>
+                    </n-space>
+                  </template>
+
+                  <template #header-extra>
+                    <n-space>
+                      <!-- ✨ 快捷添加：在此事件后插入 -->
+                      <n-button size="tiny" quaternary circle @click.stop="handleAddEvent(group, eIdx + 1)">
+                        <template #icon><n-icon><AddOutline /></n-icon></template>
+                      </n-button>
+                      <n-button size="tiny" quaternary type="error" @click.stop="group.events.splice(eIdx, 1)">
+                        <template #icon><n-icon><TrashOutline /></n-icon></template>
+                      </n-button>
+                    </n-space>
+                  </template>
+
+                  <div class="event-brief">
+                    <n-text depth="2" small>条件: {{ event.condition.xmlText || '(未设置)' }}</n-text>
+                    <div class="order-preview">
+                      指令数: <n-number-animation :from="0" :to="event.orders.length" /> 条
+                    </div>
+                  </div>
+                </n-thing>
+              </n-list-item>
+            </template>
+          </draggable>
+          <n-empty v-if="group.events.length === 0" size="small" description="该组暂无事件，请点击右上角添加" />
         </n-list>
       </n-collapse-item>
     </n-collapse>
@@ -109,6 +138,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import draggable from 'vuedraggable';
 import { useLevelState } from '../hooks/useLevelState';
 import MetaFormItem from '../../../components/MetaFormItem.vue';
 import { EVENT_CONDITION_METAS } from '../config';
@@ -117,7 +147,7 @@ import { LevelEventDefine } from '../../../../models/level/event/LevelEventDefin
 import { LevelEventOrderDefine } from '../../../../models/level/event/LevelEventOrderDefine';
 import ConditionBuilder from './event/ConditionBuilder.vue';
 import OrderBuilder from './event/OrderBuilder.vue';
-import { TrashOutline, AddOutline } from '@vicons/ionicons5';
+import { TrashOutline, AddOutline, ReorderFourOutline } from '@vicons/ionicons5';
 import { useSectionNavigator } from '../../../../hooks/useSectionNavigator';
 
 const { selectedLevel: level } = useLevelState();
@@ -130,10 +160,15 @@ const handleAddGroup = () => {
   level.value?.eventG.groups.push(newGroup);
 };
 
-const handleAddEvent = (group: LevelEventGroup) => {
-  const newEvent = new LevelEventDefine();
-  newEvent.id = "event_" + (group.events.length + 1);
-  group.events.push(newEvent);
+const handleAddEvent = (group: LevelEventGroup, index?: number) => {
+  // 使用工厂方法确保新事件带有默认属性
+  const newEvent = LevelEventDefine.createDefault("e_" + (group.events.length + 1));
+  
+  if (typeof index === 'number') {
+    group.events.splice(index, 0, newEvent);
+  } else {
+    group.events.push(newEvent);
+  }
 };
 
 const editEvent = (event: LevelEventDefine) => {
@@ -158,6 +193,28 @@ useSectionNavigator({
 </script>
 
 <style scoped>
+.drag-ghost {
+  opacity: 0.4;
+  background: #c8ebfb !important;
+}
+.drag-chosen {
+  border-left: 4px solid #18a058 !important;
+}
+.drag-handle:hover {
+  color: #18a058 !important;
+}
+
+.event-list {
+  padding: 4px;
+}
+.event-item-row {
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+.event-item-row:hover {
+  background-color: #f9f9f9;
+}
+
 .group-item {
   border: 1px solid #efeff5;
   margin-bottom: 12px;
@@ -165,15 +222,13 @@ useSectionNavigator({
   overflow: hidden;
   padding: 10px;
 }
+.event-brief {
+  padding-left: 26px; /* 避开拖动手柄 */
+}
 .order-preview {
   font-size: 12px;
   color: #999;
   margin-top: 4px;
-}
-.order-input-item {
-  display: flex;
-  gap: 8px;
-  align-items: center;
 }
 .orders-container {
   padding: 8px 0;

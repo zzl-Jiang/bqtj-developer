@@ -1,7 +1,7 @@
 <!-- client/src/views/Editor/LevelEitor/sections/event/OrderBuilder.vue -->
 <template>
   <div class="order-card" :class="{ 'is-manual': isManual }">
-    <!-- 1. 顶部操作行 -->
+    <!-- 顶部操作行 -->
     <div class="order-header">
       <n-space align="center" :size="12">
         <n-badge :value="index + 1" color="#999" />
@@ -28,7 +28,7 @@
       </n-space>
     </div>
 
-    <!-- 2. 指令参数表单区 -->
+    <!-- 指令参数表单区 -->
     <div class="order-body">
       <!-- 自动填充模式 -->
       <div v-if="!isManual && currentMeta" class="fields-grid">
@@ -82,7 +82,7 @@
       <n-empty v-if="!currentMeta && !isManual" size="small" description="请选择指令类型" />
     </div>
 
-    <!-- 3. 底部说明栏 -->
+    <!-- 底部说明栏 -->
     <div v-if="currentMeta" class="order-footer">
       <n-text depth="3" class="desc-text">
         <n-icon><InformationCircleOutline style="vertical-align: middle; margin-right: 4px;" /></n-icon>
@@ -262,7 +262,7 @@ watch(() => props.modelValue, (v) => {
 }
 .field-tip {
   font-size: 11px;
-  color: #18a058; /* 绿色提示文字 */
+  color: #67b88d; /* 绿色提示文字 */
   margin-top: 2px;
   line-height: 1.2;
 }

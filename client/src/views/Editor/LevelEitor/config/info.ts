@@ -180,9 +180,15 @@ export const LEVEL_INFO_METAS = {
     {
       key: 'modeDiy',
       label: '自定义模式 (modeDiy)',
-      type: 'string',
-      disabled: true,
-      desc: '由于对应的 diy 逻辑被禁用，此参数也将失效。'
+      type: 'select',
+      options: [
+        { label: 'death', value: 'death', desc: '待更新' },
+        { label: 'unendSingle', value: 'unendSingle', desc: '虚天塔相关' },
+        { label: 'unionPK', value: 'unionPK', desc: '军队竞技场相关' },
+        { label: 'spaceCraft', value: 'spaceCraft', desc: '太空飞船' },
+        { label: 'spaceSuit', value: 'spaceSuit', desc: '太空战斗' },
+      ],
+      desc: '不同模式有对应效果逻辑，还没研究，可自行探索。'
     },
   ]
 };

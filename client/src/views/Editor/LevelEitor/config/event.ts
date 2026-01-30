@@ -112,6 +112,37 @@ export const CONDITION_METAS: ConditionMeta[] = [
   }
 ];
 
+// --- 图像效果选项 ---
+export const VISUAL_ORDER_OPTIONS = [
+  { label: '添加天气 (addWeather)', value: 'addWeather', desc: '添加雨、炎热等天气。参数1:类型(rain/heat), 参数2:强度(0-10), 参数3:持续时间' },
+  { label: '场景缩放 (sceneScale)', value: 'sceneScale', desc: '缩放整个游戏画面。参数1:倍率(如0.5为缩小一半)' },
+  { label: '地图变黑 (mapToBlack)', value: 'mapToBlack', desc: '将地图色调平滑过渡到黑色' },
+  { label: '地图恢复 (mapToNormal)', value: 'mapToNormal', desc: '恢复地图正常色调' },
+  { label: '层级显示 (sceneMc:show)', value: 'sceneMc:show', desc: '显示特定的地图层。参数1:层级ID, 参数2:子元件名' },
+  { label: '层级隐藏 (sceneMc:hide)', value: 'sceneMc:hide', desc: '隐藏特定的地图层。参数1:层级ID, 参数2:子元件名' },
+  { label: '世界旋转180度 (roWorld180)', value: 'roWorld180', desc: '将画面完全颠倒' },
+  { label: '添加通用特效 (addNormalEffect)', value: 'addNormalEffect', desc: '在指定点播放特效。参数1:路径, 参数2:坐标(x,y), 参数3:图层名' },
+];
+
+// --- 系统与操作选项 ---
+export const SYSTEM_ORDER_OPTIONS = [
+  { label: '剧情模式 (toPlotMode)', value: 'toPlotMode', desc: '隐藏UI，进入剧情对话模式' },
+  { label: '打开输入 (openInput)', value: 'openInput', desc: '允许玩家控制角色' },
+  { label: '关闭输入 (closeInput)', value: 'closeInput', desc: '禁止玩家控制角色（常用于过场）' },
+  { label: '开启AI (setGamingAITrue)', value: 'setGamingAITrue', desc: '接管玩家角色，由AI控制' },
+  { label: '关闭AI (setGamingAIFalse)', value: 'setGamingAIFalse', desc: '将控制权交还给玩家' },
+  { label: '保存游戏 (save)', value: 'save', desc: '强制执行一次存档操作' },
+];
+
+// --- 群体与附身选项 ---
+export const GROUP_ORDER_OPTIONS = [
+  { label: '附身至单位 (heroEverParasitic)', value: 'heroEverParasitic', desc: '玩家P1永久附身到指定ID的单位上' },
+  { label: '取消附身 (clearHeroParasitic)', value: 'clearHeroParasitic', desc: 'P1脱离当前附身对象' },
+  { label: '依据角色附身 (parasiticWeRolePan)', value: 'parasiticWeRolePan', desc: '根据关卡预设的角色自动附身' },
+  { label: '所有队友死亡跪下 (allPartnerStru)', value: 'allPartnerStruNoStrikerWen', desc: '除P1外所有队友进入跪下动作' },
+  { label: '所有队友重生 (allPartnerRebirth)', value: 'allPartnerRebirth', desc: '复活所有已阵亡的队友' },
+];
+
 export const BODY_ORDER_OPTIONS = [
   {
     label: 'AI 与 移动',
@@ -191,156 +222,201 @@ export interface OrderField {
   label: string;
   type: string; // 或者具体到 'text' | 'select' | 'number'
   placeholder?: string;
-  options?: { label: string; value?: string; group?: string }[];
+  options?: { label: string; value?: string; group?: string; desc?: string }[];
 }
 
 export const ORDER_METAS: OrderMeta[] = [
   // --- 变量类 ---
   {
-    label: '变量操作',
+    label: '数值变量',
     value: 'variable',
     group: '变量',
-    desc: '修改或设置自定义数值变量。',
+    desc: '控制关卡内的计数器或标记位。',
     fields: [
-      { key: 'type', label: '方式', type: 'select', options: [
-        { label: '加法 (addNumber)', value: 'addNumber' },
-        { label: '赋值 (setNumber)', value: 'setNumber' }
-      ], placeholder: '请选择修改方式'},
-      { key: 'varName', label: '变量名', placeholder: '如: dropNum', type: 'text' },
+      { key: 'type', label: '逻辑', type: 'select', options: [
+        { label: '增加 (addNumber)', value: 'addNumber' },
+        { label: '设为 (setNumber)', value: 'setNumber' }
+      ]},
+      { key: 'varName', label: '变量名称', placeholder: 'dropNum / count_a', type: 'text' },
       { key: 'val', label: '数值', placeholder: '1', type: 'text' }
     ],
-    build: (f: { type: any; varName: any; val: any; }) => `${f.type || 'addNumber'}:${f.varName || ''};${f.val || ''}`,
-    parse: (t: string) => {
-      const parts = t.split(';');
-      const [type, varName] = (parts[0] || '').split(':');
-      return { type, varName, val: parts[1] };
+    build: (f) => `${f.type}:${f.varName || ''};${f.val || '0'}`,
+    parse: (t) => {
+      const [p1, p2] = t.split(';');
+      return { type: p1?.split(':')[0], varName: p1?.split(':')[1], val: p2 };
     }
   },
 
-  // --- 图像效果 ---
+  // --- 图像与特效 ---
   {
     label: '图像/环境效果',
     value: 'visual',
     group: '图像',
-    desc: '控制天气、滤镜、缩放等视觉表现。',
+    desc: '场景缩放、天气、图层显示隐藏及旋转。',
     fields: [
-      { key: 'type', label: '效果类型', type: 'select', options: [
-        { label: '天气 (addWeather)', value: 'addWeather' },
-        { label: '场景缩放 (sceneScale)', value: 'sceneScale' },
-        { label: '地图变黑 (mapToBlack)', value: 'mapToBlack' },
-        { label: '隐藏地图层 (sceneMc)', value: 'sceneMc' }
-      ]},
-      { key: 'p1', label: '参数1', placeholder: '如: rain 或 0.5', type: 'text' },
-      { key: 'p2', label: '参数2', placeholder: '强度/持续时间', type: 'text' }
+      { key: 'type', label: '效果类型', type: 'select', options: VISUAL_ORDER_OPTIONS },
+      { key: 'p1', label: '参数1', placeholder: 'ID/类型/倍率', type: 'text' },
+      { key: 'p2', label: '参数2', placeholder: '强度/子名', type: 'text' },
+      { key: 'p3', label: '参数3', placeholder: '持续时间/图层', type: 'text' }
     ],
-    build: (f) => `${f.type}:${f.p1 || ''};${f.p2 || ''}`,
+    build: (f) => {
+      // 处理图层控制: sceneMc:id;hide:name
+      if (f.type.startsWith('sceneMc')) {
+        const action = f.type.split(':')[1]; // hide 或 show
+        return `sceneMc:${f.p1 || ''};${action}:${f.p2 || ''}`;
+      }
+      // 处理场景缩放: sceneScale:0.5
+      if (f.type === 'sceneScale') return `sceneScale:${f.p1 || '1'}`;
+      // 处理天气: addWeather:rain;强度;持续时间
+      if (f.type === 'addWeather') return `addWeather:${f.p1 || 'rain'};${f.p2 || '5'};${f.p3 || '99999'}`;
+      // 处理通用特效: addNormalEffect:路径;坐标;图层,混合,死亡方式
+      if (f.type === 'addNormalEffect') return `addNormalEffect:${f.p1 || ''};${f.p2 || '0,0'};${f.p3 || ''}`;
+      // 单单词指令: mapToBlack, mapToNormal, roWorld180
+      return `${f.type}:`;
+    },
     parse: (t) => {
       const parts = t.split(';');
-      const [type, p1] = parts[0]?.split(':') ?? [];
-      return { type, p1, p2: parts[1] };
+      const firstPart = parts[0] || '';
+      const cmd = firstPart.split(':')[0];
+      const val = firstPart.split(':')[1];
+
+      // 还原 sceneMc
+      if (cmd === 'sceneMc') {
+        const secondPart = parts[1] || '';
+        const action = secondPart.split(':')[0]; // hide/show
+        return { type: `sceneMc:${action}`, p1: val, p2: secondPart.split(':')[1] };
+      }
+      // 还原 addWeather
+      if (cmd === 'addWeather') return { type: 'addWeather', p1: val, p2: parts[1], p3: parts[2] };
+      // 还原 sceneScale
+      if (cmd === 'sceneScale') return { type: 'sceneScale', p1: val };
+      // 还原 addNormalEffect
+      if (cmd === 'addNormalEffect') return { type: 'addNormalEffect', p1: val, p2: parts[1], p3: parts[2] };
+      
+      return { type: cmd };
     }
   },
 
-  // --- 通知类 ---
+  // --- 音乐与音效 ---
   {
-    label: '弹窗/提示',
-    value: 'notice',
+    label: '音频播放',
+    value: 'audio',
     group: '图像',
-    desc: '在屏幕上显示警告、提示或说明文字。',
+    desc: '播放背景音乐或一次性音效。',
     fields: [
-      { key: 'type', label: '类型', type: 'select', options: [
-        { label: '弹窗提示 (alert)', value: 'alert' },
-        { label: '弹窗通知 (alert:yes)', value: 'alert:yes' },
-        { label: '显示提示 (tip)', value: 'tip' }
-      ], placeholder: '请选择显示类型'},
-      { key: 'content', label: '内容', placeholder: '请输入提示文字', type: 'text' }
+      { key: 'type', label: '音频种类', type: 'select', options: [
+        { label: '播放音乐 (playMusic)', value: 'playMusic' },
+        { label: '播放音效 (playSound)', value: 'playSound' }
+      ]},
+      { key: 'id', label: '资源ID', placeholder: 'sound/hit_1', type: 'text' },
+      { key: 'param', label: '扩展参数', placeholder: 'loop / volume', type: 'text' }
     ],
-    build: (f: { type: string; content: any; }) => {
-      if (f.type === 'tip') return `tip:10;${f.content || ''}`; // 默认显示10秒
-      return `${f.type || 'alert'}:${f.content || ''}`;
+    build: (f) => f.type === 'playSound' ? `playSound:${f.id}` : `playMusic;${f.id}:${f.param || ''}`,
+    parse: (t) => t.startsWith('playSound') ? { type:'playSound', id:t.split(':')[1] } : { type:'playMusic', id:t.split(';')[1]?.split(':')[0] }
+  },
+
+  // --- 单位/角色操作 ---
+  {
+    label: '单位操作',
+    value: 'body',
+    group: '单位',
+    desc: '针对单个或群体单位发出的指令。',
+    fields: [
+      { key: 'target', label: '目标单位', placeholder: 'p1 / 玉晴 / enemyRandom / wePlayer', type: 'text' },
+      { key: 'order', label: '具体动作', type: 'select', options: BODY_ORDER_OPTIONS },
+      { key: 'property', label: '参数/坐标', placeholder: 'RectID / SkillID / x,y', type: 'text' }
+    ],
+    build: (f) => {
+      // 区分单个单位(body)和群体(allBody)
+      const isGroup = ['wePlayer', 'weRandom', 'enemyRandom'].includes(f.target);
+      const prefix = isGroup ? 'allBody' : 'body';
+      return `${prefix}:${f.target || ''};${f.order || ''}${f.property ? ':' + f.property : ''}`;
     },
-    parse: (t: string) => {
-      if (t.startsWith('tip')) return { type: 'tip', content: t.split(';')[1] };
-      const parts = t.split(':');
-      if (parts[1] === 'yes') return { type: 'alert:yes', content: parts[2] };
-      return { type: 'alert', content: parts[1] };
+    parse: (t) => {
+      const parts = t.split(';');
+      const target = parts[0]?.split(':')[1];
+      const [order, property] = (parts[1] || '').split(':');
+      return { target, order, property };
     }
   },
 
-  // --- 发兵/单位生成 ---
+  // --- 附身与控制 ---
+  {
+    label: '附身控制',
+    value: 'parasitic',
+    group: '单位',
+    desc: '控制P1、P2的附身逻辑或角色切换。',
+    fields: [
+      { key: 'type', label: '操作', type: 'select', options: GROUP_ORDER_OPTIONS },
+      { key: 'id', label: '目标ID', placeholder: '附身的对象ID', type: 'text' }
+    ],
+    build: (f) => f.type === 'parasiticWeRolePan' ? 'parasiticWeRolePan:' : `${f.type}:${f.id || ''}`,
+    parse: (t) => ({ type: t.split(':')[0], id: t.split(':')[1] })
+  },
+
+  // --- 发兵系统 ---
   {
     label: '生成单位',
     value: 'createUnit',
     group: '发兵',
-    desc: '在指定区域随机位置生成一个单位。',
+    desc: '在指定位置生成兵力。',
     fields: [
-      { key: 'unitId', label: '单位名', placeholder: '如: 战斗僵尸', type: 'text' },
-      { key: 'rectId', label: '区域ID', placeholder: '如: r1', type: 'text' }
+      { key: 'unitId', label: '单位定义ID', placeholder: 'enemy1', type: 'text' },
+      { key: 'rectId', label: '区域(Rect)', placeholder: 'r1', type: 'text' },
+      { key: 'instanceId', label: '分配实例ID', placeholder: 'e1 (用于指令追踪)', type: 'text' }
     ],
-    build: (f: { unitId: any; rectId: any; }) => `createUnit:${f.unitId || ''};${f.rectId || ''}`,
-    parse: (t: string) => {
+    build: (f) => `createUnit:${f.unitId || ''};${f.rectId || ''}${f.instanceId ? ':' + f.instanceId : ''}`,
+    parse: (t) => {
       const parts = t.split(';');
-      return { unitId: parts[0]?.split(':')[1], rectId: parts[1] };
+      const unitId = parts[0]?.split(':')[1];
+      const [rectId, instanceId] = (parts[1] || '').split(':');
+      return { unitId, rectId, instanceId };
     }
   },
 
   // --- 关卡控制 ---
   {
-    label: '关卡控制',
+    label: '关卡逻辑控制',
     value: 'level',
     group: '关卡',
-    desc: '控制胜利、失败、箭头指引、全局杀敌等。',
+    desc: '控制整关胜负、指引、倒计时、全屏震动及全局属性。',
     fields: [
-      { key: 'action', label: '逻辑动作', type: 'select', options: LEVEL_ORDER_OPTIONS },
-      { key: 'param', label: '参数', placeholder: '如区域ID', type: 'text' }
+      { key: 'action', label: '逻辑动作', type: 'select', options: [
+        { label: '关卡胜利 (win)', value: 'win', desc: '弹出结算并过关' },
+        { label: '关卡失败 (fail)', value: 'fail', desc: '弹出失败界面' },
+        { label: '通关指引 (showPointer)', value: 'showPointer', desc: '在指定RectID显示绿色箭头' },
+        { label: '全屏震动 (shake)', value: 'shake', desc: '参数选: YouLing(极强), beatMadboss(中), ArgonShip(轻)' },
+        { label: '杀光所有敌人 (killAllEnemy)', value: 'killAllEnemy', desc: '瞬间消灭当前场上所有敌军' },
+        { label: '倒计时开关 (taskTimingB)', value: 'taskTimingB', desc: '参数填: true(开始), false(停止)' },
+        { label: '设置鼠标灵敏度 (setSensitivity)', value: 'setSensitivity', desc: '数值(1-10), -1为恢复系统值' },
+        { label: '设置刷怪倍率 (enemyNormalMul)', value: 'enemyNormalMul', desc: '数值, 如2代表小怪数量变为2倍' },
+        { label: '禁止刷怪 (noEnemy)', value: 'noEnemy', desc: '停止所有后续的发兵集触发' }
+      ]},
+      { key: 'param', label: '具体参数', placeholder: 'RectID / 布尔值 / 数值', type: 'text' }
     ],
-    build: (f: { action: string | string[]; param: string; }) => {
-      if (!f.action) return 'level;win';
-      if (f.action.includes(':')) return `level;${f.action}`;
-      return `level;${f.action}${f.param ? ':' + f.param : ''}`;
-    },
-    parse: (t: string) => {
+    build: (f) => `level;${f.action || 'win'}${f.param ? ':' + f.param : ''}`,
+    parse: (t) => {
       const cmd = t.split(';')[1] || '';
       const [action, param] = cmd.split(':');
       return { action, param };
     }
   },
 
-  // --- 单位操作 ---
-  {
-    label: '单位/角色操作',
-    value: 'body',
-    group: '单位',
-    desc: '控制特定单位的AI、生死、技能、装备等。',
-    fields: [
-      { key: 'id', label: '单位ID', placeholder: '玉晴, p1, enemy1', type: 'text' },
-      { key: 'order', label: '执行动作', type: 'select', options: BODY_ORDER_OPTIONS, placeholder: '请选择要执行的操作' },
-      { key: 'property', label: '参数', placeholder: '区域ID或技能ID', type: 'text' }
-    ],
-    build: (f: { id: any; order: any; property: string; }) => `body:${f.id || ''};${f.order || ''}${f.property ? ':' + f.property : ''}`,
-    parse: (t: string) => {
-      const parts = t.split(';');
-      const id = parts[0]?.split(':')[1];
-      const [order, property] = (parts[1] || '').split(':');
-      return { id, order, property };
-    }
-  },
-
   // --- 对话 ---
   {
-    label: '开启对话',
+    label: '播放剧情对话',
     value: 'say',
     group: '对话',
-    desc: '开启或强制关闭对话列表。',
+    desc: '启动剧情对话或强制关闭当前对话窗口。',
     fields: [
       { key: 'action', label: '动作', type: 'select', options: [
-        { label: '开始对话 (startList)', value: 'startList' },
-        { label: '强制关闭 (overList)', value: 'overList' }
-      ], placeholder: '请选择对话操作'},
-      { key: 'listId', label: '对话ID', placeholder: 's1', type: 'text' }
+        { label: '开始对话列表 (startList)', value: 'startList', desc: '播放指定的对话ID' },
+        { label: '关闭对话窗口 (overList)', value: 'overList', desc: '强制关闭所有当前显示的对话' }
+      ]},
+      { key: 'listId', label: '对话ID', placeholder: 's1 (支持随机: s1,s2,s3)', type: 'text' }
     ],
-    build: (f: { action: any; listId: any; }) => `say;${f.action || 'startList'}:${f.listId || ''}`,
-    parse: (t: string) => {
+    build: (f) => `say;${f.action || 'startList'}:${f.listId || ''}`,
+    parse: (t) => {
       const cmd = t.split(';')[1] || '';
       return { action: cmd.split(':')[0], listId: cmd.split(':')[1] };
     }
@@ -348,18 +424,19 @@ export const ORDER_METAS: OrderMeta[] = [
 
   // --- 掉落物 ---
   {
-    label: '添加掉落',
+    label: '生成掉落物',
     value: 'addDrop',
     group: '掉落物',
-    desc: '在指定坐标手动添加掉落物。',
+    desc: '在场景指定坐标手动生成一个掉落物体。',
     fields: [
-      { key: 'dropId', label: '物品名', placeholder: '如: coin', type: 'text' },
-      { key: 'pos', label: '坐标', placeholder: '466, 1180', type: 'text' }
+      { key: 'dropId', label: '物品ID', placeholder: 'addCoin_task / gold', type: 'text' },
+      { key: 'pos', label: '生成坐标', placeholder: '466,1180', type: 'text' },
+      { key: 'num', label: '生成数量', placeholder: '1', type: 'text' }
     ],
-    build: (f: { dropId: any; pos: any; }) => `addDrop:${f.dropId || ''};${f.pos || ''}`,
-    parse: (t: string) => {
+    build: (f) => `addDrop:${f.dropId || ''};${f.pos || '0,0'};${f.num || '1'}`,
+    parse: (t) => {
       const parts = t.split(';');
-      return { dropId: parts[0]?.split(':')[1], pos: parts[1] };
+      return { dropId: parts[0]?.split(':')[1], pos: parts[1], num: parts[2] };
     }
   }
 ];
