@@ -22,7 +22,7 @@ export const useValidator = () => {
 
     // 校验所有关卡 (Level)
     modStore.levelList.forEach((level: LevelDefine, index: number) => {
-      const levelErrors = validateLevel(level, modStore, index);
+      const levelErrors = validateLevel(level, index);
       results.push(...levelErrors);
     });
 

@@ -1,7 +1,7 @@
 import type { ValidationError } from './types';
 import { LevelDefine } from '../../../models/level/LevelDefine';
 
-export const validateLevel = (level: LevelDefine, modStore: any, index: number): ValidationError[] => {
+export const validateLevel = (level: LevelDefine, index: number): ValidationError[] => {
   const errors: ValidationError[] = [];
 
   const targetId = (!level.name || level.name.trim() === '') 
