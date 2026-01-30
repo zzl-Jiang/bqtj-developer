@@ -4,7 +4,7 @@
     <div class="flex justify-between items-center mb-4">
       <n-h3 prefix="bar">地图区域配置 (rectG)</n-h3>
       <n-button type="primary" @click="handleAddRect">添加区域</n-button>
-      <span style="margin-left: 20px;">注意，除非有特殊需求，该页面推荐留空，一般使用默认地图点位即可。</span>
+      <span style="margin-left: 20px;">注意，除非有特殊需求，该页面推荐留空，一般使用默认 (r1/r2/r3/r_over) 即可。</span>
     </div>
 
     <n-table size="small" :single-line="false" style="margin-top: 20px;">

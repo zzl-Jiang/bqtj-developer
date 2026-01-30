@@ -15,6 +15,15 @@ export class UnitOrderDefineGroup {
   @Type(() => UnitOrderDefine)
   public unitOrders: UnitOrderDefine[] = [];
 
+  // 默认示例发兵集
+  static createDefault(): UnitOrderDefineGroup {
+    const groupG = new UnitOrderDefineGroup();
+    // 组装中层的发兵组
+    groupG.unitOrders.push(UnitOrderDefine.createDefault());
+    groupG.allDefault.aiOrder = "patrolGlobal";
+    return groupG;
+  }
+
   public toXml(): string {
     let xml = `        <unitG>\n`;
     let tempXml = "";

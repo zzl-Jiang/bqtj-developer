@@ -14,7 +14,7 @@
     </template>
 
     <template #content>
-      <n-tabs type="line" animated default-value="basic">
+      <n-tabs v-model:value="activeTab" type="line" animated>
 
         <!-- 基础与规则 (包含 Level 属性和 Info 属性) -->
         <n-tab-pane name="basic" tab="基础设置">
@@ -57,6 +57,24 @@ import LevelBasicSection from './sections/LevelBasicSection.vue';
 import UnitGroupSection from './sections/UnitGroupSection.vue';
 import MapRectSection from './sections/MapRectSection.vue';
 import EventSection from './sections/EventSection.vue';
+import { useModStore } from '../../../store/useModStore';
+import { ref, watch } from 'vue';
 
 const { selectedIndex, selectedLevel, menuOptions, addLevel, removeLevel } = useLevelState();
+const modStore = useModStore();
+
+// 管理当前激活的页签
+const activeTab = ref('basic');
+
+// 监听全局跳转请求
+watch(() => modStore.navigationRequest.timestamp, () => {
+  const req = modStore.navigationRequest;
+  
+  // 只有当跳转请求是发给 'level' 模块，且指定了具体 tab 时
+  if (req.module === 'level' && req.tab) {
+    activeTab.value = req.tab;
+    // 注意：此时 selectedIndex 会因为 modStore.jumpTo 内部修改了 activeIndexes.level 而自动改变
+    // 侧边栏会自动选中对应的关卡
+  }
+});
 </script>

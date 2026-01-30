@@ -333,6 +333,30 @@ export class SkillDefine {
   @Expose()
   @Type(() => ImageUrlDefine)
   public stateEffectImg2: ImageUrlDefine = new ImageUrlDefine();
+  
+  /**
+   * 创建一个基础的主动攻击技能模板
+   */
+  static createDefault(name: string): SkillDefine {
+    const skill = new SkillDefine();
+    skill.name = name;
+    skill.cnName = "新技能";
+    
+    // 核心逻辑默认值
+    skill.conditionType = "active"; // 默认主动触发
+    skill.condition = "avtiveSkillCdOver"; // 默认冷却结束使用
+    skill.effectType = "no";        // 默认无特殊脚本
+    skill.addType = "instant";      // 默认即时生效
+    
+    // 数值默认值
+    skill.value = 10;
+    skill.cd = 5;
+    skill.range = 300;
+
+    // 组装默认的目标选择逻辑
+    skill.target = SkillTargetDefine.createDefault();
+    return skill;
+  }
 
   /**
    * 生成符合规范的技能 XML 字符串。

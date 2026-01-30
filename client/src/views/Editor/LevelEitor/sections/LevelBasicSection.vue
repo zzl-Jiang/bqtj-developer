@@ -9,11 +9,13 @@
     <n-card title="基础参数" size="small" class="mb-4">
       <n-grid :cols="3" :x-gap="12">
         <n-gi v-for="meta in LEVEL_BASIC_METAS" :key="meta.key">
-          <MetaFormItem
-            :meta="meta"
-            v-model:modelValue="level[meta.key]"
-            :show-label="true"
-          />
+          <div :id="`basic-${meta.key}`">
+            <MetaFormItem
+              :meta="meta"
+              v-model:modelValue="level[meta.key]"
+              :show-label="true"
+            />
+          </div>
         </n-gi>
       </n-grid>
     </n-card>
@@ -96,8 +98,31 @@
 
 <script setup lang="ts">
 import { useLevelState } from '../hooks/useLevelState';
+import { useSectionNavigator } from '../../../../hooks/useSectionNavigator';
 import MetaFormItem from '../../../components/MetaFormItem.vue';
 import { LEVEL_BASIC_METAS, LEVEL_INFO_METAS } from '../config';
 
 const { selectedLevel: level } = useLevelState();
+
+// 实现跳转监听
+useSectionNavigator({
+  module: 'level',
+  tab: 'basic',
+  // 对于基础信息，列表里只有“关卡”自己
+  list: () => level.value ? [level.value] : [],
+  onFound: (item: any) => {
+    // subId 在这里代表字段名，例如 'id' 或 'bgMusic'
+    const fieldKey = item.navigationRequest.subId;
+    if (fieldKey) {
+      // 找到对应的 DOM 元素并高亮提示
+      const el = document.getElementById(`basic-${fieldKey}`);
+      if (el) {
+        el.style.transition = 'all 0.5s';
+        el.style.backgroundColor = 'rgba(24, 160, 88, 0.2)'; // 闪烁绿色背景
+        setTimeout(() => el.style.backgroundColor = 'transparent', 2000);
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  }
+});
 </script>

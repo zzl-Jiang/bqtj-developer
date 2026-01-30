@@ -14,6 +14,14 @@ export class LevelEventConditionDefine {
   // 文本位 (内容)，例如 "hitMapRect:r1;p1"
   @Expose() public xmlText: string = "";
 
+  static createDefault(text: string = 'enemyNumber:less_1'): LevelEventConditionDefine {
+    const cond = new LevelEventConditionDefine();
+    cond.xmlText = text;
+    cond.doNumber = 3;
+    cond.orderChooseType = "randomOne";
+    return cond;
+  }
+
   public toXml(): string {
     let attrs = ``;
     if (this.delay != null) attrs += ` delay="${this.delay}"`;

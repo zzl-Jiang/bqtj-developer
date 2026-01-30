@@ -8,12 +8,26 @@ export class LevelEventGroup {
   @Expose()
   @Type(() => LevelEventDefine)
   public events: LevelEventDefine[] = [];
+
+  static createDefault(): LevelEventGroup {
+    const group = new LevelEventGroup();
+    group.events.push(LevelEventDefine.createDefault());
+    return group;
+  }
 }
 
 export class LevelEventDefineGroup {
   @Expose()
   @Type(() => LevelEventGroup)
   public groups: LevelEventGroup[] = [];
+  
+  // 默认示例发兵集
+  static createDefault(): LevelEventDefineGroup {
+    const groupG = new LevelEventDefineGroup();
+    // 组装中层的发兵组
+    groupG.groups.push(LevelEventGroup.createDefault());
+    return groupG;
+  }
 
   public toXml(): string {
     if (this.groups.length === 0) return "";

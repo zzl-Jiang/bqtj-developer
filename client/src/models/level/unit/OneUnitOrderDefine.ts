@@ -38,6 +38,17 @@ export class OneUnitOrderDefine {
   @Expose() public lastB: boolean | undefined = undefined;
   @Expose() public armsRange: string[] | undefined = undefined;
 
+  // 默认实例单位
+  static createDefault(cnName = '战斗僵尸'): OneUnitOrderDefine {
+    const unit = new OneUnitOrderDefine();
+    unit.cnName = cnName;
+    unit.unitType = 'normal';
+    unit.num = 5;
+    unit.lifeMul = 1;
+    unit.dpsMul = 1;
+    return unit;
+  }
+
   /**
    * 生成 <unit ... /> 属性
    */

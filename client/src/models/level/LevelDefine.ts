@@ -46,6 +46,26 @@ export class LevelDefine {
   @Type(() => LevelEventDefineGroup)
   public eventG: LevelEventDefineGroup = new LevelEventDefineGroup();
 
+  /**
+   * 静态工厂方法：创建一个带有预设模板的关卡
+   */
+  static createDefault(name: string): LevelDefine {
+    const level = new LevelDefine();
+    level.name = name;
+    level.cnName = "新关卡";
+    level.sceneLabel = "WoTu";
+    level.descrip = "这是一个示例关卡描述";
+    
+    // 组装单位配置 (一个默认发兵组和单位)
+    level.unitG = UnitOrderDefineGroup.createDefault();
+
+    // 组装事件配置
+    level.eventG = LevelEventDefineGroup.createDefault();
+
+    level.info.enemyLv = 99;
+    return level;
+  }
+
   public toXml() {
     let xml = `      <level name="${this.name || 'empty'}"`;
     if (this.cnName != null) xml += ` cnName="${this.cnName}"`;
@@ -55,7 +75,7 @@ export class LevelDefine {
 
     // 组装子标签节点
     if (this.sceneLabel != null) {
-      xml += `      <sceneLabel>${this.sceneLabel}</sceneLabel>\n`;
+      xml += `        <sceneLabel>${this.sceneLabel}</sceneLabel>\n`;
     }
 
     // 组装 info 节点

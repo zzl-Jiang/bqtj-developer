@@ -8,7 +8,7 @@
       show-trigger="arrow-circle"
     >
       <n-menu
-        v-model:value="activeModule"
+        v-model:value="modStore.activeModule"
         :options="menuOptions"
       />
     </n-layout-sider>
@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, h } from 'vue';
+import { computed, h } from 'vue';
 import { useModStore } from '../store/useModStore';
 import SummaryModule from './Editor/SummaryModule.vue';
 import PngModule from './Editor/PngModule.vue';
@@ -32,13 +32,12 @@ import LevelEditor from './Editor/LevelEitor/index.vue';
 import GenericModule from './Editor/GenericModule.vue';
 
 const modStore = useModStore();
-const activeModule = ref('summary');
 
 const menuOptions = [
   { label: '显示汇总', key: 'summary' },
-  { label: '资源模块 (PNG)', key: 'png' },
-  { label: '技能模块', key: 'skill' },
   { label: '关卡设计', key: 'level' },
+  { label: '技能模块', key: 'skill' },
+  { label: '资源模块 (PNG)', key: 'png' },
   { key: 'divider', type: 'divider' },
   { label: '单位定义', key: 'body' },
   { label: '子弹效果', key: 'bullet' },
@@ -49,7 +48,7 @@ const menuOptions = [
 
 // 使用渲染函数或包裹组件来复用 GenericModule
 const currentModuleComponent = computed(() => {
-  switch (activeModule.value) {
+  switch (modStore.activeModule) {
     case 'summary': return SummaryModule;
     case 'png': return PngModule;
     case 'skill': return SkillEditor;

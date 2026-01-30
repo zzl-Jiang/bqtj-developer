@@ -67,6 +67,17 @@ export class SkillTargetDefine {
   @Expose()
   public alert: string | undefined= undefined;
 
+  /**
+   * 创建一个默认的敌方目标选择器
+   */
+  static createDefault(): SkillTargetDefine {
+    const target = new SkillTargetDefine();
+    target.target = "me";      // 默认参照目标：本体
+    target.chooseType = "range";  // 默认选择方式：范围
+    target.camp = "enemy";       // 默认阵营：敌方
+    return target;
+  }
+
   /** 生成 Target 节点的 XML */
   public toXml(): string {
     // 处理属性部分

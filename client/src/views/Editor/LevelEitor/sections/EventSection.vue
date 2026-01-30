@@ -74,45 +74,31 @@
                 </n-gi>
               </n-grid>
               
-              <n-divider title-placement="left">条件逻辑字符串</n-divider>
-              <n-input-group>
-                <n-input v-model:value="editingEvent.condition.xmlText" placeholder="例如 enemyNumber:less_5" />
-                
-                <n-dropdown 
-                  trigger="click" 
-                  :options="EVENT_TEMPLATES.conditions.map((t: { label: any; value: any; }) => ({label:t.label, key:t.value}))"
-                  @select="(v: any) => editingEvent!.condition.xmlText = v"
-                >
-                  <n-button type="info" secondary>常用模板</n-button>
-                </n-dropdown>
-              </n-input-group>
+              <n-divider title-placement="left">详细逻辑</n-divider>
+              
+              <ConditionBuilder v-model="editingEvent.condition.xmlText" />
             </n-card>
 
-            <!-- 3. 指令列表 (Orders) -->
-            <n-card title="执行指令列表 (Orders)" size="small" embedded>
+            <!-- 指令列表 (Orders) -->
+            <n-card title="执行指令序列 (Orders)" size="small" embedded>
               <template #header-extra>
-                <n-button size="tiny" type="primary" quaternary @click="handleAddOrder">
-                  <template #icon><n-icon><AddOutline /></n-icon></template>添加指令
+                <n-button size="small" type="primary" secondary @click="handleAddOrder">
+                  <template #icon><n-icon><AddOutline /></n-icon></template>
+                  插入新指令
                 </n-button>
               </template>
 
-              <n-space vertical>
-                <div v-for="(order, oIdx) in editingEvent.orders" :key="oIdx" class="order-input-item">
-                  <n-input-group>
-                    <n-input v-model:value="order.xmlText" size="small" placeholder="指令字符串" />
-                    <n-dropdown 
-                      trigger="click" 
-                      :options="EVENT_TEMPLATES.orders.map((t: { label: any; value: any; }) => ({label:t.label, key:t.value}))"
-                      @select="(v: any) => order.xmlText = v"
-                    >
-                      <n-button size="small" secondary>模板</n-button>
-                    </n-dropdown>
-                    <n-button size="small" type="error" @click="editingEvent.orders.splice(oIdx, 1)">
-                      <template #icon><n-icon><TrashOutline /></n-icon></template>
-                    </n-button>
-                  </n-input-group>
-                </div>
-              </n-space>
+              <div class="orders-container">
+                <OrderBuilder 
+                  v-for="(order, oIdx) in editingEvent.orders" 
+                  :key="oIdx"
+                  v-model="order.xmlText"
+                  :index="oIdx"
+                  @delete="editingEvent.orders.splice(oIdx, 1)"
+                />
+
+                <n-empty v-if="editingEvent.orders.length === 0" description="暂无指令，点击右上角添加" />
+              </div>
             </n-card>
           </n-form>
         </div>
@@ -125,11 +111,14 @@
 import { ref } from 'vue';
 import { useLevelState } from '../hooks/useLevelState';
 import MetaFormItem from '../../../components/MetaFormItem.vue';
-import { EVENT_CONDITION_METAS, EVENT_TEMPLATES } from '../config';
+import { EVENT_CONDITION_METAS } from '../config';
 import { LevelEventGroup } from '../../../../models/level/event/LevelEventDefineGroup';
 import { LevelEventDefine } from '../../../../models/level/event/LevelEventDefine';
 import { LevelEventOrderDefine } from '../../../../models/level/event/LevelEventOrderDefine';
+import ConditionBuilder from './event/ConditionBuilder.vue';
+import OrderBuilder from './event/OrderBuilder.vue';
 import { TrashOutline, AddOutline } from '@vicons/ionicons5';
+import { useSectionNavigator } from '../../../../hooks/useSectionNavigator';
 
 const { selectedLevel: level } = useLevelState();
 
@@ -158,6 +147,14 @@ const handleAddOrder = () => {
     editingEvent.value.orders.push(newOrder);
   }
 };
+
+// 跳转监听
+useSectionNavigator({
+  module: 'level',
+  tab: 'events',
+  list: () => level.value?.eventG.groups.flatMap(g => g.events),
+  onFound: (event) => editEvent(event)
+});
 </script>
 
 <style scoped>
@@ -177,6 +174,11 @@ const handleAddOrder = () => {
   display: flex;
   gap: 8px;
   align-items: center;
+}
+.orders-container {
+  padding: 8px 0;
+  max-height: 60vh; /* 防止指令过多导致抽屉过长 */
+  overflow-y: auto;
 }
 .mb-4 { margin-bottom: 1rem; }
 .mr-2 { margin-right: 0.5rem; }

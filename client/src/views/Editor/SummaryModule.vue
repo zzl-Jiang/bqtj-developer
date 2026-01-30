@@ -40,7 +40,7 @@
       </n-gi>
       <n-gi :span="4">
         <n-card embedded size="small" style="background-color: rgba(24, 160, 88, 0.1)">
-          <n-statistic label="异常检测" :value="errorCount">
+          <n-statistic label="异常检测 (测试中，目前检测不全面)" :value="errorCount">
             <template #suffix>
               <n-text :type="errorCount > 0 ? 'error' : 'success'">
                 {{ errorCount > 0 ? '项待修正' : '健康' }}
@@ -50,6 +50,57 @@
         </n-card>
       </n-gi>
     </n-grid>
+
+    <n-collapse style="padding: 0 10px; width: auto;">
+      <n-collapse-item title="诊断结果 (点击异常项可直接跳转定位)" name="diagnostics">
+        <template #header-extra>
+          <n-tag :type="errorCount > 0 ? 'error' : 'success'" round>
+            {{ errorCount }} 错误 / {{ warningCount }} 警告
+          </n-tag>
+        </template>
+        
+        <n-list hoverable clickable size="small">
+          <n-list-item 
+            v-for="(err, i) in allErrors" 
+            :key="i" 
+            @click="navigateToError(err)" 
+            style="cursor: pointer;"
+          >
+            <n-thing>
+              <template #header>
+                <n-space align="center">
+                  <!-- 模块标签 -->
+                  <n-tag :type="err.type === 'error' ? 'error' : 'warning'" size="small" uppercase>
+                    {{ err.module }}
+                  </n-tag>
+                  <!-- 目标 ID -->
+                  <n-text strong>{{ err.targetId }}</n-text>
+                  <!-- 页签提示 -->
+                  <n-text depth="3" v-if="err.tab" style="font-size: 12px;">
+                    页签: {{ err.tab }}
+                  </n-text>
+                </n-space>
+              </template>
+              
+              <template #description>
+                <n-text :type="err.type === 'error' ? 'error' : ''">
+                  {{ err.message }}
+                </n-text>
+              </template>
+            </n-thing>
+
+            <!-- 右侧跳转图标 -->
+            <template #suffix>
+              <n-icon size="20" depth="3">
+                <ArrowForwardOutline />
+              </n-icon>
+            </template>
+          </n-list-item>
+          
+          <n-empty v-if="allErrors.length === 0" description="未发现异常，关卡逻辑健康" />
+        </n-list>
+      </n-collapse-item>
+    </n-collapse>
 
     <!-- 全量导出 -->
     <n-card title="全量代码导出" segmented>
@@ -68,40 +119,27 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useNavigation } from '../../hooks/useNavigation';
+import { ArrowForwardOutline } from '@vicons/ionicons5';
 import { useModStore } from '../../store/useModStore';
 import { useMessage } from 'naive-ui';
+import { useValidator } from './Validators';
 
+const { allErrors, errorCount, warningCount } = useValidator();
+const { navigateToError } = useNavigation();
 const modStore = useModStore();
 const message = useMessage();
 
 const statistics = computed(() => [
-  { label: '图片资源', value: modStore.pngList.length },
-  { label: '技能总数', value: modStore.skillList.length },
   { label: '关卡数量', value: modStore.levelList.length },
+  { label: '技能总数', value: modStore.skillList.length },
+  { label: '图片资源', value: modStore.pngList.length },
   { label: '单位数量', value: modStore.bodyList.length },
   { label: '子弹数量', value: modStore.bulletList.length },
   { label: '武器数量', value: modStore.armsList.length },
   { label: '对话数量', value: modStore.sayList.length },
   { label: '掉落定义', value: modStore.dropList.length },
 ]);
-
-// 错误检查逻辑
-const errorList = computed(() => {
-  const list: { module: string, type: 'error' | 'warning', message: string }[] = [];
-  
-  // 检查 PNG
-  modStore.pngList.forEach((p, i) => {
-    if (!p.url) list.push({ module: 'PNG', type: 'error', message: `资源 [${p.name || i}] 缺少图片 URL` });
-    // 检查重名
-    if (modStore.pngList.filter(x => x.name === p.name).length > 1) {
-      list.push({ module: 'PNG', type: 'warning', message: `存在重复的名字: ${p.name}` });
-    }
-  });
-
-  return list;
-});
-
-const errorCount = computed(() => errorList.value.length);
 
 // 生成全量 XML
 
@@ -139,9 +177,9 @@ const fullXml = computed(() => {
   };
 
   // 按顺序汇总所有模块
-  xml += buildFather('png', '资源', modStore.pngList);
-  xml += buildFather('skill', '技能', modStore.skillList);
   xml += buildFatherLevel('level', '关卡', modStore.levelList);
+  xml += buildFather('skill', '技能', modStore.skillList);
+  xml += buildFather('png', '资源', modStore.pngList);
   xml += buildFather('body', '单位', modStore.bodyList);
   xml += buildFather('bullet', '子弹', modStore.bulletList);
   xml += buildFather('arms', '武器', modStore.armsList);

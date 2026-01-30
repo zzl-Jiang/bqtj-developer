@@ -2,7 +2,7 @@
 <template>
   <div v-if="level && level.unitG">
     <!-- 全局默认设置 -->
-    <n-card title="全局默认配置 (allDefault)" size="small" class="mb-4" :segmented="true">
+    <n-card id="units-allDefault" title="全局默认配置 (allDefault)" size="small" class="mb-4" :segmented="true">
       <template #header-extra>
         <!-- 添加属性按钮 -->
         <n-dropdown 
@@ -59,12 +59,13 @@
       <n-button type="primary" ghost @click="handleAddGroup">添加发兵集</n-button>
     </div>
 
-    <n-collapse arrow-placement="right" :default-expanded-names="[]" style="margin-top: 20px;">
+    <n-collapse v-model:expanded-names="expandedNames" arrow-placement="right" :default-expanded-names="[]" style="margin-top: 20px;">
       <n-collapse-item 
         v-for="(group, gIdx) in level.unitG.unitOrders" 
         :key="gIdx" 
-        :name="gIdx"
+        :name="group.id" 
         class="group-item"
+        :id="`units-${group.id}`" 
       >
         <template #header>
           <n-space style="padding: 10px">
@@ -104,7 +105,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(unit, uIdx) in group.arr" :key="uIdx">
+            <tr v-for="(unit, uIdx) in group.arr" :key="uIdx" :id="`units-item-${unit.cnName}`">
               <td>{{ unit.cnName || '-' }}</td>
               <td><n-tag size="small" :type="unit.unitType === 'boss' ? 'error' : 'default'">{{ unit.unitType }}</n-tag></td>
               <td>{{ unit.lifeMul }} / {{ unit.dpsMul }}</td>
@@ -167,11 +168,13 @@ import { AI_ORDER_META, GROUP_METAS, UNIT_METAS } from '../config';
 import { UnitOrderDefine } from '../../../../models/level/unit/UnitOrderDefine';
 import { OneUnitOrderDefine } from '../../../../models/level/unit/OneUnitOrderDefine';
 import { TrashOutline, AddOutline } from '@vicons/ionicons5';
+import { useSectionNavigator } from '../../../../hooks/useSectionNavigator';
 
 const { selectedLevel: level } = useLevelState();
 
 const showDrawer = ref(false);
 const editingUnit = ref<any>(null);
+const expandedNames = ref<string[]>([]);
 
 const handleAddGroup = () => {
   const newGroup = new UnitOrderDefine();
@@ -241,6 +244,39 @@ const addPropertyOptions = computed(() => {
 const removeProperty = (key: string) => {
   if (level.value) level.value.unitG.allDefault[key] = undefined;
 };
+
+/**
+ * ✨ 实现跳转定位逻辑
+ */
+useSectionNavigator<any>({
+  module: 'level',
+  tab: 'units',
+  // 汇总所有可跳转的目标：组 ID 或 单位名称
+  list: () => {
+    if (!level.value) return [];
+    const groups = level.value.unitG.unitOrders;
+    const units = groups.flatMap(g => g.arr);
+    return [...groups, ...units];
+  },
+  idField: 'id', // 默认按 id 找，但单位没有 id，逻辑在 onFound 处理
+  onFound: (item) => {
+    // 如果找到的是发兵组 (有 arr 属性)
+    if ('arr' in item) {
+      expandedNames.value = [item.id]; // 展开该组
+    } 
+    // 如果找到的是具体的单位 (特征是有 cnName 属性)
+    else if ('cnName' in item) {
+      // 找到该单位属于哪个组
+      const parentGroup = level.value?.unitG.unitOrders.find(g => g.arr.includes(item));
+      if (parentGroup) {
+        expandedNames.value = [parentGroup.id || '']; // 展开父组
+      }
+      // 自动打开详情抽屉
+      editUnit(item);
+    }
+  }
+});
+
 </script>
 
 <style scoped>

@@ -151,6 +151,6 @@ export class LevelInfoDefine {
       }
     }
 
-    return attrs ? `          <info${attrs}/>` : "";
+    return attrs ? `        <info${attrs}/>` : "";
   }
 }

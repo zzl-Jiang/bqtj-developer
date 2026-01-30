@@ -21,6 +21,16 @@ export class UnitOrderDefine {
   @Type(() => OneUnitOrderDefine)
   public arr: OneUnitOrderDefine[] = [];
 
+  // 默认示例单位组
+  static createDefault(id = 'enemy1'): UnitOrderDefine {
+    const group = new UnitOrderDefine();
+    group.id = id;
+    group.camp = 'enemy';
+    // 组装底层的默认单位
+    group.arr.push(OneUnitOrderDefine.createDefault());
+    return group;
+  }
+
   public toXml(): string {
     let xml = `          <unitOrder id="${this.id || ''}"`;
     if (this.camp != null) xml += ` camp="${this.camp}"`
