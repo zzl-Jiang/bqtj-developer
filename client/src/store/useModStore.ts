@@ -133,11 +133,11 @@ export const useModStore = defineStore('mod', {
     // Skill
     addSkill() {
       // 调用静态方法创建实例
-      const newSkill = SkillDefine.createDefault(`skill_${this.levelList.length + 1}`);
+      const newSkill = SkillDefine.createDefault(`skill_${this.skillList.length + 1}`);
       
       // 放入列表并选中
       this.skillList.push(newSkill);
-      this.activeIndexes.level = this.levelList.length - 1;
+      this.activeIndexes.level = this.skillList.length - 1;
     },
     removeSkill(index: number) {
       this.skillList.splice(index, 1);
