@@ -95,8 +95,8 @@ export const LOGIC_META: SkillMetaItem[] = [
     注意部分效果会随着 addType 的选项而发生改变。
     【即时】效果对应 instant 生效；
     【状态】效果对应 state 生效；
-    instantAndState 同时生效【即时】与【状态】。
-    请注意：range 属性是否需要依赖目标选择-选择模式 (chooseType) 的配置，与本属性关系不大。
+    instantAndState / stateAndInstant 同时生效【即时】与【状态】，区别在于生效顺序。
+    请注意：range 属性是否需要依赖目标选择-选择模式 (chooseType) 的配置，不局限于本属性。
     另，若期望条件判定实现后技能概率生效，请自行添加 effectProArr 属性，在选项说明中不再特别指出。
     由于选项数据记录不全，若有范围外的调用需求，可以自行输入参数后回车创建新选项。`
   },

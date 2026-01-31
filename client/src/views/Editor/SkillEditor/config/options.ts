@@ -220,6 +220,16 @@ export const CONDITION_OPTIONS_MAP: Record<string, { label: string, value: strin
       value: 'underRos',
       desc: '当血量下降一定比例，陷入僵直时触发'
     },
+    {
+      label: '单位射击 (heroShoot)',
+      value: 'heroShoot',
+      desc: '当持枪单位每次射击时触发'
+    },
+    {
+      label: '受到技能时 (underEnemySkill)',
+      value: 'underEnemySkill',
+      desc: '被敌方技能指向或影响时触发'
+    },
   ],
 };
 
@@ -498,6 +508,198 @@ export const EFFECT_TYPE_OPTIONS = [
     若释放者范围 range 内存在敌方单位，为其回复最大生命值 mul 比例的血量。`
   },
   {
+    label: '摩卡护体 (escapeInvincible)',
+    value: 'escapeInvincible',
+    category: ['instant', 'state'],
+    desc: `可选或需求参数：duration。
+    这是一个复合型保命技能。
+    【即时】1. 调用 screaming_hero (惊吓，使目标强制索敌释放者); 2. 调用 godHand (上帝的护佑，生命设为1且无敌)。
+    【状态】1. 调用 screaming (惊吓状态，沉默、丢失目标、必须逃跑、控制混乱); 2.调用 invincible (技能免疫、无敌状态);
+    3. 调用 hidingB (隐身状态); 4. 持续恢复生命 1 / duration * 30。该效果每帧生效，表现为持续时间内缓慢回满血。可配合 duration 设置持续时间。
+    通常用于死前判定，实现类似阶段性复生的效果。`
+  },
+  {
+    label: '血盾 (bloodShield)',
+    value: 'bloodShield',
+    category: ['instant', 'state'],
+    desc: `可选或需求参数：mul / secMul / duration。
+    【即时】1. 增加技能熟练度；2. 触发器次数 + 1；3. 若 secMul > 0，为目标回复 secMul 比例的生命值。
+    【状态】若触发器次数 > 0，提升防御力 触发器次数 * mul (最大 200%)，等效于伤害减免为 (1 / 1 + 防御力提升，最大 1 / 3)。
+    建议配合 duration 设为 99999 或以上实现持续状态，因其计时器不会随着状态消失清空。`
+  },
+  {
+    label: '技能免疫 (spellImmunityB)',
+    value: 'spellImmunityB',
+    category: ['instant', 'state'],
+    desc: `无参数要求。
+    【即时】为目标添加技能免疫效果。
+    【状态】为目标添加技能免疫状态，可配合 duration 设置持续时间。
+    通常直接调用 state 或者联合调用居多。`
+  },
+  {
+    label: '动态添加技能 (addSkill)',
+    value: 'addSkill',
+    category: ['instant'],
+    desc: `可选或需求参数：valueString / value / duration。
+    立即为目标赋予一个 ID 为 valueString 的技能。
+    没有实际调用，但是经过测试确实可以生效。`
+  },
+  {
+    label: '饿狼无双 (ctrlSkillCdLessThan)',
+    value: 'ctrlSkillCdLessThan',
+    category: ['instant', 'state'],
+    desc: `可选或需求参数：valueString / value / duration。
+    【即时】使基础标签为 valueString 的技能在 UI 上执行闪烁特效，用以提示效果触发。
+    【状态】在持续时间 duration 内，将基础标签为 valueString 的技能冷却设置为 value。
+    通常直接用混合或者状态，instant 只有一个视觉提示的效果。`
+  },
+  {
+    label: '概率免疫 (immune)',
+    value: 'immune',
+    category: ['instant'],
+    desc: `可选或需求参数：mul。
+    将目标的技能闪避概率 (skillDodgePro) 设置为 mul (0-1)。
+    在实际调用中，通常将 mul 置 1，通过 effectProArr 控制生效概率;
+    然而在简单测试中两者并无差别，效果相同，不确定是否在复杂情境下会有所区分。
+    如果目的为深度还原游戏的免疫机制，建议参照原版调用，使用 effectProArr 控制生效概率。`
+  },
+  {
+    label: '技能反弹 (skillBack)',
+    value: 'skillBack',
+    category: ['instant'],
+    desc: `无参数要求。
+    若自身受到技能影响，且该技能不是魅惑类技能：
+    1. 自身获得 100% 技能闪避;
+    2. 将受到的技能效果反弹施加给释放者。`
+  },
+  {
+    label: '沉默并清除增益 (silenceBAndClearState)',
+    value: 'silenceBAndClearState',
+    category: ['instant', 'state'],
+    desc: `可选或需求参数：value / duration。
+    【即时】强制移除目标身上的特定状态：狂暴 (crazy)、穿透 (crazyAndPenetrationGap)、隐身 (hidingB)、巨毒尸-隐身 (hidingB_hugePosion)、
+    无敌 (noUnderHurtB)、反伤 (reverseHurt)、伤害加成 (armsDpsMul);
+    【状态】将目标的沉默 (silenceB) 状态设为 value (0 - false / 1 - true)，期间无法使用主动技能，可配合 duration 设置持续时间。`
+  },
+  {
+    label: '寒冰封印 (iceConeSkill)',
+    value: 'iceConeSkill',
+    category: ['instant', 'state'],
+    desc: `可选或需求参数：duration。
+    【即时】使目标停止所有动作、失去控制权限 (lostCtrlB)，并标记当天生肖效果已使用。
+    【状态】使目标失去控制权限 (lostCtrlB)，可配合 duration 设置持续时间。`
+  },
+  {
+    label: '沉默封锁 (yearMouseSkill)',
+    value: 'yearMouseSkill',
+    category: ['instant', 'state'],
+    desc: `可选或需求参数：duration。
+    【即时】使目标沉默并清除增益 (silenceBAndClearState)，并标记当天生肖效果已使用。
+    【状态】使目标沉默 (silenceAllB) 、被动技能失效 (noPassiveSkillB)，可配合 duration 设置持续时间。`
+  },
+  {
+    label: '慢性中毒 (yearCattleSkill)',
+    value: 'yearCattleSkill',
+    category: ['instant'],
+    desc: `可选或需求参数：mul / doGap / duration。
+    对目标造成 (1 点数值伤害 + mul 百分比伤害) 的混合毒属性 (CHILD_POISON) 普通伤害，并标记当天生肖效果已使用。
+    因生肖效果的使用设置，推荐添加 doGap 在 state 类型下使用，可配合 duration 设置持续时间。`
+  },
+  {
+    label: '封锁 (noAllSkill)',
+    value: 'noAllSkill',
+    category: ['instant', 'state'],
+    desc: `可选或需求参数：duration。
+    【即时】立即强制移除目标身上所有的我方施加的状态 (clearAllWeState)。
+    【状态】使目标沉默 (silenceAllB) 、被动技能失效 (noPassiveSkillB)，可配合 duration 设置持续时间。`
+  },
+  {
+    label: '条件性状态清除 (noAllSkillPanMeltFlamerPurgold)',
+    value: 'noAllSkillPanMeltFlamerPurgold',
+    category: ['instant', 'state'],
+    desc: `可选或需求参数：duration。
+    【即时】若目标具有 [免疫封锁] (targetArmsNoMeltFlamerPurgold) 状态，执行 noAllSkill (封锁)。
+    【状态】若目标具有 [免疫封锁] (targetArmsNoMeltFlamerPurgold) 状态，使目标沉默 (silenceAllB) 、被动技能失效 (noPassiveSkillB)，可配合 duration 设置持续时间。
+    通常用于那些具有封锁效果但与封锁不同，effectType 空缺，期望被化锁类技能免疫的技能中。简而言之，参见 防毒僵尸 - 当头扳击。
+    [免疫封锁] 状态：1. 携带武器或本身具有化锁技能 (meltFlamerPurgold); 2. 具有车卷风技能 (redMoto3Skill); 3. 造成伤害的武器是闪电极源，且目标是携带先锋盾的小白时：
+    以上条件满足任意一条时，本技能效果不生效。`
+  },
+  {
+    label: '尖叫/恐惧 (screaming_hero)',
+    value: 'screaming_hero',
+    category: ['instant', 'state'],
+    desc: `可选或需求参数：mul / duration。
+    【即时】除非目标拥有无视恐惧 (out_noFearB) 属性，否则强制其停止当前攻击，转而将仇恨锁定在技能释放者身上。
+    【状态】1. 调用 screaming (惊吓状态，沉默、丢失目标、必须逃跑、控制混乱); 2. 调用 addSpeedState (使目标速度加成为 mul)。可配合 duration 设置时间，若位于军队竞技场中，持续时间减半。`
+  },
+  {
+    label: '爆竹惊吓 (squibDevice_screaming)',
+    value: 'squibDevice_screaming',
+    category: ['instant', 'state'],
+    desc: `可选或需求参数：mul / duration。
+    【即时】强制目标停止当前攻击，转而将仇恨锁定在技能释放者身上。
+    【状态】1. 调用 screaming (惊吓状态，沉默、丢失目标、必须逃跑、控制混乱); 2. 调用 addSpeedState (使目标速度加成为 1.5); 
+    3. 使目标受到伤害加成 (1 / mul)。可配合 duration 设置时间。
+    爆竹用的专属技能。`
+  },
+  {
+    label: '技能复制 (skillCopy)',
+    value: 'skillCopy',
+    category: ['instant'],
+    desc: `无参数要求。
+    从目标拥有的技能列表中随机选择一个释放者尚未拥有的技能，并临时赋予释放者。`
+  },
+  {
+    label: '末次技能刷新 (fleshLastSkill)',
+    value: 'fleshLastSkill',
+    category: ['instant'],
+    desc: `可选或需求参数：mul。
+    若目标最后一次使用的技能冷却进度低于 60%，则按 mul 比例缩减其剩余冷却时间。`
+  },
+  {
+    label: '馈赠 (skillFullCd)',
+    value: 'skillFullCd',
+    category: ['instant'],
+    desc: `可选或需求参数：value。
+    强制重置目标当前受影响技能的 CD。value 参数决定重置后的技能冷却秒数。`
+  },
+  {
+    label: '持枪馈赠 (heroSkillFullCd)',
+    value: 'heroSkillFullCd',
+    category: ['instant'],
+    desc: `可选或需求参数：value。
+    如果当前模式为修罗模式，触发概率减半。出发时调用馈赠 (skillFullCd)，强制重置目标当前受影响技能的 CD。value 参数决定重置后的技能冷却秒数。`
+  },
+  {
+    label: '全量状态清理-敌对 (clearEnemyState)',
+    value: 'clearEnemyState',
+    category: ['instant'],
+    desc: `无参数要求。
+    立即移除目标身上所有由敌方阵营施加的状态。`
+  },
+  {
+    label: '全量状态清理-友方 (clearWeState)',
+    value: 'clearWeState',
+    category: ['instant'],
+    desc: `无参数要求。
+    立即移除目标身上所有由我方阵营施加的状态（暂无实际调用）。`
+  },
+  {
+    label: '枷锁 (noPassiveSkill)',
+    value: 'noPassiveSkill',
+    category: ['instant', 'state'],
+    desc: `可选或需求参数：duration。
+    【即时】立即移除目标身上所有由我方阵营施加的状态。
+    【状态】使目标的被动技能不生效 (noPassiveSkillB)，可配合 duration 设置持续时间。`
+  },
+  {
+    label: '狼图腾 (clearEnemyState_FightWolf)',
+    value: 'clearEnemyState_FightWolf',
+    category: ['instant'],
+    desc: `可选或需求参数：mul。
+    移除目标身上所有的负面状态，每移除一个，基于 mul 比例回复其最大生命值（最高回复 10%）。`
+  },
+  {
     label: '敬请期待',
     value: 'under_development',
     category: ['instant', 'state'],
@@ -672,9 +874,14 @@ export const OTHER_CONDITION_OPTIONS = [
     desc: '目标不是P1。'
   },
   {
-    label: '释放P1 (puMainPlayer)',
+    label: 'P1释放 (puMainPlayer)',
     value: 'puMainPlayer',
     desc: '释放者是P1。'
+  },
+  {
+    label: '友方释放 (puWe)',
+    value: 'puWe',
+    desc: '释放者为非敌方阵营。'
   },
   {
     label: '种族类型 (raceType)',
@@ -904,6 +1111,84 @@ export const OTHER_CONDITION_OPTIONS = [
     label: '伤害低于 (hurtLessLifePer)',
     value: 'hurtLessLifePer',
     desc: '受到的伤害低于最大生命值的一定比例。\n需要配合 conditionRange 输入最大生命值百分比阈值，输入为单个数值。'
+  },
+  {
+    label: '修罗虚天 (isDemon3OrUnend)',
+    value: 'isDemon3OrUnend',
+    desc: '修罗（独战、冷门、决斗）模式中，或虚天塔中。'
+  },
+  {
+    label: '排除决斗 (noDemonOnlyBoss)',
+    value: 'noDemonOnlyBoss',
+    desc: '修罗决斗模式中不生效。'
+  },
+  {
+    label: '排除主线 (noMainTask)',
+    value: 'noMainTask',
+    desc: '主线任务中不生效。'
+  },
+  {
+    label: '排除困难模式 (noHardB)',
+    value: 'noHardB',
+    desc: '困难模式中不生效。'
+  },
+  {
+    label: '排除争霸 (noUnionBattle)',
+    value: 'noUnionBattle',
+    desc: '争霸模式中不生效。'
+  },
+
+  {
+    label: '天数判断 (dayPan)',
+    value: 'dayPan',
+    desc: '只有在一周内的特定天数可以使用。\n需配合 conditionRange 输入天数 (1-7, 周一-周日)。'
+  },
+  {
+    label: '生肖限制 (yearArmsFalse)',
+    value: 'yearArmsFalse',
+    desc: '仅于当天生肖效果未使用时可以生效。'
+  },
+  {
+    label: '排除封锁 (targetArmsNoMeltFlamerPurgold)',
+    value: 'targetArmsNoMeltFlamerPurgold',
+    desc: `1. 携带武器或本身具有化锁技能 (meltFlamerPurgold); 2. 具有车卷风技能 (redMoto3Skill); 3. 造成伤害的武器是闪电极源，且目标是携带先锋盾的小白时：
+    以上条件满足任意一条时，本技能效果不生效。`
+  },
+  
+  {
+    label: '步枪 (rifle)',
+    value: 'rifle',
+    desc: '触发武器为步枪。'
+  },
+  {
+    label: '狙击 (sniper)',
+    value: 'sniper',
+    desc: '触发武器为狙击。'
+  },
+  {
+    label: '散弹 (shotgun)',
+    value: 'shotgun',
+    desc: '触发武器为散弹。'
+  },
+  {
+    label: '手枪 (pistol)',
+    value: 'pistol',
+    desc: '触发武器为手枪。'
+  },
+  {
+    label: '火炮 (rocket)',
+    value: 'rocket',
+    desc: '触发武器为火炮。'
+  },
+  {
+    label: '弩 (crossbow)',
+    value: 'crossbow',
+    desc: '触发武器为弩。'
+  },
+  {
+    label: '喷火器 (flamer)',
+    value: 'flamer',
+    desc: '触发武器为喷火器。'
   },
   {
     label: '敬请期待 (under_development)',
