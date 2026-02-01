@@ -7,7 +7,7 @@ import { LevelDefine } from '../models/level/LevelDefine';
 import { BodyDefine } from '../models/body/BodyDefine';
 import { BulletDefine } from '../models/bullet/BulletDefine';
 import { ArmsDefine } from '../models/arms/ArmsDefine';
-import { SayDefine } from '../models/say/SayDefine';
+import { SayListDefine } from '../models/say/SayListDefine';
 import { DropDefine } from '../models/drop/DropDefine';
 
 // 定义模块键名的联合类型，增强类型检查
@@ -30,7 +30,7 @@ export const useModStore = defineStore('mod', {
     bodyList: [] as BodyDefine[],
     bulletList: [] as BulletDefine[],
     armsList: [] as ArmsDefine[],
-    sayList: [] as SayDefine[],
+    sayList: [] as SayListDefine[],
     dropList: [] as DropDefine[],
     
     // 当前激活的模块 Key
@@ -193,9 +193,11 @@ export const useModStore = defineStore('mod', {
 
     // Say (对话)
     addSay() {
-      this.createItem(SayDefine, this.sayList, {
-        name: `say_${this.sayList.length + 1}`
-      }, 'say');
+      const newItem = SayListDefine.createDefault(`s${this.sayList.length + 1}`);
+      
+      this.sayList.push(newItem);
+      // 自动选中
+      this.activeIndexes.say = this.sayList.length - 1;
     },
     removeSay(index: number) {
       this.sayList.splice(index, 1);
@@ -204,7 +206,7 @@ export const useModStore = defineStore('mod', {
 
     // Drop (掉落)
     addDrop() {
-      this.createItem(SayDefine, this.dropList, {
+      this.createItem(DropDefine, this.dropList, {
         name: `drop_${this.dropList.length + 1}`
       }, 'drop');
     },
