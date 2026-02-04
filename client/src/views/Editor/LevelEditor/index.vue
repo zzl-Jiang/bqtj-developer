@@ -1,4 +1,4 @@
-<!-- client/src/views/Editor/LevelEitor/index.vue -->
+<!-- client/src/views/Editor/LevelEditor/index.vue -->
 <template>
   <EditorLayout 
     :has-selection="!!selectedLevel" 

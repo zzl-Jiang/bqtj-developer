@@ -160,9 +160,12 @@ export const useModStore = defineStore('mod', {
 
     // Body (单位)
     addBody() {
-      this.createItem(BodyDefine, this.bodyList, {
-        name: `body_${this.bodyList.length + 1}`
-      }, 'body');
+      // 调用静态方法创建实例
+      const newBody = BodyDefine.createDefault(`body_${this.bodyList.length + 1}`);
+      
+      // 放入列表并选中
+      this.bodyList.push(newBody);
+      this.activeIndexes.body = this.bodyList.length - 1;
     },
     removeBody(index: number) {
       this.bodyList.splice(index, 1);

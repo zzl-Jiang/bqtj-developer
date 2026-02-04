@@ -1,4 +1,4 @@
-// client/src/views/Editor/LevelEitor/config/event.ts
+// client/src/views/Editor/LevelEditor/config/event.ts
 
 export const EVENT_CONDITION_METAS = [
   { key: 'delay', label: '延迟触发 (秒)', type: 'number', desc: '满足条件后延迟多久执行' },

@@ -1,4 +1,4 @@
-<!-- client/src/views/Editor/LevelEitor/sections/EventSection.vue -->
+<!-- client/src/views/Editor/LevelEditor/sections/EventSection.vue -->
 <template>
   <div v-if="level && level.eventG">
     <div class="flex justify-between items-center mb-4">

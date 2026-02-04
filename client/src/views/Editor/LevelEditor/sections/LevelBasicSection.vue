@@ -1,4 +1,4 @@
-<!-- client/src/views/Editor/LevelEitor/sections/LevelBasicSection.vue -->
+<!-- client/src/views/Editor/LevelEditor/sections/LevelBasicSection.vue -->
 <template>
   <n-form v-if="level" :label-width="100">
     <n-alert title="预览环境限制说明" type="warning" closable class="mb-4">

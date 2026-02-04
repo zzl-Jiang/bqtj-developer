@@ -1,4 +1,4 @@
-// client/src/views/Editor/LevelEitor/config/info.ts
+// client/src/views/Editor/LevelEditor/config/info.ts
 
 export const LEVEL_INFO_METAS = {
   // 基础运行逻辑

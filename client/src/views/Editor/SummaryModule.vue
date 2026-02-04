@@ -133,9 +133,9 @@ const message = useMessage();
 const statistics = computed(() => [
   { label: '关卡数量', value: modStore.levelList.length },
   { label: '技能总数', value: modStore.skillList.length },
+  { label: '单位数量', value: modStore.bodyList.length },
   { label: '对话数量', value: modStore.sayList.length },
   { label: '图片资源', value: modStore.pngList.length },
-  { label: '单位数量', value: modStore.bodyList.length },
   { label: '子弹数量', value: modStore.bulletList.length },
   { label: '武器数量', value: modStore.armsList.length },
   { label: '掉落定义', value: modStore.dropList.length },
@@ -179,9 +179,9 @@ const fullXml = computed(() => {
   // 按顺序汇总所有模块
   xml += buildFatherLevel('level', '关卡', modStore.levelList);
   xml += buildFather('skill', '技能', modStore.skillList);
+  xml += buildFather('body', '单位', modStore.bodyList);
   xml += buildFatherLevel('say', '对话', modStore.sayList);
   xml += buildFather('png', '资源', modStore.pngList);
-  xml += buildFather('body', '单位', modStore.bodyList);
   xml += buildFather('bullet', '子弹', modStore.bulletList);
   xml += buildFather('arms', '武器', modStore.armsList);
   xml += buildFather('drop', '掉落', modStore.dropList);

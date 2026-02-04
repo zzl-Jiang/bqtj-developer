@@ -1,4 +1,4 @@
-// client/src/views/Editor/LevelEitor/config/unit.ts
+// client/src/views/Editor/LevelEditor/config/unit.ts
 
 export const UNIT_METAS = {
   // 基础身份

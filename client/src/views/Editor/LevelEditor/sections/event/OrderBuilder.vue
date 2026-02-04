@@ -1,4 +1,4 @@
-<!-- client/src/views/Editor/LevelEitor/sections/event/OrderBuilder.vue -->
+<!-- client/src/views/Editor/LevelEditor/sections/event/OrderBuilder.vue -->
 <template>
   <div class="order-card" :class="{ 'is-manual': isManual }">
     <!-- 顶部操作行 -->

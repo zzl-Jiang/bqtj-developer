@@ -1,4 +1,4 @@
-// client/src/views/Editor/LevelEitor/config/rect.ts
+// client/src/views/Editor/LevelEditor/config/rect.ts
 
 export const RECT_METAS = {
   basic: [

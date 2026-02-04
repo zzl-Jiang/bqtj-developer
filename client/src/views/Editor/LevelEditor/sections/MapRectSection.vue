@@ -1,4 +1,4 @@
-<!-- client/src/views/Editor/LevelEitor/sections/MapRectSection.vue -->
+<!-- client/src/views/Editor/LevelEditor/sections/MapRectSection.vue -->
 <template>
   <div v-if="level && level.rectG">
     <div class="flex justify-between items-center mb-4">

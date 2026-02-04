@@ -1,4 +1,4 @@
-// client/src/views/Editor/LevelEitor/config/index.ts
+// client/src/views/Editor/LevelEditor/config/index.ts
 
 export * from "./basic";
 export * from "./info";

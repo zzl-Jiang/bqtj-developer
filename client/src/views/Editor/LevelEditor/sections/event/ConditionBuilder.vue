@@ -1,4 +1,4 @@
-<!-- client/src/views/Editor/LevelEitor/sections/event/ConditionBuilder.vue -->
+<!-- client/src/views/Editor/LevelEditor/sections/event/ConditionBuilder.vue -->
 <template>
   <n-space vertical>
     <!-- 第一行：类型选择与模式切换 -->

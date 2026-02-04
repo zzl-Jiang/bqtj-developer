@@ -28,8 +28,9 @@ import { useModStore } from '../store/useModStore';
 import SummaryModule from './Editor/SummaryModule.vue';
 import PngModule from './Editor/PngModule.vue';
 import SkillEditor from './Editor/SkillEditor/index.vue';
-import LevelEditor from './Editor/LevelEitor/index.vue';
+import LevelEditor from './Editor/LevelEditor/index.vue';
 import SayEditor from './Editor/SayEditor/index.vue';
+import BodyEditor from './Editor/BodyEditor/index.vue';
 import GenericModule from './Editor/GenericModule.vue';
 
 const modStore = useModStore();
@@ -38,10 +39,10 @@ const menuOptions = [
   { label: '显示汇总', key: 'summary' },
   { label: '关卡设计', key: 'level' },
   { label: '技能模块', key: 'skill' },
+  { label: '单位定义', key: 'body' },
   { label: '剧情对话', key: 'say' },
   { label: '资源模块 (PNG)', key: 'png' },
   { key: 'divider', type: 'divider' },
-  { label: '单位定义', key: 'body' },
   { label: '子弹效果', key: 'bullet' },
   { label: '武器定义', key: 'arms' },
   { label: '效果掉落', key: 'drop' },
@@ -54,16 +55,10 @@ const currentModuleComponent = computed(() => {
     case 'png': return PngModule;
     case 'skill': return SkillEditor;
     case 'level': return LevelEditor;
+    case 'body': return BodyEditor;
     case 'say': return SayEditor;
     
-    // 以下模块共用 GenericModule，但传入不同的 Props 和 Actions
-    case 'body':
-      return h(GenericModule, { 
-        title: '单位', 
-        dataList: modStore.bodyList,
-        onAdd: () => modStore.addBody(),
-        onRemove: (i: number) => modStore.removeBody(i)
-      });
+    // 以下模块共用 GenericModule，但传入不同的 Props 和 Actions=
     case 'bullet':
       return h(GenericModule, { 
         title: '子弹', 

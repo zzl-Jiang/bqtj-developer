@@ -1,4 +1,4 @@
-<!-- client/src/views/Editor/LevelEitor/sections/UnitGroupSection.vue -->
+<!-- client/src/views/Editor/LevelEditor/sections/UnitGroupSection.vue -->
 <template>
   <div v-if="level && level.unitG">
     <!-- 全局默认设置 -->

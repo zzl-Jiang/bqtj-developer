@@ -1,4 +1,4 @@
-// client/src/views/Editor/LevelEitor/config/basic.ts
+// client/src/views/Editor/LevelEditor/config/basic.ts
 
 export const LEVEL_BASIC_METAS = [
   { 
