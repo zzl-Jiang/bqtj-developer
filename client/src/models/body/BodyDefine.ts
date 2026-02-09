@@ -159,8 +159,8 @@ export class BodyDefine {
     d.name = name;
     d.cnName = "新单位";
     d.raceType = "human";
-    d.showLevel = 9999;
-    d.swfUrl = `swf/enemy/ZombieShoot?v=${name}`;
+    d.showLevel = 99;
+    d.swfUrl = `swf/enemy/ZombieBattle`;
     d.hitRect = { x: -16, y: -46, width: 33, height: 93 };
     return d;
   }

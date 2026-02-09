@@ -1,16 +1,7 @@
 <template>
   <n-layout has-sider style="height: 100vh;">
-    <n-layout-sider
-      bordered
-      collapse-mode="width"
-      :collapsed-width="64"
-      :width="200"
-      show-trigger="arrow-circle"
-    >
-      <n-menu
-        v-model:value="modStore.activeModule"
-        :options="menuOptions"
-      />
+    <n-layout-sider bordered collapse-mode="width" :collapsed-width="64" :width="200" show-trigger="arrow-circle">
+      <n-menu v-model:value="modStore.activeModule" :options="menuOptions" />
     </n-layout-sider>
 
     <n-layout-content content-style="padding: 0;">
@@ -26,7 +17,7 @@
 import { computed, h } from 'vue';
 import { useModStore } from '../store/useModStore';
 import SummaryModule from './Editor/SummaryModule.vue';
-import PngModule from './Editor/PngModule.vue';
+import PngEditor from './Editor/PngEditor/index.vue';
 import SkillEditor from './Editor/SkillEditor/index.vue';
 import LevelEditor from './Editor/LevelEditor/index.vue';
 import SayEditor from './Editor/SayEditor/index.vue';
@@ -52,30 +43,30 @@ const menuOptions = [
 const currentModuleComponent = computed(() => {
   switch (modStore.activeModule) {
     case 'summary': return SummaryModule;
-    case 'png': return PngModule;
+    case 'png': return PngEditor;
     case 'skill': return SkillEditor;
     case 'level': return LevelEditor;
     case 'body': return BodyEditor;
     case 'say': return SayEditor;
-    
+
     // 以下模块共用 GenericModule，但传入不同的 Props 和 Actions=
     case 'bullet':
-      return h(GenericModule, { 
-        title: '子弹', 
+      return h(GenericModule, {
+        title: '子弹',
         dataList: modStore.bulletList,
         onAdd: () => modStore.addBullet(),
         onRemove: (i: number) => modStore.removeBullet(i)
       });
     case 'arms':
-      return h(GenericModule, { 
-        title: '武器', 
+      return h(GenericModule, {
+        title: '武器',
         dataList: modStore.armsList,
         onAdd: () => modStore.addArms(),
         onRemove: (i: number) => modStore.removeArms(i)
       });
     case 'drop':
-      return h(GenericModule, { 
-        title: '掉落', 
+      return h(GenericModule, {
+        title: '掉落',
         dataList: modStore.dropList,
         onAdd: () => modStore.addDrop(),
         onRemove: (i: number) => modStore.removeDrop(i)
