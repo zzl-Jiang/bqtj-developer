@@ -11,6 +11,7 @@ lerna-debug.log*
 
 node_modules
 materials
+.agent/
 dist
 dist-ssr
 *.local
