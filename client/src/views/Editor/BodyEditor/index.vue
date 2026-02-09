@@ -138,7 +138,6 @@ watch(() => modStore.navigationRequest.timestamp, () => {
   padding: 16px;
   overflow-y: auto;
   height: calc(100% - 45px);
-  /* Adjust based on tab header height */
   box-sizing: border-box;
 }
 </style>
