@@ -1,9 +1,9 @@
 // client/src/store/useModStore.ts
 import { defineStore } from 'pinia';
 import { plainToInstance } from 'class-transformer';
-import { PngDefine } from '../models/PngDefine';
+import { PngDefine } from '../models/png/PngDefine';
 import { SkillDefine } from '../models/skill/SkillDefine';
-import { LevelDefine } from '../models/level/LevelDefine'; 
+import { LevelDefine } from '../models/level/LevelDefine';
 import { BodyDefine } from '../models/body/BodyDefine';
 import { BulletDefine } from '../models/bullet/BulletDefine';
 import { ArmsDefine } from '../models/arms/ArmsDefine';
@@ -32,10 +32,10 @@ export const useModStore = defineStore('mod', {
     armsList: [] as ArmsDefine[],
     sayList: [] as SayListDefine[],
     dropList: [] as DropDefine[],
-    
+
     // 当前激活的模块 Key
     activeModule: 'summary' as ModuleKey | 'summary',
-    
+
     // 记录每个模块当前选中的索引，实现跨组件状态保持
     activeIndexes: {
       png: null as number | null,
@@ -56,7 +56,7 @@ export const useModStore = defineStore('mod', {
       timestamp: 0                   // 时间戳驱动 watch
     }
   }),
-  
+
   actions: {
     /**
      * 核心跳转动作：精准定位到一个项目
@@ -111,7 +111,7 @@ export const useModStore = defineStore('mod', {
     createItem<T>(cls: any, list: T[], defaultData: Partial<T>, moduleKey?: ModuleKey) {
       const item = plainToInstance(cls, defaultData, { exposeDefaultValues: true });
       list.push(item as T);
-      
+
       // 如果传了模块 Key，新增后自动选中这一项
       if (moduleKey && this.activeIndexes.hasOwnProperty(moduleKey)) {
         (this.activeIndexes as any)[moduleKey] = list.length - 1;
@@ -120,9 +120,9 @@ export const useModStore = defineStore('mod', {
 
     // PNG
     addPng() {
-      this.createItem(PngDefine, this.pngList, { 
+      this.createItem(PngDefine, this.pngList, {
         name: `img_${this.pngList.length + 1}`,
-        url: "https://fs.img4399.com/bbs/" 
+        url: "https://fs.img4399.com/bbs/"
       }, 'png');
     },
     removePng(index: number) {
@@ -134,7 +134,7 @@ export const useModStore = defineStore('mod', {
     addSkill() {
       // 调用静态方法创建实例
       const newSkill = SkillDefine.createDefault(`skill_${this.skillList.length + 1}`);
-      
+
       // 放入列表并选中
       this.skillList.push(newSkill);
       this.activeIndexes.level = this.skillList.length - 1;
@@ -148,7 +148,7 @@ export const useModStore = defineStore('mod', {
     addLevel() {
       // 调用静态方法创建实例
       const newLevel = LevelDefine.createDefault(`level_${this.levelList.length + 1}`);
-      
+
       // 放入列表并选中
       this.levelList.push(newLevel);
       this.activeIndexes.level = this.levelList.length - 1;
@@ -162,7 +162,7 @@ export const useModStore = defineStore('mod', {
     addBody() {
       // 调用静态方法创建实例
       const newBody = BodyDefine.createDefault(`body_${this.bodyList.length + 1}`);
-      
+
       // 放入列表并选中
       this.bodyList.push(newBody);
       this.activeIndexes.body = this.bodyList.length - 1;
@@ -197,7 +197,7 @@ export const useModStore = defineStore('mod', {
     // Say (对话)
     addSay() {
       const newItem = SayListDefine.createDefault(`s${this.sayList.length + 1}`);
-      
+
       this.sayList.push(newItem);
       // 自动选中
       this.activeIndexes.say = this.sayList.length - 1;

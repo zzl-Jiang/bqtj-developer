@@ -1,6 +1,6 @@
-// client/src/views/Editor/configs/pngMeta.ts
+// client/src/views/Editor/PngEditor/config/pngMeta.ts
 
-import { PngDefine } from '../../../models/PngDefine';
+import { PngDefine } from '../../../../models/png/PngDefine';
 
 /** 定义接口，限制 key 必须是 PngDefine 的属性名之一 */
 export interface PngMetaItem {
@@ -30,19 +30,23 @@ export const PNG_UI_META: PngMetaItem[] = [
     type: 'string',
     desc: '图片链接'
   },
-  { key: 'x',
+  {
+    key: 'x',
     label: 'X',
     type: 'number'
   },
-  { key: 'y',
+  {
+    key: 'y',
     label: 'Y',
     type: 'number'
   },
-  { key: 'scaleX',
+  {
+    key: 'scaleX',
     label: '缩放X',
     type: 'number'
   },
-  { key: 'scaleY',
+  {
+    key: 'scaleY',
     label: '缩放Y',
     type: 'number'
   }
