@@ -96,6 +96,51 @@ export const EXTRA_VALUE_OPTIONS = [
     label: '波数 (nowEnemyBo)',
     value: 'nowEnemyBo',
     desc: '当前关卡怪物波数。'
+  },
+  {
+    label: '当前生命比例 (lifePer)',
+    value: 'lifePer',
+    desc: '当前生命值百分比 (0-1)。'
+  },
+  {
+    label: '丢失生命比例 (lostLifePer)',
+    value: 'lostLifePer',
+    desc: '已损失的生命值百分比 (0-1)。'
+  },
+  {
+    label: '攻击力加成 (attackMul)',
+    value: 'attackMul',
+    desc: '单位当前攻击力加成倍率。'
+  },
+  {
+    label: '暴击率 (critPro)',
+    value: 'critPro',
+    desc: '单位当前暴击概率。'
+  },
+  {
+    label: '暴击伤害倍率 (critMul)',
+    value: 'critMul',
+    desc: '单位当前暴击伤害倍率。'
+  },
+  {
+    label: '最大怒气 (maxAnger)',
+    value: 'maxAnger',
+    desc: '单位当前最大怒气值。'
+  },
+  {
+    label: '武器伤害倍率 (armsDpsMul)',
+    value: 'armsDpsMul',
+    desc: '单位当前武器造成的伤害加成倍率。'
+  },
+  {
+    label: '冷却加速倍率 (cdMul)',
+    value: 'cdMul',
+    desc: '单位当前技能冷却回复速度倍率。'
+  },
+  {
+    label: '移动速度 (moveSpeed)',
+    value: 'moveSpeed',
+    desc: '单位当前基础移动速度数值。'
   }
 ];
 
@@ -115,6 +160,16 @@ export const CAMP_OPTIONS = [
     label: '全体 (all)',
     value: 'all',
     desc: '选择实际目标为全体阵营'
+  },
+  {
+    label: '自身 (me)',
+    value: 'me',
+    desc: '选择实际目标仅为自身'
+  },
+  {
+    label: '中立 (neutral)',
+    value: 'neutral',
+    desc: '选择实际目标为中立阵营'
   }
 ];
 
@@ -230,6 +285,41 @@ export const CONDITION_OPTIONS_MAP: Record<string, { label: string, value: strin
       value: 'underEnemySkill',
       desc: '被敌方技能指向或影响时触发'
     },
+    {
+      label: '受到特定技能 (underSkill)',
+      value: 'underSkill',
+      desc: '被特定 ID 的技能击中时触发 (需配合 conditionString)'
+    },
+    {
+      label: '生命值低于 (lifeLessThan)',
+      value: 'lifeLessThan',
+      desc: '生命值百分比低于设定值时触发'
+    },
+    {
+      label: '生命值高于 (lifeMoreThan)',
+      value: 'lifeMoreThan',
+      desc: '生命值百分比高于设定值时触发'
+    },
+    {
+      label: '拾取物品 (drop)',
+      value: 'drop',
+      desc: '拾取掉落物、补给箱时触发'
+    },
+    {
+      label: '跳跃落地 (land)',
+      value: 'land',
+      desc: '从空中落回地面时触发'
+    },
+    {
+      label: '关卡结算 (victory)',
+      value: 'victory',
+      desc: '关卡胜利结束时触发'
+    },
+    {
+      label: '切换至当前武器 (nowArmsSelected)',
+      value: 'nowArmsSelected',
+      desc: '选定并切换至当前技能关联的武器时触发'
+    },
   ],
 };
 
@@ -287,7 +377,7 @@ export const EFFECT_TYPE_OPTIONS = [
   {
     label: '钢铁之躯 (ironBodyLing)',
     value: 'ironBodyLing',
-    category: ['instant', 'state'], 
+    category: ['instant', 'state'],
     desc: `可选或需求参数：duration。
     【即时】为释放者回复 0.05 的最大生命值。
     【状态】为释放者添加无敌状态，可配合 duration 设置持续时间。`
@@ -345,7 +435,7 @@ export const EFFECT_TYPE_OPTIONS = [
     desc: `可选或需求参数：mul。
     限制该技能在 1 秒周期内对目标造成的累计伤害总额。
     上限值 = 目标最大生命值 * mul。
-    若一秒内多次触发该技能（如多段攻击），后续伤害会因额度不足被削减直至降为 0；
+    若一秒内多次触发该技能（如多段攻击），后续伤害会因额度不足被削减直至降为 0; 
     时间超过 1 秒后，累计伤害自动清零并重新计算，做到限制每秒伤害。
     特别注意，该效果不同于锁血，是真正意义上的秒伤限制，目前游戏中没有实际调用。`
   },
@@ -382,10 +472,10 @@ export const EFFECT_TYPE_OPTIONS = [
     desc: `可选或需求参数：value / mul。
     需求 obj 参数：{"target":"now"|"all", "addType":"add"}。
     为目标的武器补充弹药。
-    target: "now" 表示仅针对当前手持武器，"all" 表示针对所有装备武器；
+    target: "now" 表示仅针对当前手持武器，"all" 表示针对所有装备武器; 
     addType: 补充模式（通常为 "add" 累加）。
     如果玩家处于变身或附身状态，会自动将弹药补充到正确的本体或目标身上。
-    若 value > 0，按固定数值补充；若 mul > 0，按最大弹药量的百分比补充。
+    若 value > 0，按固定数值补充; 若 mul > 0，按最大弹药量的百分比补充。
     常用于击毙补充弹药、拾取弹药箱等场景。`
   },
   {
@@ -402,7 +492,7 @@ export const EFFECT_TYPE_OPTIONS = [
     category: ['instant'],
     desc: `可选或需求参数：value / mul。
     立即削减目标的武器弹药。
-    1. 根据 mul 比例减少目标的后备弹药 (携弹量)；
+    1. 根据 mul 比例减少目标的后备弹药 (携弹量); 
     2. 根据 value 比例减少目标当前弹匣内的子弹数量 (弹容)。`
   },
   {
@@ -413,7 +503,7 @@ export const EFFECT_TYPE_OPTIONS = [
     交换技能释放者与目标的当前生命值百分比。
     该效果包含严格的平衡性限制：
     1. 在反客模式中，目标最多损失当前生命的 70%。
-    2. 在非反客模式中，对 BOSS (首领单位) 触发时，目标最多损失当前生命的 10%；对其他单位触发时，最多损失 40%。
+    2. 在非反客模式中，对 BOSS (首领单位) 触发时，目标最多损失当前生命的 10%; 对其他单位触发时，最多损失 40%。
     3. 在非反客模式中，释放者通过置换获得的血量百分比最高不超过原先的 2 倍。
     注意：此效果交换的是百分比而非固定数值。`
   },
@@ -448,8 +538,8 @@ export const EFFECT_TYPE_OPTIONS = [
     value: 'godHand',
     category: ['instant', 'state'],
     desc: `可选或需求参数：value / duration。
-    【即时】将本次受到的伤害强制归零；
-    将目标的当前生命值强行设为 1 点；
+    【即时】将本次受到的伤害强制归零; 
+    将目标的当前生命值强行设为 1 点; 
     将目标设为 noUnderHurtB (免伤) 状态。
     【状态】为目标添加 noUnderHurtB (免伤) 状态，若 value 为 1，为目标添加 hidingB (隐身) 状态。可配合 duration 设置持续时间。
     常用于角色濒死时触发的被动，确保角色在必死的一击下强行存活。`
@@ -523,7 +613,7 @@ export const EFFECT_TYPE_OPTIONS = [
     value: 'bloodShield',
     category: ['instant', 'state'],
     desc: `可选或需求参数：mul / secMul / duration。
-    【即时】1. 增加技能熟练度；2. 触发器次数 + 1；3. 若 secMul > 0，为目标回复 secMul 比例的生命值。
+    【即时】1. 增加技能熟练度; 2. 触发器次数 + 1; 3. 若 secMul > 0，为目标回复 secMul 比例的生命值。
     【状态】若触发器次数 > 0，提升防御力 触发器次数 * mul (最大 200%)，等效于伤害减免为 (1 / 1 + 防御力提升，最大 1 / 3)。
     建议配合 duration 设为 99999 或以上实现持续状态，因其计时器不会随着状态消失清空。`
   },
@@ -700,11 +790,204 @@ export const EFFECT_TYPE_OPTIONS = [
     移除目标身上所有的负面状态，每移除一个，基于 mul 比例回复其最大生命值（最高回复 10%）。`
   },
   {
+    label: '狼图腾-尸宠 (clearEnemyState_PetFightWolf)',
+    value: 'clearEnemyState_PetFightWolf',
+    category: ['instant'],
+    desc: `可选或需求参数：mul。
+    移除目标身上的负面状态。每移除一个，不仅为目标回复 mul 比例生命，还会为目标的拥有者 (P1) 回复一半的数值。最高回复 30%。`
+  },
+  {
+    label: '按标签清除状态 (clearStateByBaseLabelArr)',
+    value: 'clearStateByBaseLabelArr',
+    category: ['instant'],
+    desc: `可选或需求参数：valueString / pointEffectImg。
+    传入以逗号分隔的 baseLabel 字符串。若成功移除状态，将在击中点播放 pointEffectImg 特效。
+    其中 pointEffectImg 为可选参数，注意 valueString 需要以逗号分隔。`
+  },
+  {
+    label: '按效果类型清除 (clearEnemyStateByEffectTypeArr)',
+    value: 'clearEnemyStateByEffectTypeArr',
+    category: ['instant'],
+    desc: `可选或需求参数：valueString。
+    传入逗号分隔的 effectType 字符串（如 "dizziness"），强制移除目标身上对应的所有敌对状态。`
+  },
+  {
+    label: '按名称包含清除 (clearStateByNameContain)',
+    value: 'clearStateByNameContain',
+    category: ['instant'],
+    desc: `可选或需求参数：valueString。
+    传入部分状态名称字符串（如 "feedback_"），强制移除目标身上所有名称包含该字符串的状态。`
+  },
+  {
+    label: '按名称包含清除 (clearStateByNameContainPointEffect)',
+    value: 'clearStateByNameContainPointEffect',
+    category: ['instant'],
+    desc: `可选或需求参数：valueString / pointEffectImg。
+    传入部分状态名称字符串（如 "feedback_"），强制移除目标身上所有名称包含该字符串的状态。若成功移除状态，将在击中点播放 pointEffectImg 特效。
+    其中 pointEffectImg 为可选参数。`
+  },
+  {
+    label: '时长倍率缩放 (setEnemyStateTMul)',
+    value: 'setEnemyStateTMul',
+    category: ['instant'],
+    desc: `可选或需求参数：mul / pointEffectImg。
+    将目标身上所有敌方施加的状态剩余时间乘以 mul 倍率。
+    例如 mul 设为 0.5，则所有负面状态持续时间减半。执行时播放 pointEffectImg 特效。`
+  },
+  {
+    label: '快进 (fastForward)',
+    value: 'fastForward',
+    category: ['instant'],
+    desc: `无参数要求。
+    使单位立即沿着其 AI 当前规划的路径向前跳跃一个节点。若单位由玩家控制，则直接传送到鼠标位置。`
+  },
+  {
+    label: '传送 (teleport)',
+    value: 'teleport',
+    category: ['instant'],
+    desc: `可选或需求参数：valueString / value / range。
+    根据 valueString 定位：
+    1. "mousePoint": 传送到鼠标坐标; 
+    2. "attackTarget": 传送到当前攻击目标的背后; 
+    3. "master": 传送到归属者的坐标; 
+    4. "mapRanPoint": 地图内随机点; 
+    5. "farHeroRan": 距离目标 value 像素以外的随机点; 
+    6. "farTargetMust": 距离目标 value ~ range 像素之间的随机点，如果没找到则选取随机大于 value 的点，若还是没找到则选取地图随机点  。
+    注意：若目标身上带有 "cantMove" 状态，此函数将失效。`
+  },
+  {
+    label: '传送至目标 (teleportToAttackBody)',
+    value: 'teleportToAttackBody',
+    category: ['instant'],
+    desc: `可选或需求参数：valueString (坐标偏移) / mul (是否翻转)。
+    传送到目标坐标并立即面向目标。valueString 填 "x,y" 偏移量。`
+  },
+  {
+    label: '眩晕 (dizziness)',
+    value: 'dizziness',
+    category: ['instant', 'state'],
+    desc: `可选或需求参数：duration。
+    【即时】使目标立即进入 lostCtrlB (失去控制) 状态并停止所有 AI 行为。
+    【状态】使目标进入 lostCtrlB (失去控制) 状态，除非目标拥有 noDizzinessB (眩晕免疫)，否则无法通过移动或攻击指令打破。
+    可配合 duration 设置持续时间。`
+  },
+  {
+    label: '龙卷 (yearMonkeySkill)',
+    value: 'yearMonkeySkill',
+    category: ['instant', 'state'],
+    desc: `可选或需求参数：duration。
+    【即时】使目标立即进入 lostCtrlB (失去控制) 状态并停止所有 AI 行为。
+    【状态】使目标进入 lostCtrlB (失去控制) 状态。在该状态下，目标将被强行吸附在子弹上并随之同步移动。
+    除非子弹销毁或目标拥有 noDizzinessB (眩晕免疫)，否则无法通过任何移动或攻击指令打破此位移效果。
+    可配合 duration 设置持续时间。`
+  },
+  {
+    label: '稀有元素-黄 (elementsYellow)',
+    value: 'elementsYellow',
+    category: ['instant', 'state'],
+    desc: `可选或需求参数：duration。打断墟洞岩火。
+    【即时】调用 dizziness (眩晕) 的即时效果。同时强行击杀场上所有名为 FireWolf 的普通单位 ( boss 分身)。
+    【状态】调用 dizziness (眩晕) 的状态效果。
+    可配合 duration 设置持续时间。`
+  },
+  {
+    label: '强制僵直 (toRos)',
+    value: 'toRos',
+    category: ['instant', 'state'],
+    desc: `无参数要求。
+    强制让目标进入僵直动作。`
+  },
+  {
+    label: '复仇-技能挂载 (revengeLingAddSkill)',
+    value: 'revengeLingAddSkill',
+    category: ['instant'],
+    desc: `可选或需求参数：valueString / mul。
+    为目标添加由 valueString 指定的子技能 (通常链接到 revengeLing_link)。
+    该函数会将当前技能定义的 mul (伤害比例) 传递并记录在子技能中。通常配合 interval 使用，用于将该能力赋予范围内的所有我方单位。`
+  },
+  {
+    label: '复仇-比例伤害 (revengeLingHurt)',
+    value: 'revengeLingHurt',
+    category: ['instant'],
+    desc: `可选或需求参数：secMul / (由父级传递的 mul)。
+    复仇机制的伤害执行逻辑，具备以下特性：
+    1. 若殒命的单位为队友单位，则扣除目标 mul 比例生命值；若为普通单位，则固定扣除 3%。
+    2. 对同一个目标造成的累计伤害总额不能超过 secMul (如 0.45 则代表最多扣除目标 45% 的生命)。
+    3. 该伤害无视闪避与免疫，执行时会弹出红色的百分比伤害文本。通常由子技能在单位死亡 (die) 时触发。`
+  },
+  {
+    label: '元素加成 (hurtStrikerLing)',
+    value: 'hurtStrikerLing',
+    category: ['instant'],
+    desc: `可选或需求参数：mul / valueString (推荐使用)。
+    根据现实日期的星期数自动切换属性。若目标当前的外壳类型 (shell) 匹配今日选定的属性，则本次伤害乘以 mul。
+    属性逻辑：周一普通 (生化敏感)，周二五复合 (火焰敏感)，周三六变异 (冷冻敏感)，周四日金属 (电磁敏感)。
+    推荐使用 <valueString>Striker</valueString> 使加成生效于 P1。`
+  },
+  {
+    label: '反弹伤害 (backHurt)',
+    value: 'backHurt',
+    category: ['instant'],
+    desc: `需求参数：mul / extraValueType。
+    将受到的伤害按 mul 比例反弹给生产者。
+    单次反弹最高不超过目标最大生命的 20%，Boss 单位则限制在 2%。
+    拥有 noUnderBackB 状态的单位不受影响，该效果会受 feedBack (电离折射) 类技能削减。`
+  },
+  {
+    label: '暴击 (crit)',
+    value: 'crit',
+    category: ['instant'],
+    desc: `可选或需求参数：extraValueType / value / mul。
+    有 value (0-1) 的概率触发一次暴击 (CHILD_CRIT) 类型的倍率伤害。
+    可通过 extraValueType / mul 设置伤害。`
+  },
+  {
+    label: '中毒 (poison)',
+    value: 'poison',
+    category: ['instant'],
+    desc: `可选或需求参数：extraValueType / mul / doGap / duration。
+    触发一次毒属性 (CHILD_POISON) 普通伤害。
+    可通过 extraValueType / mul 设置伤害。
+    可添加 doGap 在 state 类型下使用，可配合 duration 设置持续时间;
+    也可单独在 instant 类型下作为即时效果应用。`
+  },
+  {
+    label: '七步毒 (poison7)',
+    value: 'poison7',
+    category: ['instant'],
+    desc: `可选或需求参数：extraValueType / mul / doGap / duration。
+    若目标当前水平速度不为0，造成一次毒属性 (CHILD_POISON) 普通伤害。
+    可通过 extraValueType / mul 设置伤害。
+    推荐添加 doGap 在 state 类型下使用，可配合 duration 设置持续时间。`
+  },
+  {
+    label: '小炎戒 (poison_xiaoAi)',
+    value: 'poison_xiaoAi',
+    category: ['instant'],
+    desc: `可选或需求参数：extraValueType / mul / doGap / duration。
+    触发一次毒属性 (CHILD_POISON) 普通伤害。
+    可通过 extraValueType / mul 设置伤害。
+    修罗/虚天塔模式下倍率为设置的 0.1，困难模式下倍率为设置的 0.2。
+    推荐添加 doGap 在 state 类型下使用，可配合 duration 设置持续时间。`
+  },
+  {
+    label: '核爆 (nuclear_peak)',
+    value: 'nuclear_peak',
+    category: ['instant'],
+    desc: `需求参数：mul。
+    1. 普通小怪：若等级低于释放者，直接斩杀; 若高于释放者，造成 25% 最大生命值伤害。
+    2. 精英怪：造成 25% 最大生命值伤害。
+    3. Boss：若 Boss 血量 > 30%，则扣除 mul 比例的生命值。
+    在修罗/虚天塔模式下，若伤害倍率为 100%，设置为 30%; 否则倍率设为原本的 40%。
+    困难模式下，倍率设为原本的 40%。
+    触发时附带全屏剧烈震动。`
+  },
+  {
     label: '敬请期待',
     value: 'under_development',
     category: ['instant', 'state'],
     desc: '更多效果函数待补充。'
-  }
+  },
 ];
 
 // 目标参照
@@ -763,6 +1046,18 @@ export const UNIT_TYPE_OPTIONS = [
   {
     label: '首领 (boss)',
     value: 'boss'
+  },
+  {
+    label: '建筑 (building)',
+    value: 'building'
+  },
+  {
+    label: '载具 (vehicle)',
+    value: 'vehicle'
+  },
+  {
+    label: '子弹 (bullet)',
+    value: 'bullet'
   }
 ];
 
@@ -775,6 +1070,14 @@ export const SYSTEM_TYPE_OPTIONS = [
   {
     label: '持枪 (hero)',
     value: 'hero'
+  },
+  {
+    label: '技能/陷阱 (skill)',
+    value: 'skill'
+  },
+  {
+    label: '宠物 (pet)',
+    value: 'pet'
   }
 ];
 
@@ -1093,8 +1396,8 @@ export const OTHER_CONDITION_OPTIONS = [
     label: '(隐) 距离目标 (hiding_hero)',
     value: 'hiding_hero',
     desc: `距离目标 (隐身专用)。\n需要配合 conditionRange 输入距离范围，血量阈值为 0.5。
-    注意 0.5 会受 0.8~1.2 的随机系数影响，即实际为 0.4~0.6；conditionRange 会受 0.9~1.1 的随机系数影响。刷新游戏重置上述随机数。
-    若释放者攻击 ai 处于 eacapeAndHidingB 并且血量小于血量阈值，视为满足条件；
+    注意 0.5 会受 0.8~1.2 的随机系数影响，即实际为 0.4~0.6; conditionRange 会受 0.9~1.1 的随机系数影响。刷新游戏重置上述随机数。
+    若释放者攻击 ai 处于 eacapeAndHidingB 并且血量小于血量阈值，视为满足条件; 
     否则，仅当释放者与目标距离小于 conditionRange 时，视为满足条件。`
   },
   {
@@ -1137,6 +1440,16 @@ export const OTHER_CONDITION_OPTIONS = [
     value: 'noUnionBattle',
     desc: '争霸模式中不生效。'
   },
+  {
+    label: '排除虚天塔 (noUnendLevelB)',
+    value: 'noUnendLevelB',
+    desc: '虚天塔中不生效。'
+  },
+  {
+    label: '最大生命值不生效 (noSkillNoTargetMaxLifeB)',
+    value: 'noSkillNoTargetMaxLifeB',
+    desc: '技能最大生命值相关效果不生效。'
+  },
 
   {
     label: '天数判断 (dayPan)',
@@ -1149,12 +1462,17 @@ export const OTHER_CONDITION_OPTIONS = [
     desc: '仅于当天生肖效果未使用时可以生效。'
   },
   {
+    label: '复仇计数器 (revengeLingHurtLess)',
+    value: 'revengeLingHurtLess',
+    desc: '目标的复仇计数器小于该技能 secMul 时可以生效。'
+  },
+  {
     label: '排除封锁 (targetArmsNoMeltFlamerPurgold)',
     value: 'targetArmsNoMeltFlamerPurgold',
     desc: `1. 携带武器或本身具有化锁技能 (meltFlamerPurgold); 2. 具有车卷风技能 (redMoto3Skill); 3. 造成伤害的武器是闪电极源，且目标是携带先锋盾的小白时：
     以上条件满足任意一条时，本技能效果不生效。`
   },
-  
+
   {
     label: '步枪 (rifle)',
     value: 'rifle',
