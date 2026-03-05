@@ -1,74 +1,96 @@
 <!-- client/src/views/Editor/BodyEditor/sections/BodyPhysicsSection.vue -->
 <template>
-  <div v-if="body">
-    <n-grid :x-gap="16" :y-gap="16" cols="1 l:2" responsive="screen">
+  <div v-if="body" class="physics-section">
+    <n-grid :x-gap="20" :y-gap="20" cols="1 l:2" responsive="screen">
 
-      <!-- Left Column: Physics & Motion -->
+      <!-- 左侧：物理 & 移动 -->
       <n-gi>
-        <n-space vertical size="large">
+        <n-space vertical :size="20">
 
-          <!-- Basic Limits -->
-          <n-card title="基础速度限制 (Limits)" size="small">
-            <template #header-extra><n-tag size="small" type="info">Basic</n-tag></template>
-            <n-grid :cols="3" :x-gap="8">
+          <!-- 基础限制 -->
+          <n-card title="速度与跳跃限制 (Movement Limits)" size="small" class="premium-card">
+            <template #header-extra>
+              <n-icon :component="SpeedometerOutline" color="var(--primary-color)" size="20" />
+            </template>
+            <n-grid :cols="3" :x-gap="12">
               <n-gi>
-                <n-form-item label="水平限速 (MaxVx)">
+                <div class="mini-form-item">
+                  <div class="mini-label">最大水平速度</div>
                   <n-input-number v-model:value="body.maxVx" size="small" :step="0.5" />
-                </n-form-item>
+                </div>
               </n-gi>
               <n-gi>
-                <n-form-item label="垂直限速 (MaxVy)">
+                <div class="mini-form-item">
+                  <div class="mini-label">最大垂直速度</div>
                   <n-input-number v-model:value="body.maxVy" size="small" :step="0.5" />
-                </n-form-item>
+                </div>
               </n-gi>
               <n-gi>
-                <n-form-item label="最大跳跃 (JumpNum)">
+                <div class="mini-form-item">
+                  <div class="mini-label">最大跳跃次数</div>
                   <n-input-number v-model:value="body.maxJumpNum" size="small" min="0" />
-                </n-form-item>
+                </div>
               </n-gi>
             </n-grid>
           </n-card>
 
-          <!-- Physics Engine (motionD) -->
-          <n-card title="物理参数 (Physics Engine)" size="small">
-            <template #header-extra><n-text depth="3" class="text-xs">motionD.*</n-text></template>
+          <!-- 物理参数 -->
+          <n-card title="物理引擎参数 (Physics Engine)" size="small" class="premium-card">
+            <template #header-extra>
+              <n-icon :component="PhysicsIcon" color="#70c0e8" size="20" />
+            </template>
 
-            <n-divider title-placement="left" style="margin: 0 0 12px 0; font-size: 12px; color: #999;">力与阻力
-              (Forces)</n-divider>
-            <n-grid :cols="2" :x-gap="12" :y-gap="12">
-              <n-gi v-for="meta in forceMetas" :key="meta.key">
-                <MetaFormItem :meta="meta" v-model:modelValue="body.motionD[meta.key]" :show-label="true" />
-              </n-gi>
-            </n-grid>
+            <div class="stat-group">
+              <div class="group-header">
+                <n-icon :component="ArrowDownOutline" />
+                <span>受力与阻力控制 (Forces & Friction)</span>
+              </div>
+              <n-grid :cols="2" :x-gap="12" :y-gap="12">
+                <n-gi v-for="meta in forceMetas" :key="meta.key">
+                  <MetaFormItem :meta="meta" v-model:modelValue="body.motionD[meta.key]" :show-label="true" />
+                </n-gi>
+              </n-grid>
+            </div>
 
-            <n-divider title-placement="left" style="margin: 12px 0 12px 0; font-size: 12px; color: #999;">运动行为
-              (Behavior)</n-divider>
-            <n-grid :cols="2" :x-gap="12" :y-gap="12">
-              <n-gi v-for="meta in behaviorMetas" :key="meta.key">
-                <MetaFormItem :meta="meta" v-model:modelValue="body.motionD[meta.key]" :show-label="true" />
-              </n-gi>
-            </n-grid>
+            <n-divider class="premium-divider" />
+
+            <div class="stat-group">
+              <div class="group-header">
+                <n-icon :component="BicycleOutline" />
+                <span>地面与空中行为 (Motion Behavior)</span>
+              </div>
+              <n-grid :cols="2" :x-gap="12" :y-gap="12">
+                <n-gi v-for="meta in behaviorMetas" :key="meta.key">
+                  <MetaFormItem :meta="meta" v-model:modelValue="body.motionD[meta.key]" :show-label="true" />
+                </n-gi>
+              </n-grid>
+            </div>
           </n-card>
 
         </n-space>
       </n-gi>
 
-      <!-- Right Column: AI & Extensions -->
+      <!-- 右侧：AI & 扩展 -->
       <n-gi>
-        <n-space vertical size="large">
+        <n-space vertical :size="20">
 
-          <!-- AI Logic -->
-          <n-card title="AI 逻辑与感知 (AI Logic)" size="small">
-            <template #header-extra><n-icon color="#e6a23c"><i class="ad-brain" /></n-icon></template>
-            <n-grid :cols="2" :x-gap="12" :y-gap="12">
+          <!-- AI 逻辑 -->
+          <n-card title="AI 感知与决策 (AI Decision)" size="small" class="premium-card">
+            <template #header-extra>
+              <n-icon color="#f2c97d" size="20"><i class="ad-brain" /></n-icon>
+            </template>
+            <n-grid :cols="2" :x-gap="12" :y-gap="12" class="p-2">
               <n-gi v-for="meta in BODY_AI_METAS" :key="meta.key">
                 <MetaFormItem :meta="meta" v-model:modelValue="body[meta.key]" :show-label="true" />
               </n-gi>
             </n-grid>
           </n-card>
 
-          <!-- Movement Extensions -->
-          <n-card title="移动扩展 (Extensions)" size="small">
+          <!-- 移动扩展 -->
+          <n-card title="特殊移动扩展 (Special Moves)" size="small" class="premium-card">
+            <template #header-extra>
+              <n-icon :component="ExtensionPuzzleOutline" color="#e88080" size="20" />
+            </template>
             <n-grid :cols="2" :x-gap="12" :y-gap="12">
               <n-gi v-for="meta in BODY_MOVE_EXT_METAS" :key="meta.key">
                 <MetaFormItem :meta="meta" v-model:modelValue="body[meta.key]" :show-label="true" />
@@ -84,6 +106,13 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import {
+  SpeedometerOutline,
+  ArrowDownOutline,
+  BicycleOutline,
+  ExtensionPuzzleOutline,
+  AppsOutline as PhysicsIcon
+} from '@vicons/ionicons5';
 import { useBodyState } from '../hooks/useBodyState';
 import { BODY_PHYSICS_METAS, BODY_AI_METAS, BODY_MOVE_EXT_METAS } from '../config';
 import MetaFormItem from '../../../components/MetaFormItem.vue';
@@ -96,7 +125,45 @@ const behaviorMetas = computed(() => BODY_PHYSICS_METAS.filter(m => !forceKeys.i
 </script>
 
 <style scoped>
-.text-xs {
-  font-size: 12px;
+.physics-section {
+  padding-bottom: 32px;
+}
+
+.mini-form-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mini-label {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.5;
+  padding-left: 2px;
+}
+
+.stat-group {
+  margin-bottom: 4px;
+}
+
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0.6;
+  margin-bottom: 20px;
+  color: #fff;
+  padding-left: 4px;
+}
+
+.premium-divider {
+  margin: 16px 0 24px 0;
+  opacity: 0.05;
+}
+
+:deep(.n-input-number) {
+  border-radius: 8px !important;
 }
 </style>

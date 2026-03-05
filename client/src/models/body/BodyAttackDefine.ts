@@ -57,6 +57,9 @@ export class BodyAttackDefine {
     const d = new BodyAttackDefine();
     d.imgLabel = label;
     d.cn = "新攻击动作";
+    d.hurtRatio = 1;
+    d.attackType = 'direct';
+    d.hitMaxNum = 999;
     // 默认给一个矩形对象，方便前端 v-model 绑定
     d.grapRect = { x: 0, y: 0, width: 50, height: 50 };
     return d;
@@ -123,7 +126,7 @@ export class BodyAttackDefine {
     addBool("ingfollowB", this.ingfollowB);
 
     // 图像效果
-    const hitImgXml = this.hitImg.toXml("hitImg");
+    const hitImgXml = this.hitImg.toXml("hitImgUrl");
     if (hitImgXml) xml += `        ${hitImgXml}\n`;
 
     xml += `      </hurt>`;

@@ -34,14 +34,14 @@ export class SayDefine {
     if (this.target != null) xml += ` target="${this.target}"`;
     if (this.pointer != null) xml += ` pointer="${this.pointer}"`;
     if (this.iconUrl != null) xml += ` iconUrl="${this.iconUrl}"`;
-    if (this.r != null) xml += ` r="${this.r}"`;
+    if (this.r != null && this.r != "") xml += ` r="${this.r}"`;
     xml += `>\n`;
-    
+
     // 内容节点
     this.contentArr.forEach(content => {
       xml += `            <content>${content}</content>\n`;
     });
-    
+
     xml += `          </say>`;
     return xml;
   }

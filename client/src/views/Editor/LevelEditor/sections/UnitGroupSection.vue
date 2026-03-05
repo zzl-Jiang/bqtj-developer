@@ -5,15 +5,12 @@
     <n-card id="units-allDefault" title="全局默认配置 (allDefault)" size="small" class="mb-4" :segmented="true">
       <template #header-extra>
         <!-- 添加属性按钮 -->
-        <n-dropdown 
-          trigger="click" 
-          :options="addPropertyOptions" 
-          @select="handleAddProperty"
-          scrollable
-          style="max-height: 250px"
-        >
+        <n-dropdown trigger="click" :options="addPropertyOptions" @select="handleAddProperty" scrollable
+          style="max-height: 250px">
           <n-button type="primary" size="tiny" ghost>
-            <template #icon><n-icon><AddOutline /></n-icon></template>
+            <template #icon><n-icon>
+                <AddOutline />
+              </n-icon></template>
             添加覆盖属性
           </n-button>
         </n-dropdown>
@@ -22,31 +19,18 @@
       <n-grid :cols="3" :x-gap="12" :y-gap="12">
         <!-- 固定显示的 AI 指令 -->
         <n-gi>
-          <MetaFormItem 
-            :meta="AI_ORDER_META" 
-            v-model:modelValue="level.unitG.allDefault.aiOrder" 
-            :show-label="true" 
-          />
+          <MetaFormItem :meta="AI_ORDER_META" v-model:modelValue="level.unitG.allDefault.aiOrder" :show-label="true" />
         </n-gi>
 
         <!-- 动态生成的已添加属性 -->
         <n-gi v-for="meta in activeExtraProperties" :key="meta.key">
           <div class="dynamic-property-item">
-            <MetaFormItem 
-              :meta="meta" 
-              v-model:modelValue="level.unitG.allDefault[meta.key]" 
-              :show-label="true" 
-            />
+            <MetaFormItem :meta="meta" v-model:modelValue="level.unitG.allDefault[meta.key]" :show-label="true" />
             <!-- 删除按钮 -->
-            <n-button 
-              quaternary 
-              circle 
-              size="tiny" 
-              type="error" 
-              class="delete-btn"
-              @click="removeProperty(meta.key)"
-            >
-              <template #icon><n-icon><TrashOutline /></n-icon></template>
+            <n-button quaternary circle size="tiny" type="error" class="delete-btn" @click="removeProperty(meta.key)">
+              <template #icon><n-icon>
+                  <TrashOutline />
+                </n-icon></template>
             </n-button>
           </div>
         </n-gi>
@@ -59,14 +43,10 @@
       <n-button type="primary" ghost @click="handleAddGroup">添加发兵集</n-button>
     </div>
 
-    <n-collapse v-model:expanded-names="expandedNames" arrow-placement="right" :default-expanded-names="[]" style="margin-top: 20px;">
-      <n-collapse-item 
-        v-for="(group, gIdx) in level.unitG.unitOrders" 
-        :key="gIdx" 
-        :name="group.id" 
-        class="group-item"
-        :id="`units-${group.id}`" 
-      >
+    <n-collapse v-model:expanded-names="expandedNames" arrow-placement="right" :default-expanded-names="[]"
+      style="margin-top: 20px;">
+      <n-collapse-item v-for="(group, gIdx) in level.unitG.unitOrders" :key="gIdx" :name="group.id" class="group-item"
+        :id="`units-${group.id}`">
         <template #header>
           <n-space style="padding: 10px">
             <n-tag type="info" size="small">{{ group.camp || 'enemy' }}</n-tag>
@@ -74,7 +54,7 @@
             <n-text depth="3">({{ group.arr.length }} 个单位)</n-text>
           </n-space>
         </template>
-        
+
         <template #header-extra>
           <n-button-group size="tiny" style="margin-right: 8px;">
             <n-button @click.stop="handleAddUnit(group)">添加单位</n-button>
@@ -83,13 +63,9 @@
         </template>
 
         <!-- 组属性设置 -->
-        <n-grid :cols="3" :x-gap="12" class="mb-4 p-2">
+        <n-grid :cols="3" :x-gap="12" class="mb-4">
           <n-gi v-for="meta in GROUP_METAS" :key="meta.key">
-            <MetaFormItem 
-              :meta="meta" 
-              v-model:modelValue="group[meta.key]" 
-              :show-label="true" 
-            />
+            <MetaFormItem :meta="meta" v-model:modelValue="group[meta.key]" :show-label="true" />
           </n-gi>
         </n-grid>
 
@@ -107,12 +83,14 @@
           <tbody>
             <tr v-for="(unit, uIdx) in group.arr" :key="uIdx" :id="`units-item-${unit.cnName}`">
               <td>{{ unit.cnName || '-' }}</td>
-              <td><n-tag size="small" :type="unit.unitType === 'boss' ? 'error' : 'default'">{{ unit.unitType }}</n-tag></td>
+              <td><n-tag size="small" :type="unit.unitType === 'boss' ? 'error' : 'default'">{{ unit.unitType }}</n-tag>
+              </td>
               <td>{{ unit.lifeMul }} / {{ unit.dpsMul }}</td>
               <td>{{ unit.num }}</td>
               <td>
                 <n-button size="tiny" secondary type="info" @click="editUnit(unit)">详情</n-button>
-                <n-button size="tiny" secondary type="error" @click="group.arr.splice(uIdx, 1)" class="ml-2">移除</n-button>
+                <n-button size="tiny" secondary type="error" @click="group.arr.splice(uIdx, 1)"
+                  class="ml-2">移除</n-button>
               </td>
             </tr>
           </tbody>
@@ -211,7 +189,7 @@ const ALL_AVAILABLE_METAS = computed(() => {
 // 找出当前已经在 allDefault 中设置了值的属性（排除 undefined 和 aiOrder）
 const activeExtraProperties = computed(() => {
   if (!level.value?.unitG?.allDefault) return [];
-  return ALL_AVAILABLE_METAS.value.filter(meta => 
+  return ALL_AVAILABLE_METAS.value.filter(meta =>
     level.value?.unitG.allDefault[meta.key] !== undefined && meta.key !== 'aiOrder'
   );
 });
@@ -224,7 +202,7 @@ const handleAddProperty = (key: string) => {
     let defaultValue: any = '';
     if (meta.type === 'number') defaultValue = 1;
     if (meta.type === 'boolean') defaultValue = true;
-    
+
     if (level.value) level.value.unitG.allDefault[key] = defaultValue;
   }
 };
@@ -263,7 +241,7 @@ useSectionNavigator<any>({
     // 如果找到的是发兵组 (有 arr 属性)
     if ('arr' in item) {
       expandedNames.value = [item.id]; // 展开该组
-    } 
+    }
     // 如果找到的是具体的单位 (特征是有 cnName 属性)
     else if ('cnName' in item) {
       // 找到该单位属于哪个组
@@ -285,10 +263,18 @@ useSectionNavigator<any>({
   margin-bottom: 8px;
   border-radius: 4px;
 }
-.mb-4 { margin-bottom: 1rem; }
-.p-2 { padding: 0.5rem; }
-.ml-2 { margin-left: 0.5rem; }
-.mr-2 { margin-right: 0.5rem; }
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
 
 .dynamic-property-item {
   position: relative;
@@ -302,7 +288,7 @@ useSectionNavigator<any>({
   top: -8px;
   right: -8px;
   background-color: white !important;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -310,6 +296,7 @@ useSectionNavigator<any>({
 :deep(.n-collapse .n-collapse-item:not(:first-child)) {
   border-top: 1px solid #efeff5 !important;
 }
+
 :deep(.n-collapse .n-collapse-item .n-collapse-item__header) {
   padding: 0 !important;
 }

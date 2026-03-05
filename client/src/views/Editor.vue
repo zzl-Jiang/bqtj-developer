@@ -1,21 +1,21 @@
 <template>
-  <n-layout has-sider style="height: 100vh;">
-    <n-layout-sider bordered collapse-mode="width" :collapsed-width="64" :width="200" show-trigger="arrow-circle">
-      <n-menu v-model:value="modStore.activeModule" :options="menuOptions" />
-    </n-layout-sider>
+  <div class="editor-container">
+    <DashboardNav />
 
-    <n-layout-content content-style="padding: 0;">
-      <!-- 使用 keep-alive 可以在切换模块时保留编辑状态 -->
-      <keep-alive>
-        <component :is="currentModuleComponent" />
-      </keep-alive>
-    </n-layout-content>
-  </n-layout>
+    <div class="module-content">
+      <transition name="module-fade" mode="out-in">
+        <keep-alive>
+          <component :is="currentModuleComponent" :key="modStore.activeModule" />
+        </keep-alive>
+      </transition>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { computed, h } from 'vue';
 import { useModStore } from '../store/useModStore';
+import DashboardNav from './components/DashboardNav.vue';
 import SummaryModule from './Editor/SummaryModule.vue';
 import PngEditor from './Editor/PngEditor/index.vue';
 import SkillEditor from './Editor/SkillEditor/index.vue';
@@ -26,20 +26,6 @@ import GenericModule from './Editor/GenericModule.vue';
 
 const modStore = useModStore();
 
-const menuOptions = [
-  { label: '显示汇总', key: 'summary' },
-  { label: '关卡设计', key: 'level' },
-  { label: '技能模块', key: 'skill' },
-  { label: '单位定义', key: 'body' },
-  { label: '剧情对话', key: 'say' },
-  { label: '资源模块 (PNG)', key: 'png' },
-  { key: 'divider', type: 'divider' },
-  { label: '子弹效果', key: 'bullet' },
-  { label: '武器定义', key: 'arms' },
-  { label: '效果掉落', key: 'drop' },
-];
-
-// 使用渲染函数或包裹组件来复用 GenericModule
 const currentModuleComponent = computed(() => {
   switch (modStore.activeModule) {
     case 'summary': return SummaryModule;
@@ -49,7 +35,6 @@ const currentModuleComponent = computed(() => {
     case 'body': return BodyEditor;
     case 'say': return SayEditor;
 
-    // 以下模块共用 GenericModule，但传入不同的 Props 和 Actions=
     case 'bullet':
       return h(GenericModule, {
         title: '子弹',
@@ -76,3 +61,31 @@ const currentModuleComponent = computed(() => {
   }
 });
 </script>
+
+<style scoped>
+.editor-container {
+  min-height: calc(100vh - 120px);
+  padding: 20px 0;
+}
+
+.module-content {
+  position: relative;
+  width: 100%;
+}
+
+/* 模块切换过渡动画 */
+.module-fade-enter-active,
+.module-fade-leave-active {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.module-fade-enter-from {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.module-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-12px);
+}
+</style>

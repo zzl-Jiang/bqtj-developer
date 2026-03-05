@@ -9,7 +9,7 @@ export interface SelectOption {
 export interface BodyMetaItem {
   key: string;
   label: string;
-  type: 'string' | 'number' | 'select' | 'multi_select' | 'switch';
+  type: 'string' | 'number' | 'select' | 'multi_select' | 'switch' | 'select_png';
   desc?: string;
   options?: SelectOption[];
   group?: string;

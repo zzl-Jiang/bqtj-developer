@@ -1,27 +1,43 @@
 <!-- client/src/views/Editor/BodyEditor/sections/BodyRectSection.vue -->
 <template>
-  <div v-if="body">
-    <n-grid :cols="1" :y-gap="16">
+  <div v-if="body" class="rect-section">
+    <n-grid :cols="1" :y-gap="20">
 
       <!-- 站立/下蹲碰撞体积 -->
       <n-gi>
-        <n-card title="基础碰撞体积 (Collision)" size="small">
-          <n-grid :cols="2" :x-gap="12">
+        <n-card title="基础碰撞体积限制 (Collision Boxes)" size="small" class="premium-card">
+          <template #header-extra>
+            <n-icon :component="ScanOutline" color="var(--primary-color)" size="20" />
+          </template>
+          <n-grid :cols="2" :x-gap="20">
             <n-gi>
-              <n-form-item label="站立碰撞 (hitRect)">
+              <div class="mini-form-item">
+                <div class="mini-label">站立状态碰撞 (hitRect)</div>
                 <RectInput v-model="body.hitRect" />
-              </n-form-item>
+              </div>
             </n-gi>
             <n-gi>
-              <n-form-item label="下蹲碰撞 (squatHitRect)">
+              <div class="mini-form-item">
+                <div class="mini-label">下蹲状态碰撞 (squatHitRect)</div>
                 <div v-if="!body.squatHitRect">
-                  <n-button dashed block @click="initSquatHitRect">启用下蹲碰撞</n-button>
+                  <n-button dashed block @click="initSquatHitRect" class="dashed-btn">
+                    <template #icon><n-icon>
+                        <AddIcon />
+                      </n-icon></template>
+                    激活下蹲碰撞
+                  </n-button>
                 </div>
-                <div v-else class="flex flex-col gap-2">
+                <div v-else class="active-rect-container">
                   <RectInput v-model="body.squatHitRect" />
-                  <n-button size="tiny" type="error" secondary @click="body.squatHitRect = undefined">移除</n-button>
+                  <n-button size="tiny" type="error" quaternary @click="body.squatHitRect = undefined"
+                    class="remove-btn">
+                    <template #icon><n-icon>
+                        <TrashIcon />
+                      </n-icon></template>
+                    移除下蹲配置
+                  </n-button>
                 </div>
-              </n-form-item>
+              </div>
             </n-gi>
           </n-grid>
         </n-card>
@@ -29,40 +45,54 @@
 
       <!-- 受伤判定框数组 -->
       <n-gi>
-        <n-card title="身体判定框 (Hurt Rects)" size="small">
+        <n-card title="身体部位详细判定 (Hurt Body Parts)" size="small" class="premium-card">
           <template #header-extra>
-            <n-button size="small" type="primary" secondary @click="addHurtRect">
+            <n-button size="small" type="primary" secondary @click="addHurtRect" round>
               <template #icon><n-icon>
                   <AddIcon />
                 </n-icon></template>
-              添加
+              添加新部位
             </n-button>
           </template>
 
-          <n-empty v-if="!body.hurtRectArr || body.hurtRectArr.length === 0" description="暂无受伤判定框" />
+          <div class="hurt-rects-content">
+            <n-empty v-if="!body.hurtRectArr || body.hurtRectArr.length === 0" description="点击上方按钮定义身体判定区域"
+              class="py-8" />
 
-          <n-grid v-else :cols="1" :y-gap="8">
-            <n-gi v-for="(_rect, index) in body.hurtRectArr" :key="index">
-              <n-card size="small" embedded :title="getHurtRectLabel(index)">
-                <div class="flex items-center gap-2">
-                  <div class="flex-1">
+            <n-grid v-else :cols="1" :y-gap="12">
+              <n-gi v-for="(_rect, index) in body.hurtRectArr" :key="index">
+                <div class="hurt-rect-item">
+                  <div class="item-header">
+                    <div class="item-title">
+                      <n-badge :value="index + 1" :color="index === 0 ? '#e88080' : '#18a058'" class="mr-2" />
+                      {{ getHurtRectLabel(index) }}
+                    </div>
+                    <n-button circle size="tiny" type="error" quaternary @click="removeHurtRect(index)">
+                      <template #icon><n-icon>
+                          <TrashIcon />
+                        </n-icon></template>
+                    </n-button>
+                  </div>
+                  <div class="item-content">
                     <RectInput v-model="body.hurtRectArr[index]" />
                   </div>
-                  <n-button size="tiny" type="error" ghost @click="removeHurtRect(index)">
-                    <template #icon><n-icon>
-                        <TrashIcon />
-                      </n-icon></template>
-                  </n-button>
                 </div>
-              </n-card>
-            </n-gi>
-          </n-grid>
+              </n-gi>
+            </n-grid>
+          </div>
 
-          <n-alert type="info" class="mt-4" :bordered="false" title="判定框逻辑说明">
-            <ul class="pl-4 m-0 text-xs">
-              <li>通常定义 3 条：<b>1. 要害 </b>、<b>2. 站立 </b>、<b>3. 下蹲 </b>。</li>
-              <li>如果<b>仅定义 1 条</b>：该框将作为所有状态（含要害/下蹲）的基础受击区域。</li>
-            </ul>
+          <n-divider class="premium-divider" />
+
+          <n-alert type="info" class="premium-alert" :bordered="false">
+            <template #icon><n-icon>
+                <InformationCircleOutline />
+              </n-icon></template>
+            <div class="alert-content">
+              <b>判定逻辑：</b>
+              <div>1. 通常定义顺序：<b>要害部位</b> (0) → <b>站立身体</b> (1) → <b>下蹲身体</b> (2)</div>
+              <div>2. 若仅有 1 个判定框，该框将覆盖所有受击情境。</div>
+              <div>3. 多出的判定框将作为额外的全身均质受击区。</div>
+            </div>
           </n-alert>
         </n-card>
       </n-gi>
@@ -74,13 +104,17 @@
 <script setup lang="ts">
 import { useBodyState } from '../hooks/useBodyState';
 import RectInput from '../components/RectInput.vue';
-import { Add as AddIcon, Trash as TrashIcon } from '@vicons/ionicons5';
+import {
+  Add as AddIcon,
+  Trash as TrashIcon,
+  ScanOutline,
+  InformationCircleOutline
+} from '@vicons/ionicons5';
 
 const { selectedBody: body } = useBodyState();
 
 const initSquatHitRect = () => {
   if (body.value) {
-    // Default relative to hitRect or standard values
     body.value.squatHitRect = { x: -12, y: -50, width: 24, height: 50 };
   }
 };
@@ -99,33 +133,104 @@ const removeHurtRect = (index: number) => {
 };
 
 const getHurtRectLabel = (index: number) => {
-  const labels = ['要害受伤 (Critical)', '站立受伤 (Standing)', '下蹲受伤 (Squatting)'];
-  return labels[index] || `额外判定框 ${index + 1}`;
+  const labels = ['要害部位 (Critical Peak)', '常规躯干 (Body Main)', '下蹲躯干 (Crouch Main)'];
+  return labels[index] || `自定义躯体部位 ${index + 1}`;
 };
 </script>
 
 <style scoped>
-.flex {
+.rect-section {
+  padding-bottom: 32px;
+}
+
+.mini-form-item {
   display: flex;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.gap-2 {
+  flex-direction: column;
   gap: 8px;
 }
 
-.flex-1 {
-  flex: 1;
+.mini-label {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.5;
+  padding-left: 2px;
 }
 
-.flex-col {
+.dashed-btn {
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.active-rect-container {
+  display: flex;
   flex-direction: column;
+  gap: 8px;
 }
 
-.mt-4 {
-  margin-top: 1rem;
+.remove-btn {
+  align-self: flex-end;
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.remove-btn:hover {
+  opacity: 1;
+}
+
+.hurt-rects-content {
+  padding-top: 8px;
+}
+
+.hurt-rect-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+}
+
+.hurt-rect-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.item-title {
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.mr-2 {
+  margin-right: 8px;
+}
+
+.py-8 {
+  padding: 32px 0;
+}
+
+.premium-divider {
+  margin: 20px 0;
+  opacity: 0.05;
+}
+
+.premium-alert {
+  background: rgba(112, 192, 232, 0.05) !important;
+  border: 1px solid rgba(112, 192, 232, 0.1) !important;
+  border-radius: 12px;
+}
+
+.alert-content {
+  font-size: 12px;
+  line-height: 1.8;
+  opacity: 0.8;
 }
 </style>

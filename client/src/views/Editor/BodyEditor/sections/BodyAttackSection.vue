@@ -1,75 +1,142 @@
 <!-- client/src/views/Editor/BodyEditor/sections/BodyAttackSection.vue -->
 <template>
-  <div v-if="body">
-    <div class="flex justify-between items-center mb-4">
-      <n-h3 prefix="bar" style="margin: 0">攻击动作列表</n-h3>
-      <n-button type="primary" size="small" @click="addHurt">
+  <div v-if="body" class="attack-section">
+    <div class="header-actions">
+      <div class="header-title">
+        <n-icon :component="FlashOutline" color="var(--primary-color)" size="22" />
+        <n-h3 style="margin: 0">攻击动作列表 (Attack Actions)</n-h3>
+      </div>
+      <n-button type="primary" size="small" @click="addHurt" round>
         <template #icon><n-icon>
             <AddIcon />
           </n-icon></template>
-        添加动作
+        新增动作
       </n-button>
     </div>
 
     <!-- 动作列表 -->
-    <n-data-table :columns="columns" :data="body.hurtArr" :row-key="(row: any) => row" size="small" :max-height="500" />
+    <n-card class="premium-card table-card">
+      <n-data-table :columns="columns" :data="body.hurtArr" :row-key="(row: any) => row" size="small" :max-height="500"
+        class="premium-table" />
+    </n-card>
 
     <!-- 详情编辑抽屉 -->
-    <n-drawer v-model:show="drawerVisible" :width="520">
-      <n-drawer-content :title="`编辑: ${editingHurt?.cn || editingHurt?.imgLabel || '未命名'}`" closable>
+    <n-drawer v-model:show="drawerVisible" :width="560" placement="right" class="premium-drawer">
+      <n-drawer-content :title="`编辑动作: ${editingHurt?.cn || editingHurt?.imgLabel || '未命名'}`" closable>
         <template #header-extra>
-          <n-tag type="warning" size="small" v-if="editingHurt?.imgLabel">Label: {{ editingHurt.imgLabel }}</n-tag>
+          <n-tag type="warning" size="small" v-if="editingHurt?.imgLabel" round>Label: {{ editingHurt.imgLabel
+          }}</n-tag>
         </template>
 
-        <n-form v-if="editingHurt" label-placement="left" :label-width="100" size="small">
-          <n-tabs type="segment" animated>
-
+        <n-form v-if="editingHurt" label-placement="top" size="medium">
+          <n-tabs type="line" animated justify-content="space-evenly" class="premium-tabs">
             <!-- Tab 1: 基础 Basic -->
-            <n-tab-pane name="basic" tab="基础信息">
-              <n-card embedded :bordered="false">
-                <MetaFormItem v-for="m in ATTACK_METAS.basic" :key="m.key" :meta="m"
-                  v-model:modelValue="editingHurt[m.key]" :show-label="true" />
-              </n-card>
+            <n-tab-pane name="basic">
+              <template #tab>
+                <n-space align="center" :size="4">
+                  <n-icon :component="InformationCircleOutline" />基础
+                </n-space>
+              </template>
+              <div class="tab-pane-content">
+                <n-grid :cols="2" :x-gap="12" :y-gap="12">
+                  <n-gi v-for="meta in ATTACK_METAS.basic" :key="meta.key">
+                    <MetaFormItem :meta="meta" v-model:modelValue="editingHurt[meta.key]" :show-label="true" />
+                  </n-gi>
+                </n-grid>
+              </div>
             </n-tab-pane>
 
             <!-- Tab 2: 伤害 Damage -->
-            <n-tab-pane name="hurt" tab="伤害数值">
-              <n-card embedded :bordered="false">
-                <n-grid :cols="1" :y-gap="12">
+            <n-tab-pane name="hurt">
+              <template #tab>
+                <n-space align="center" :size="4">
+                  <n-icon :component="FlameOutline" />数值
+                </n-space>
+              </template>
+              <div class="tab-pane-content">
+                <n-grid :cols="2" :x-gap="12" :y-gap="12">
                   <n-gi v-for="m in ATTACK_METAS.hurt" :key="m.key">
                     <MetaFormItem :meta="m" v-model:modelValue="editingHurt[m.key]" :show-label="true" />
                   </n-gi>
                 </n-grid>
-              </n-card>
+              </div>
             </n-tab-pane>
 
             <!-- Tab 3: 判定 Hitbox -->
-            <n-tab-pane name="hitbox" tab="判定范围">
-              <n-card embedded :bordered="false" title="判定框 (grapRect)">
-                <div v-if="!editingHurt.grapRect">
-                  <n-button dashed block
-                    @click="editingHurt.grapRect = { x: 0, y: 0, width: 0, height: 0 }">启用判定框</n-button>
+            <n-tab-pane name="hitbox">
+              <template #tab>
+                <n-space align="center" :size="4">
+                  <n-icon :component="ScanOutline" />判定
+                </n-space>
+              </template>
+              <div class="tab-pane-content">
+                <n-card embedded :bordered="false" class="inner-card">
+                  <template #header>
+                    <div class="inner-card-header">
+                      <span>碰撞判定框 (grapRect)</span>
+                    </div>
+                  </template>
+                  <div v-if="!editingHurt.grapRect">
+                    <n-button dashed block @click="editingHurt.grapRect = { x: 0, y: 0, width: 0, height: 0 }"
+                      class="dashed-btn">
+                      <template #icon><n-icon>
+                          <AddIcon />
+                        </n-icon></template>
+                      启用图形判定
+                    </n-button>
+                  </div>
+                  <div v-else class="active-rect-container">
+                    <RectInput v-model="editingHurt.grapRect" />
+                    <n-button size="tiny" type="error" quaternary @click="editingHurt.grapRect = null"
+                      class="remove-btn">
+                      <template #icon><n-icon>
+                          <TrashIcon />
+                        </n-icon></template>
+                      移除判定框
+                    </n-button>
+                  </div>
+                </n-card>
+                <div class="mt-6">
+                  <n-grid :cols="2" :x-gap="12" :y-gap="12">
+                    <n-gi v-for="meta in ATTACK_METAS.range" :key="meta.key">
+                      <MetaFormItem :meta="meta" v-model:modelValue="editingHurt[meta.key]" :show-label="true" />
+                    </n-gi>
+                  </n-grid>
                 </div>
-                <div v-else>
-                  <RectInput v-model="editingHurt.grapRect" />
-                  <n-button size="tiny" type="error" secondary class="mt-2"
-                    @click="editingHurt.grapRect = null">移除</n-button>
-                </div>
-              </n-card>
-              <n-alert type="info" class="mt-4" :bordered="false">
-                定义攻击生效的矩形区域，相对于单位中心点。
-              </n-alert>
+              </div>
             </n-tab-pane>
 
-
-            <!-- Tab 4: 逻辑 Logic -->
-            <n-tab-pane name="logic" tab="高级逻辑">
-              <n-card embedded :bordered="false">
-                <MetaFormItem v-for="m in ATTACK_METAS.logic" :key="m.key" :meta="m"
-                  v-model:modelValue="editingHurt[m.key]" :show-label="true" />
-              </n-card>
+            <!-- Tab 4: 物理 Physics -->
+            <n-tab-pane name="physics">
+              <template #tab>
+                <n-space align="center" :size="4">
+                  <n-icon :component="RocketOutline" />物理
+                </n-space>
+              </template>
+              <div class="tab-pane-content">
+                <n-grid :cols="2" :x-gap="12" :y-gap="12">
+                  <n-gi v-for="meta in ATTACK_METAS.physics" :key="meta.key">
+                    <MetaFormItem :meta="meta" v-model:modelValue="editingHurt[meta.key]" :show-label="true" />
+                  </n-gi>
+                </n-grid>
+              </div>
             </n-tab-pane>
 
+            <!-- Tab 5: 逻辑 Logic -->
+            <n-tab-pane name="logic">
+              <template #tab>
+                <n-space align="center" :size="4">
+                  <n-icon :component="ExtensionPuzzleOutline" />逻辑
+                </n-space>
+              </template>
+              <div class="tab-pane-content">
+                <n-grid :cols="2" :x-gap="12" :y-gap="12">
+                  <n-gi v-for="meta in ATTACK_METAS.logic" :key="meta.key">
+                    <MetaFormItem :meta="meta" v-model:modelValue="editingHurt[meta.key]" :show-label="true" />
+                  </n-gi>
+                </n-grid>
+              </div>
+            </n-tab-pane>
           </n-tabs>
         </n-form>
       </n-drawer-content>
@@ -79,8 +146,18 @@
 
 <script setup lang="ts">
 import { ref, h } from 'vue';
-import { NButton, NTag, NSpace, useDialog } from 'naive-ui';
-import { Add as AddIcon } from '@vicons/ionicons5';
+import { NButton, NTag, NSpace, useDialog, NIcon } from 'naive-ui';
+import {
+  Add as AddIcon,
+  Trash as TrashIcon,
+  FlashOutline,
+  InformationCircleOutline,
+  FlameOutline,
+  ScanOutline,
+  RocketOutline,
+  ExtensionPuzzleOutline,
+  CreateOutline
+} from '@vicons/ionicons5';
 import { useBodyState } from '../hooks/useBodyState';
 import { ATTACK_METAS } from '../config';
 import { BodyAttackDefine } from '../../../../models/body/BodyAttackDefine';
@@ -106,66 +183,133 @@ const openHurtDrawer = (hurt: any) => {
 
 const handleRemove = (row: any, index: number) => {
   dialog.warning({
-    title: '确认删除',
-    content: `确定要删除攻击动作 "${row.cn || row.imgLabel}" 吗？`,
-    positiveText: '删除',
-    negativeText: '取消',
+    title: '确认删除动作',
+    content: `确定要永久删除攻击动作 "${row.cn || row.imgLabel}" 吗？此操作不可撤销。`,
+    positiveText: '确认删除',
+    negativeText: '手滑了',
     onPositiveClick: () => {
       body.value?.hurtArr.splice(index, 1);
     }
   });
 };
 
-// Define columns for NDataTable
 const columns = [
   {
     title: '名称',
     key: 'cn',
-    width: 120,
-    render: (row: any) => row.cn || m('em', { style: 'color: #999' }, '未命名')
+    width: 140,
+    render: (row: any) => h('div', { class: 'action-name' }, [
+      h(NIcon, { component: CreateOutline, size: 14, class: 'mr-1 opacity-50' }),
+      row.cn || h('em', { style: 'color: #777' }, '未命名')
+    ])
   },
   {
-    title: 'Label',
+    title: '标签 (Label)',
     key: 'imgLabel',
-    width: 120,
-    render: (row: any) => h(NTag, { size: 'small', type: 'info', bordered: false }, { default: () => row.imgLabel || '?' })
+    width: 140,
+    render: (row: any) => h(NTag, { size: 'small', type: 'info', bordered: false, round: true }, { default: () => row.imgLabel || '?' })
   },
   {
-    title: '属性',
+    title: '额外属性',
     key: 'tags',
     render: (row: any) => {
       const tags = [];
-      if (row.bulletLabel) tags.push(h(NTag, { size: 'tiny', type: 'warning', style: 'margin-right: 4px' }, { default: () => '弹' }));
-      if (row.skillArr?.length) tags.push(h(NTag, { size: 'tiny', type: 'success' }, { default: () => `技 ${row.skillArr.length}` }));
-      return tags.length ? h('div', tags) : null;
+      if (row.bulletLabel) tags.push(h(NTag, { size: 'tiny', type: 'warning', style: 'margin-right: 6px' }, { default: () => '远程/子弹' }));
+      if (row.skillArr?.length) tags.push(h(NTag, { size: 'tiny', type: 'success' }, { default: () => `${row.skillArr.length} 个子动作` }));
+      return tags.length ? h('div', tags) : h('span', { style: 'opacity: 0.3; font-size: 11px' }, '无额外扩展');
     }
   },
   {
     title: '操作',
     key: 'actions',
-    width: 130,
+    width: 150,
     render(row: any, index: number) {
       return h(NSpace, null, {
         default: () => [
-          h(NButton, { size: 'tiny', secondary: true, type: 'info', onClick: () => openHurtDrawer(row) }, { default: () => '编辑' }),
-          h(NButton, { size: 'tiny', secondary: true, type: 'error', onClick: () => handleRemove(row, index) }, { default: () => '删' })
+          h(NButton, { size: 'tiny', strong: true, secondary: true, type: 'info', onClick: () => openHurtDrawer(row) }, { default: () => '配置' }),
+          h(NButton, { size: 'tiny', strong: true, quaternary: true, type: 'error', onClick: () => handleRemove(row, index) }, { default: () => '移除' })
         ]
       });
     }
   }
 ];
 
-// Helper for 'em' tag which is not a component
-const m = h;
-
 </script>
 
 <style scoped>
-.mb-4 {
-  margin-bottom: 1rem;
+.attack-section {
+  padding-bottom: 24px;
 }
 
-.mt-4 {
-  margin-top: 1rem;
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.table-card {
+  border-radius: 16px !important;
+  overflow: hidden;
+}
+
+.premium-table {
+  background: transparent !important;
+}
+
+.tab-pane-content {
+  padding: 16px 4px;
+}
+
+.inner-card {
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.04) !important;
+  background: rgba(255, 255, 255, 0.01) !important;
+}
+
+.inner-card-header {
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+.dashed-btn {
+  height: 48px;
+  border-radius: 10px;
+}
+
+.active-rect-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.remove-btn {
+  align-self: flex-end;
+  opacity: 0.6;
+}
+
+.mt-6 {
+  margin-top: 1.5rem;
+}
+
+.mr-1 {
+  margin-right: 4px;
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.action-name {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
 }
 </style>

@@ -4,6 +4,49 @@ import type { Changelog } from '../types/changelog';
 
 export const UPDATES_DATA: Changelog[] = [
   {
+    version: 'v0.5.0',
+    date: '2026-03-05',
+    isMajor: true,
+    blocks: [
+      { type: 'title', content: '视觉与感官深度重构：迈向 Premium 体态' },
+      { type: 'text', content: '本次更新是项目视觉表现的分水岭。我们彻底重塑了全局布局与动效系统，实现了从“表单工具”到“高级控制台”的审美跨越。' },
+      {
+        type: 'feature',
+        title: '全新 Level 1 侧边导航',
+        desc: '将顶级导航整合至左侧可折叠抽屉，释放顶部空间，解决了药丸导航与传统菜单的排版冲突。支持一键折叠，专为沉浸式编辑设计。',
+        tag: '核心'
+      },
+      {
+        type: 'feature',
+        title: 'Premium 视觉感官系统',
+        desc: '背景升级为深绿/紫色微光径向渐变并叠加噪点纹理，消除大色块断层。全局应用 20px 现代圆角与磨砂玻璃特效，质感全面跃升。',
+        tag: '视觉'
+      },
+      {
+        type: 'feature',
+        title: '万能属性编辑器 (V2) 进化',
+        desc: 'MetaFormItem 深度图标化。现在生命值、攻击力等数十种属性拥有专属图标与色彩标识。所有复杂的 AS3 逻辑说明均转为悬浮气泡，界面呼吸感十足。',
+        tag: '交互'
+      },
+      {
+        type: 'feature',
+        title: '全局丝滑过渡动效',
+        desc: '引入模块级（module-fade）与页签级 entrance 动画。切换面板时内容会伴随轻微位移与缩放，交互反馈不再生硬。',
+        tag: '感官'
+      },
+      {
+        type: 'list', content: [
+          '重构单位编辑器（BodyEditor）全部子面板，统一适配 Premium Card 风格',
+          '优化攻击动作配置流，对话框采用 2 列布局显著提升信息密度',
+          '修复了 Say 剧情模块中 r 属性在空值状态下错误导出的 XML Bug',
+          '完善了关卡编辑器的中文引导描述，明确了场景 ID 等核心字段的填写规范',
+          '全局优化了按钮点击反馈，引入了更精致的 Quaternary 按钮动效'
+        ]
+      },
+      { type: 'action', label: '体验全新高级面板', module: 'body' }
+    ]
+  },
+  {
     version: 'v0.4.1',
     date: '2026-02-04',
     isMajor: false,
