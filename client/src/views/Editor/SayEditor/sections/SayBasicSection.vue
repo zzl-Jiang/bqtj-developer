@@ -2,7 +2,7 @@
 <template>
   <n-form v-if="sayList" :label-width="100">
     <n-card title="对话组全局定义" size="small">
-      <n-grid :cols="3" :x-gap="12">
+      <n-grid cols="1 s:2 m:3" :x-gap="12" responsive="screen">
         <!-- 使用 v-for 循环渲染，方便扩展 -->
         <n-gi v-for="meta in dynamicMetas" :key="meta.key">
           <!-- 添加 :id 适配跳转功能 -->

@@ -65,7 +65,7 @@
 
                 <!-- 展开后的详细编辑区 -->
                 <div class="editor-detail">
-                  <n-grid :cols="4" :x-gap="12" :y-gap="6">
+                  <n-grid cols="1 s:2 m:3 l:4" :x-gap="12" :y-gap="6" responsive="screen">
                     <n-gi v-for="meta in SAY_ITEM_METAS" :key="meta.key">
                       <div :id="`sayRow-${rIdx}-${meta.key}`">
                         <MetaFormItem 

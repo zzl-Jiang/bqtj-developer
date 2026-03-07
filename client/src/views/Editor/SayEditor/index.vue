@@ -16,7 +16,7 @@
     <template #content>
       <div class="h-full flex flex-col">
         <!-- XML 预览抽屉 -->
-        <n-drawer v-model:show="showXmlDrawer" :width="500" placement="right">
+        <n-drawer v-model:show="showXmlDrawer" :width="isMobile ? '100%' : 500" placement="right">
           <n-drawer-content title="XML 预览" closable>
             <div class="xml-drawer-content">
               <n-button type="primary" size="small" @click="copyXml" style="margin-bottom: 12px">
@@ -60,6 +60,7 @@
 import { ref } from 'vue';
 import { SettingsOutline, ChatbubblesOutline } from '@vicons/ionicons5';
 import { useMessage, NDrawer, NDrawerContent } from 'naive-ui';
+import { useResponsive } from '../../../hooks/useResponsive';
 import EditorLayout from '../../components/EditorLayout.vue';
 import ModuleSidebar from '../../components/ModuleSidebar.vue';
 import SayBasicSection from './sections/SayBasicSection.vue';
@@ -68,6 +69,7 @@ import { useSayState } from './hooks/useSayState';
 
 const message = useMessage();
 const { selectedIndex, selectedSayList, menuOptions, addSay, removeSay } = useSayState();
+const { isMobile } = useResponsive();
 
 // XML 预览抽屉状态
 const showXmlDrawer = ref(false);

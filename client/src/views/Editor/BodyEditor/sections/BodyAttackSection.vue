@@ -21,7 +21,7 @@
     </n-card>
 
     <!-- 详情编辑抽屉 -->
-    <n-drawer v-model:show="drawerVisible" :width="560" placement="right" class="premium-drawer">
+    <n-drawer v-model:show="drawerVisible" :width="isMobile ? '100%' : 560" placement="right" class="premium-drawer">
       <n-drawer-content :title="`编辑动作: ${editingHurt?.cn || editingHurt?.imgLabel || '未命名'}`" closable>
         <template #header-extra>
           <n-tag type="warning" size="small" v-if="editingHurt?.imgLabel" round>Label: {{ editingHurt.imgLabel
@@ -159,12 +159,14 @@ import {
   CreateOutline
 } from '@vicons/ionicons5';
 import { useBodyState } from '../hooks/useBodyState';
+import { useResponsive } from '../../../../hooks/useResponsive';
 import { ATTACK_METAS } from '../config';
 import { BodyAttackDefine } from '../../../../models/body/BodyAttackDefine';
 import MetaFormItem from '../../../components/MetaFormItem.vue';
 import RectInput from '../components/RectInput.vue';
 
 const { selectedBody: body } = useBodyState();
+const { isMobile } = useResponsive();
 
 const dialog = useDialog();
 

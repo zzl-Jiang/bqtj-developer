@@ -9,7 +9,7 @@
                     </n-space>
                 </template>
                 <div class="section-content">
-                    <n-grid :cols="2" :x-gap="12" :y-gap="12">
+                    <n-grid cols="1 m:2" :x-gap="12" :y-gap="12" responsive="screen">
                         <n-gi v-for="meta in DROP_BASIC_METAS" :key="meta.key">
                             <MetaFormItem :meta="meta" v-model:modelValue="drop" :show-label="true" />
                         </n-gi>

@@ -16,7 +16,7 @@
     <template #content>
       <div class="h-full flex flex-col">
         <!-- XML 预览抽屉 -->
-        <n-drawer v-model:show="showXmlDrawer" :width="500" placement="right">
+        <n-drawer v-model:show="showXmlDrawer" :width="isMobile ? '100%' : 500" placement="right">
           <n-drawer-content title="XML 预览" closable>
             <div class="xml-drawer-content">
               <n-button type="primary" size="small" @click="copyXml" style="margin-bottom: 12px">
@@ -49,6 +49,7 @@
 import { ref, provide } from 'vue';
 import { ImageOutline } from '@vicons/ionicons5';
 import { useMessage, NDrawer, NDrawerContent } from 'naive-ui';
+import { useResponsive } from '../../../hooks/useResponsive';
 import { usePngState } from './hooks/usePngState';
 import EditorLayout from '../../components/EditorLayout.vue';
 import ModuleSidebar from '../../components/ModuleSidebar.vue';
@@ -56,6 +57,7 @@ import PngBasicSection from './sections/PngBasicSection.vue';
 
 const message = useMessage();
 const { selectedIndex, selectedPng, menuOptions, addPng, removePng } = usePngState();
+const { isMobile } = useResponsive();
 
 // 提供给子组件使用
 provide('selectedPng', selectedPng);

@@ -2,7 +2,7 @@
 <template>
     <div v-if="selectedPng">
         <n-form label-placement="top" :model="selectedPng">
-            <n-grid :cols="2" :x-gap="12">
+            <n-grid cols="1 m:2" :x-gap="12" responsive="screen">
                 <n-gi v-for="meta in PNG_UI_META" :key="meta.key">
                     <MetaFormItem :meta="meta" :show-label="true" v-model:modelValue="selectedPng[meta.key]" />
                 </n-gi>

@@ -16,7 +16,7 @@
     <template #content>
       <div class="h-full flex flex-col">
         <!-- XML 预览抽屉 -->
-        <n-drawer v-model:show="showXmlDrawer" :width="500" placement="right">
+        <n-drawer v-model:show="showXmlDrawer" :width="isMobile ? '100%' : 500" placement="right">
           <n-drawer-content title="XML 预览" closable>
             <div class="xml-drawer-content">
               <n-button type="primary" size="small" @click="copyXml" style="margin-bottom: 12px">
@@ -117,6 +117,7 @@
 import { ref, watch, computed } from 'vue';
 import { PersonOutline, PulseOutline, SpeedometerOutline, FlashOutline, ScanOutline } from '@vicons/ionicons5';
 import { useMessage, NDrawer, NDrawerContent } from 'naive-ui';
+import { useResponsive } from '../../../hooks/useResponsive';
 import { useBodyState } from './hooks/useBodyState';
 
 import { useModStore } from '../../../store/useModStore';
@@ -153,6 +154,7 @@ const message = useMessage();
 const { selectedIndex, selectedBody, menuOptions, addBody, removeBody } = useBodyState();
 const modStore = useModStore();
 const editorModeStore = useEditorModeStore();
+const { isMobile } = useResponsive();
 
 // 管理当前激活的页签
 const activeTab = ref('basic');
