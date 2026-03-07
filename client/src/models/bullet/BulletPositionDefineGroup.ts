@@ -6,16 +6,16 @@ export class BulletPositionDefineGroup {
     /** 预定义的位置列表 */
     @Expose({ name: 'points' })
     @Type(() => BulletPositionDefine)
-    public arr: BulletPositionDefine[] = [];
+    public arr: BulletPositionDefine[] | undefined = undefined;
 
     /** 用于定位的特殊程序化逻辑的名称 */
     @Expose()
-    public specialType: string = "";
+    public specialType: string | undefined = undefined;
 
     public toXml(): string {
         let xml = '';
         if (this.specialType) xml += `        <specialType>${this.specialType}</specialType>\n`;
-        if (this.arr.length > 0) {
+        if (this.arr && this.arr.length > 0) {
             xml += `        <arr>\n`;
             for (const pos of this.arr) {
                 const posXml = pos.toXml();

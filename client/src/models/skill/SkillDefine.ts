@@ -22,8 +22,8 @@ export class SkillDefine {
 
   /** 父级分类 (例如: heroSkill, enemySuper, equipSkill) */
   @Expose()
-  public father: string = "heroSkill";
-  
+  public father: string | undefined = undefined;
+
   /** 技能局外图标路径 */
   @Expose()
   public iconUrl: string | undefined = undefined;
@@ -36,7 +36,7 @@ export class SkillDefine {
   @Expose()
   public baseLabel: string | undefined = undefined;
 
-  /** 
+  /**
    * 触发种类：
    * passive: 被动
    * active: 主动
@@ -62,7 +62,7 @@ export class SkillDefine {
 
   /** 学习所需等级 */
   @Expose()
-  public mustLv: number = 0;
+  public mustLv: number | undefined = undefined;
 
   /** 效果分类。这个使用需要严格的限制和已有定义对应 */
   @Expose()
@@ -70,7 +70,7 @@ export class SkillDefine {
 
   /** AS3 内部调用的函数名称 */
   @Expose()
-  public effectType: string = "no";
+  public effectType: string | undefined = undefined;
 
   /** 效果添加种类，即时/状态/即时+状态 */
   @Expose()
@@ -82,7 +82,7 @@ export class SkillDefine {
 
   /** 状态移除时调用的效果 */
   @Expose()
-  public stateRemoveEvent: string = "";
+  public stateRemoveEvent: string | undefined = undefined;
 
   /** 技能数值 */
   @Expose()
@@ -112,9 +112,9 @@ export class SkillDefine {
   @Expose()
   public cd: number | undefined = undefined;
 
-  /** 
+  /**
    * 初始冷却时间。
-   * 若保持初始值，则初始化时自动设为 cd 的 2/3 
+   * 若保持初始值，则初始化时自动设为 cd 的 2/3
    */
   @Expose()
   public firstCd: number | undefined = undefined;
@@ -162,89 +162,89 @@ export class SkillDefine {
   // 状态标志位
   /** 是否在生命条上方显示 */
   @Expose()
-  public showInLifeBarB: boolean = false;
+  public showInLifeBarB: boolean | undefined = undefined;
 
   /** 是否无视沉默状态 */
   @Expose()
-  public ignoreSilenceB: boolean = false;
+  public ignoreSilenceB: boolean | undefined = undefined;
 
   /** 是否无视封锁状态 */
   @Expose()
-  public ignoreNoSkillB: boolean = false;
+  public ignoreNoSkillB: boolean | undefined = undefined;
 
   /** 状态是否可以叠加 (Overlying) */
   @Expose()
-  public overlyingB: boolean = false;
+  public overlyingB: boolean | undefined = undefined;
 
   /** 能否被分身/克隆单位继承 */
   @Expose()
-  public noInClonedB: boolean = false;
+  public noInClonedB: boolean | undefined = undefined;
 
   /** 是否不被清除 */
   @Expose()
-  public noBeClearB: boolean = false;
+  public noBeClearB: boolean | undefined = undefined;
 
   /** 是否永不清除 */
   @Expose()
-  public everNoClearB: boolean = false;
+  public everNoClearB: boolean | undefined = undefined;
 
   /** 是否召唤单位 */
   @Expose()
-  public summonedUnitsB: boolean = false;
+  public summonedUnitsB: boolean | undefined = undefined;
 
   /** 是否会修改伤害，多用于武器技能 */
   @Expose()
-  public changeHurtB: boolean = false;
+  public changeHurtB: boolean | undefined = undefined;
 
   /** 是否无视概率免疫 */
   @Expose()
-  public noSkillDodgeB: boolean = false;
+  public noSkillDodgeB: boolean | undefined = undefined;
 
   /** 是否无视技能免疫 */
   @Expose()
-  public ignoreImmunityB: boolean = false;
+  public ignoreImmunityB: boolean | undefined = undefined;
 
   /** 是否不会被技能复制所复制 */
   @Expose()
-  public noCopyB: boolean = false;
+  public noCopyB: boolean | undefined = undefined;
 
   /** 是否不会出现在随机技能列表中 */
   @Expose()
-  public noRandomListB: boolean = false;
+  public noRandomListB: boolean | undefined = undefined;
 
-  /** 
+  /**
    * 是否免疫所有伤害，用于电离折射/反转。
    * 注意，这个属性实际没有任何效果。
    */
   @Expose()
-  public isDefenceB: boolean = false;
+  public isDefenceB: boolean | undefined = undefined;
 
-  /** 
+  /**
    * 是否不可阻挡，用于电离折射/反转/一些特殊技能。
    * 注意，这个属性实际也没有任何效果。
    */
   @Expose()
-  public isInvincibleB: boolean = false;
+  public isInvincibleB: boolean | undefined = undefined;
 
   /** 是否生效期间内不反复触发 */
   @Expose()
-  public noReStateB: boolean = false;
+  public noReStateB: boolean | undefined = undefined;
 
   /** 是否不允许 cd 加成 */
   @Expose()
-  public noCdMulB: boolean = false;
+  public noCdMulB: boolean | undefined = undefined;
 
   /** 是否落地后效果消失。点名滑翔 */
   @Expose()
-  public groundDieB: boolean = false;
+  public groundDieB: boolean | undefined = undefined;
 
   /** 是否需要/显示说明文本 */
   @Expose()
-  public wantDescripB: boolean = false;
+  public wantDescripB: boolean | undefined = undefined;
 
   /** 是否在目标点实现效果 */
   @Expose()
-  public targetPointEffectB: boolean = false;
+  public targetPointEffectB: boolean | undefined = undefined;
 
   /** 效果不生效的模式 */
   @Expose()
@@ -256,7 +256,7 @@ export class SkillDefine {
 
   /** 每颗子弹触发及能生效的最大击中次数 */
   @Expose()
-  public haveEffectBuletHitNum: number = 9999;
+  public haveEffectBuletHitNum: number | undefined = undefined;
 
   /** 对应单位使用的动作标签。需要和 swf 动画对应 */
   @Expose()
@@ -264,7 +264,7 @@ export class SkillDefine {
 
   /** 光波专用，好像也是个类似前摇的，专门用于控制图像效果 */
   @Expose()
-  public ie: string = "";
+  public ie: string | undefined = undefined;
 
   /** 其他条件生效列表 */
   @Expose()
@@ -272,7 +272,7 @@ export class SkillDefine {
 
   /** 生效需要的攻击动画标签列表 */
   @Expose()
-  public applyArr: string[] = [];
+  public applyArr: string[] | undefined = undefined;
 
   /** 技能概率列表 */
   @Expose()
@@ -288,51 +288,51 @@ export class SkillDefine {
 
   /** 动作特效预处理列表 */
   @Expose()
-  public preEffectArr: string[] = [];
-  
+  public preEffectArr: string[] | undefined = undefined;
+
   /** 技能目标定义 */
   @Expose()
   @Type(() => SkillTargetDefine)
-  public target: SkillTargetDefine = new SkillTargetDefine();
+  public target: SkillTargetDefine | undefined = undefined;
 
   /** 额外参数对象 (源码中以 JSON 字符串形式存储在 <obj> 节点) */
   @Expose()
   public obj: string | undefined = undefined;
-  
+
   /** 技能添加图像 */
   @Expose()
   @Type(() => ImageUrlDefine)
-  public addSkillEffectImg: ImageUrlDefine = new ImageUrlDefine();
+  public addSkillEffectImg: ImageUrlDefine | undefined = undefined;
 
   /** 对自身，即调用者的图像附加 */
   @Expose()
   @Type(() => ImageUrlDefine)
-  public meEffectImg: ImageUrlDefine = new ImageUrlDefine();
+  public meEffectImg: ImageUrlDefine | undefined = undefined;
 
   /** 对目标的图像附加 */
   @Expose()
   @Type(() => ImageUrlDefine)
-  public targetEffectImg: ImageUrlDefine = new ImageUrlDefine();
+  public targetEffectImg: ImageUrlDefine | undefined = undefined;
 
   /** 对生效点位的图像附加 */
   @Expose()
   @Type(() => ImageUrlDefine)
-  public pointEffectImg: ImageUrlDefine = new ImageUrlDefine();
+  public pointEffectImg: ImageUrlDefine | undefined = undefined;
 
   /** 其他附加图像 */
   @Expose()
   @Type(() => ImageUrlDefine)
-  public otherEffectImg: ImageUrlDefine = new ImageUrlDefine();
+  public otherEffectImg: ImageUrlDefine | undefined = undefined;
 
   /** 状态生效时的附加图像 */
   @Expose()
   @Type(() => ImageUrlDefine)
-  public stateEffectImg: ImageUrlDefine = new ImageUrlDefine();
+  public stateEffectImg: ImageUrlDefine | undefined = undefined;
 
   /** 状态2图像 */
   @Expose()
   @Type(() => ImageUrlDefine)
-  public stateEffectImg2: ImageUrlDefine = new ImageUrlDefine();
+  public stateEffectImg2: ImageUrlDefine | undefined = undefined;
   
   /**
    * 创建一个基础的主动攻击技能模板
@@ -418,14 +418,14 @@ export class SkillDefine {
     });
 
     // 子对象与嵌套
-    if (this.target.toXml()) {
+    if (this.target?.toXml()) {
       xml += `      ${this.target.toXml()}\n`;
     };
-    
+
     // 图像组
     const imgTags = ["addSkillEffectImg", "meEffectImg", "targetEffectImg", "pointEffectImg", "otherEffectImg", "stateEffectImg", "stateEffectImg2"];
     imgTags.forEach(tag => {
-      const imgXml = this[tag].toXml(tag);
+      const imgXml = this[tag]?.toXml(tag);
       if (imgXml) xml += `      ${imgXml}\n`;
     });
 
@@ -434,7 +434,7 @@ export class SkillDefine {
     if ((this.effectProArr?.length ?? 0) > 0) xml += `      <effectProArr>${(this.effectProArr ?? []).join(',')}</effectProArr>\n`;
     if ((this.passiveSkillArr?.length ?? 0) > 0) xml += `      <passiveSkillArr>${(this.passiveSkillArr ?? []).join(',')}</passiveSkillArr>\n`;
     if ((this.linkArr?.length ?? 0) > 0) xml += `      <linkArr>${(this.linkArr ?? []).join(',')}</linkArr>\n`;
-    if (this.preEffectArr.length > 0) xml += `      <preEffectArr>${this.preEffectArr.join(',')}</preEffectArr>\n`;
+    if ((this.preEffectArr?.length ?? 0) > 0) xml += `      <preEffectArr>${(this.preEffectArr ?? []).join(',')}</preEffectArr>\n`;
 
     // 动态对象 Obj
     if (this.obj) xml += `      <obj>${this.obj}</obj>\n`;

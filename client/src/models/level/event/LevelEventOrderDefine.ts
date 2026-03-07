@@ -4,7 +4,7 @@ import { Expose } from "class-transformer";
 
 export class LevelEventOrderDefine {
   // 对应 XML 标签内的文本内容，例如 "createUnit:enemy1;r1"
-  @Expose() public xmlText: string = "";
+  @Expose() public xmlText: string | undefined = undefined;
 
   static createDefault(text: string = 'createUnit:enemy1;r1'): LevelEventOrderDefine {
     const order = new LevelEventOrderDefine();

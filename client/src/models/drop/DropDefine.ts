@@ -2,28 +2,28 @@
 import { Expose } from 'class-transformer';
 
 export class DropDefine {
-  @Expose() public name: string = "";
-  @Expose() public cnName: string = "";
-  @Expose() public type: string = "";
-  @Expose() public secType: string = "";
-  @Expose() public text: string = "";
-  @Expose() public imgUrl: string = "";
-  @Expose() public imgRandom: number = 0;
-  @Expose() public extraSkill: string = "";
-  @Expose() public lifetime: number = -1;
-  @Expose() public noFollowHeroB: boolean = false;
-  @Expose() public smallMapColor: string = "";
-  @Expose() public lightImg: string = "";
-  @Expose() public keyB: boolean = false;
+  @Expose() public name: string | undefined = undefined;
+  @Expose() public cnName: string | undefined = undefined;
+  @Expose() public type: string | undefined = undefined;
+  @Expose() public secType: string | undefined = undefined;
+  @Expose() public text: string | undefined = undefined;
+  @Expose() public imgUrl: string | undefined = undefined;
+  @Expose() public imgRandom: number | undefined = undefined;
+  @Expose() public extraSkill: string | undefined = undefined;
+  @Expose() public lifetime: number | undefined = undefined;
+  @Expose() public noFollowHeroB: boolean | undefined = undefined;
+  @Expose() public smallMapColor: string | undefined = undefined;
+  @Expose() public lightImg: string | undefined = undefined;
+  @Expose() public keyB: boolean | undefined = undefined;
 
   // 掉落概率属性
-  @Expose() public normalPro: number = 0;      // 普通小怪掉率
-  @Expose() public superPro: number = 0;       // 精英怪掉率
-  @Expose() public bossPro: number = 0;        // 首领掉率
-  @Expose() public itemsLvRange: number[] = []; // 物品等级范围 [min, max]
+  @Expose() public normalPro: number | undefined = undefined;      // 普通小怪掉率
+  @Expose() public superPro: number | undefined = undefined;       // 精英怪掉率
+  @Expose() public bossPro: number | undefined = undefined;        // 首领掉率
+  @Expose() public itemsLvRange: number[] | undefined = undefined; // 物品等级范围 [min, max]
 
   public toXml(): string {
-    let xml = `    <drop name="${this.name || ""}"`;
+    let xml = `    <drop name="${this.name ?? ""}"`;
     if (this.type) xml += ` type="${this.type}"`;
     xml += `>\n`;
 
@@ -37,19 +37,19 @@ export class DropDefine {
     addTag("secType", this.secType, "");
     addTag("text", this.text, "");
     addTag("imgUrl", this.imgUrl, "");
-    if (this.imgRandom > 0) addTag("imgRandom", this.imgRandom);
+    if (this.imgRandom && this.imgRandom > 0) addTag("imgRandom", this.imgRandom);
     if (this.extraSkill) addTag("extraSkill", this.extraSkill);
-    if (this.lifetime !== -1) addTag("lifetime", this.lifetime);
+    if (this.lifetime !== undefined && this.lifetime !== -1) addTag("lifetime", this.lifetime);
     if (this.noFollowHeroB) xml += `      <noFollowHeroB>1</noFollowHeroB>\n`;
     if (this.smallMapColor) addTag("smallMapColor", this.smallMapColor);
     if (this.lightImg) addTag("lightImg", this.lightImg);
     if (this.keyB) xml += `      <keyB>1</keyB>\n`;
 
     // 掉落概率
-    if (this.normalPro > 0) addTag("normalPro", this.normalPro);
-    if (this.superPro > 0) addTag("superPro", this.superPro);
-    if (this.bossPro > 0) addTag("bossPro", this.bossPro);
-    if (this.itemsLvRange.length > 0) addTag("itemsLvRange", this.itemsLvRange.join(","));
+    if (this.normalPro && this.normalPro > 0) addTag("normalPro", this.normalPro);
+    if (this.superPro && this.superPro > 0) addTag("superPro", this.superPro);
+    if (this.bossPro && this.bossPro > 0) addTag("bossPro", this.bossPro);
+    if (this.itemsLvRange && this.itemsLvRange.length > 0) addTag("itemsLvRange", this.itemsLvRange.join(","));
 
     xml += `    </drop>`;
     return xml;

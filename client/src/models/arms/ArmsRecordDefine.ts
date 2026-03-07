@@ -4,11 +4,11 @@ import { Expose } from 'class-transformer';
 export class ArmsRecordDefine {
     /** 弦音的钢琴数据字符串 */
     @Expose()
-    public piano: string = "";
+    public piano: string | undefined = undefined;
 
     /** 特殊动能/移动间隔数据 */
     @Expose()
-    public moveGap: number = 0;
+    public moveGap: number | undefined = undefined;
 
     public toXml(): string {
         if (!this.piano && this.moveGap === 0) return '';

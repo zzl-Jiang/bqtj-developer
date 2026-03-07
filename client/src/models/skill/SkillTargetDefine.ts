@@ -6,14 +6,14 @@ import { Expose } from "class-transformer";
  * 技能目标定义类
  */
 export class SkillTargetDefine {
-  [key: string]: any; 
+  [key: string]: any;
   /** 是否计入本体 */
   @Expose()
-  public noMeB: boolean = false;
+  public noMeB: boolean | undefined = undefined;
 
   /** 是否计入 P1 角色 */
   @Expose()
-  public noMainB: boolean = false;
+  public noMainB: boolean | undefined = undefined;
 
   /** 目标限制数量 */
   @Expose()
@@ -21,15 +21,15 @@ export class SkillTargetDefine {
 
   /** 目标是否必须存在 */
   @Expose()
-  public noExistB: boolean = false;
+  public noExistB: boolean | undefined = undefined;
 
   /** 目标是否必须存活 */
   @Expose()
-  public targetMustLiveB: boolean = false;
+  public targetMustLiveB: boolean | undefined = undefined;
 
   /** 竞技场是否无效 */
   @Expose()
-  public arenaB: boolean = true;
+  public arenaB: boolean | undefined = undefined;
 
   /** 排除的种族类型 */
   @Expose()
@@ -41,7 +41,7 @@ export class SkillTargetDefine {
 
   /** 是否排除载具 */
   @Expose()
-  public noVehicleB: boolean = false;
+  public noVehicleB: boolean | undefined = undefined;
 
   /** 生效的参照目标 */
   @Expose()
@@ -49,23 +49,23 @@ export class SkillTargetDefine {
 
   /** 生效选择的类型 */
   @Expose()
-  public chooseType: string | undefined= undefined;
+  public chooseType: string | undefined = undefined;
 
   /** 目标阵营 */
   @Expose()
-  public camp: string | undefined= undefined;
+  public camp: string | undefined = undefined;
 
   /** 单位类型限制 */
   @Expose()
-  public unitType: string | undefined= undefined;
+  public unitType: string | undefined = undefined;
 
   /** 单位大类限制 */
   @Expose()
-  public systemType: string | undefined= undefined;
+  public systemType: string | undefined = undefined;
 
   /** 特殊技能机制目标选择 */
   @Expose()
-  public alert: string | undefined= undefined;
+  public alert: string | undefined = undefined;
 
   /**
    * 创建一个默认的敌方目标选择器
@@ -88,7 +88,7 @@ export class SkillTargetDefine {
     if (this.limitNum) xml += ` limitNum="${this.limitNum}"`;
     if (this.noExistB) xml += ` noExistB="1"`;
     if (this.targetMustLiveB) xml += ` targetMustLiveB="1"`;
-    if (!this.arenaB) xml += ` arenaB="0"`;
+    if (this.arenaB === false) xml += ` arenaB="0"`;
     if (this.noRaceType) xml += ` noRaceType="${this.noRaceType}"`;
     if (this.bodyName) xml += ` bodyName="${this.bodyName}"`;
     if (this.noVehicleB) xml += ` noVehicleB="1"`;

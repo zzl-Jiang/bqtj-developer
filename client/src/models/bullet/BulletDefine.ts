@@ -15,131 +15,128 @@ export class BulletDefine extends BulletPositionDefine {
   [key: string]: any;
 
   // 基础信息
-  @Expose() public name: string = "";
-  @Expose() public cnName: string = "";
-  @Expose() public kind: string = "";
-  @Expose() public hole: string = "";
-  @Expose() public baseLabel: string = "";
-  @Expose() public armsType: string = "";
-  @Expose() public actionLabel: string = "";
+  @Expose() public name: string | undefined = undefined;
+  @Expose() public cnName: string | undefined = undefined;
+  @Expose() public kind: string | undefined = undefined;
+  @Expose() public hole: string | undefined = undefined;
+  @Expose() public baseLabel: string | undefined = undefined;
+  @Expose() public armsType: string | undefined = undefined;
+  @Expose() public actionLabel: string | undefined = undefined;
 
   // 行为标志
-  @Expose() public sameCampB: boolean = true;
-  @Expose() public noHitB: boolean = false;
-  @Expose() public noHurtEffectB: boolean = false;
-  @Expose() public whippB: boolean = true;
-  @Expose() public noMagneticB: boolean = false;
-  @Expose() public noBeClearB: boolean = false;
-  @Expose() public implodingB: boolean = false;
-  @Expose() public twoHitSameNameB: boolean = false;
-  @Expose() public oneHitBodyB: boolean = false;
+  @Expose() public sameCampB: boolean | undefined = undefined;
+  @Expose() public noHitB: boolean | undefined = undefined;
+  @Expose() public noHurtEffectB: boolean | undefined = undefined;
+  @Expose() public whippB: boolean | undefined = undefined;
+  @Expose() public noMagneticB: boolean | undefined = undefined;
+  @Expose() public noBeClearB: boolean | undefined = undefined;
+  @Expose() public implodingB: boolean | undefined = undefined;
+  @Expose() public twoHitSameNameB: boolean | undefined = undefined;
+  @Expose() public oneHitBodyB: boolean | undefined = undefined;
 
   // 伤害与效果
-  @Expose() public hurtRatio: number = 0;
-  @Expose() public hurtMul: number = 0;
-  @Expose() public transBackMul: number = 1;
-  @Expose() public attackType: string = "direct";
-  @Expose() public beatBack: number = 0;
-  @Expose() public targetShakeValue: number = 0;
+  @Expose() public hurtRatio: number | undefined = undefined;
+  @Expose() public hurtMul: number | undefined = undefined;
+  @Expose() public transBackMul: number | undefined = undefined;
+  @Expose() public attackType: string | undefined = undefined;
+  @Expose() public beatBack: number | undefined = undefined;
+  @Expose() public targetShakeValue: number | undefined = undefined;
 
   @Expose() @Type(() => BulletCritDefine)
-  public critD: BulletCritDefine = new BulletCritDefine();
+  public critD: BulletCritDefine | undefined = undefined;
 
   @Expose() @Type(() => BulletCritDefine)
-  public critD3: BulletCritDefine = new BulletCritDefine();
+  public critD3: BulletCritDefine | undefined = undefined;
 
   // 生命周期与碰撞
-  @Expose() public bulletLife: number = 2;
-  @Expose() public lifeRandom: number = 0;
-  @Expose() public imgClearDelay: number = 0;
-  @Expose() public bulletWidth: number = 7;
-  @Expose() public bulletShakeWidth: number = 0;
-  @Expose() public hitType: string = "rect";
-  @Expose() public penetrationNum: number = 0;
-  @Expose() public penetrationGap: number = 0;
+  @Expose() public bulletLife: number | undefined = undefined;
+  @Expose() public lifeRandom: number | undefined = undefined;
+  @Expose() public imgClearDelay: number | undefined = undefined;
+  @Expose() public bulletWidth: number | undefined = undefined;
+  @Expose() public bulletShakeWidth: number | undefined = undefined;
+  @Expose() public hitType: string | undefined = undefined;
+  @Expose() public penetrationNum: number | undefined = undefined;
+  @Expose() public penetrationGap: number | undefined = undefined;
 
   // 攻击频率与时机
-  @Expose() public attackGap: number = 0;
-  @Expose() public attackDelay: number = 0;
-  @Expose() public noHitTime: number = 0;
-  @Expose() public hideTime: number = 0;
-  @Expose() public hitGap: number = 0;
-  @Expose() public twoHitGap: number = 0;
+  @Expose() public attackGap: number | undefined = undefined;
+  @Expose() public attackDelay: number | undefined = undefined;
+  @Expose() public noHitTime: number | undefined = undefined;
+  @Expose() public hideTime: number | undefined = undefined;
+  @Expose() public hitGap: number | undefined = undefined;
+  @Expose() public twoHitGap: number | undefined = undefined;
 
   // 发射属性
-  @Expose() public bulletNum: number = 1;
-  @Expose() public shootGap: number = 0;
-  @Expose() public shootNum: number = 1;
-  @Expose() public shootRecoil: number = 0;
-  @Expose() public screenShakeValue: number = 0;
-  @Expose() public aiShootRange: number = 0;
-  @Expose() public gatlinNum: number = 0;
-  @Expose() public gatlinRange: number = 0;
-  @Expose() public shootPoint: string = "0,0";
+  @Expose() public bulletNum: number | undefined = undefined;
+  @Expose() public shootGap: number | undefined = undefined;
+  @Expose() public shootNum: number | undefined = undefined;
+  @Expose() public shootRecoil: number | undefined = undefined;
+  @Expose() public screenShakeValue: number | undefined = undefined;
+  @Expose() public aiShootRange: number | undefined = undefined;
+  @Expose() public gatlinNum: number | undefined = undefined;
+  @Expose() public gatlinRange: number | undefined = undefined;
+  @Expose() public shootPoint: string | undefined = undefined;
 
   @Expose() @Type(() => BulletPositionDefineGroup)
-  public positionD: BulletPositionDefineGroup | null = null;
+  public positionD: BulletPositionDefineGroup | undefined = undefined;
 
   // 运动学
-  @Expose() public bulletSpeed: number = 0;
-  @Expose() public gravity: number = 0;
-  @Expose() public bulletVra: number = 0;
-  @Expose() public bulletAngle: number = -1000;
-  @Expose() public bulletAngleRange: number = 0;
-  @Expose() public extendGap: number = 0;
+  @Expose() public bulletSpeed: number | undefined = undefined;
+  @Expose() public gravity: number | undefined = undefined;
+  @Expose() public bulletVra: number | undefined = undefined;
+  @Expose() public bulletAngle: number | undefined = undefined;
+  @Expose() public bulletAngleRange: number | undefined = undefined;
+  @Expose() public extendGap: number | undefined = undefined;
 
   @Expose() @Type(() => BulletSpeedDefine)
-  public speedD: BulletSpeedDefine = new BulletSpeedDefine();
+  public speedD: BulletSpeedDefine | undefined = undefined;
 
   @Expose() @Type(() => BulletFollowDefine)
-  public followD: BulletFollowDefine = new BulletFollowDefine();
+  public followD: BulletFollowDefine | undefined = undefined;
 
   @Expose() @Type(() => BulletBounceDefine)
-  public bounceD: BulletBounceDefine = new BulletBounceDefine();
+  public bounceD: BulletBounceDefine | undefined = undefined;
 
   // 技能与特殊效果
-  @Expose() public skillArr: string[] = [];
-  @Expose() public godSkillArr: string[] = [];
-  @Expose() public bulletSkillArr: string[] = [];
+  @Expose() public skillArr: string[] | undefined = undefined;
+  @Expose() public godSkillArr: string[] | undefined = undefined;
+  @Expose() public bulletSkillArr: string[] | undefined = undefined;
 
   @Expose() @Type(() => BulletBoomDefine)
-  public boomD: BulletBoomDefine = new BulletBoomDefine();
+  public boomD: BulletBoomDefine | undefined = undefined;
 
   @Expose() @Type(() => BulletBindingDefine)
-  public bindingD: BulletBindingDefine = new BulletBindingDefine();
+  public bindingD: BulletBindingDefine | undefined = undefined;
 
   @Expose() @Type(() => BulletLineDefine)
-  public lineD: BulletLineDefine = new BulletLineDefine();
+  public lineD: BulletLineDefine | undefined = undefined;
 
   // 视觉资源
-  @Expose() public playImgLabel: string = '';
+  @Expose() public playImgLabel: string | undefined = undefined;
 
   @Expose() @Type(() => ImageUrlDefine)
-  public bulletImg: ImageUrlDefine = new ImageUrlDefine();
+  public bulletImg: ImageUrlDefine | undefined = undefined;
 
   @Expose() @Type(() => ImageUrlDefine)
-  public fireImg: ImageUrlDefine = new ImageUrlDefine();
+  public fireImg: ImageUrlDefine | undefined = undefined;
 
   @Expose() @Type(() => ImageUrlDefine)
-  public bulletLeftImg: ImageUrlDefine = new ImageUrlDefine();
+  public bulletLeftImg: ImageUrlDefine | undefined = undefined;
 
   @Expose() @Type(() => ImageUrlDefine)
-  public hitImg: ImageUrlDefine = new ImageUrlDefine();
+  public hitImg: ImageUrlDefine | undefined = undefined;
 
   @Expose() @Type(() => ImageUrlDefine)
-  public hitFloorImg: ImageUrlDefine = new ImageUrlDefine();
+  public hitFloorImg: ImageUrlDefine | undefined = undefined;
 
   @Expose() @Type(() => ImageUrlDefine)
-  public smokeImg: ImageUrlDefine = new ImageUrlDefine();
+  public smokeImg: ImageUrlDefine | undefined = undefined;
 
   @Expose() @Type(() => ImageUrlDefine)
-  public selfBoomImg: ImageUrlDefine = new ImageUrlDefine();
+  public selfBoomImg: ImageUrlDefine | undefined = undefined;
 
   constructor() {
     super();
-    this.critD3.mul = 3;
-    // 设置默认值，防止 class-transformer 转换出空对象
-    this.bulletImg.url = "";
   }
 
   public toXml(): string {
@@ -181,10 +178,10 @@ export class BulletDefine extends BulletPositionDefine {
     addBool("whippB", this.whippB);
     addBool("implodingB", this.implodingB);
 
-    if (this.shakeAngle !== 0) addTag("shakeAngle", this.shakeAngle);
-    if (this.hurtRatio !== 0) addTag("hurtRatio", this.hurtRatio);
-    if (this.hurtMul !== 0) addTag("hurtMul", this.hurtMul);
-    if (this.transBackMul !== 1) addTag("transBackMul", this.transBackMul);
+    if (this.shakeAngle !== undefined && this.shakeAngle !== 0) addTag("shakeAngle", this.shakeAngle);
+    if (this.hurtRatio !== undefined && this.hurtRatio !== 0) addTag("hurtRatio", this.hurtRatio);
+    if (this.hurtMul !== undefined && this.hurtMul !== 0) addTag("hurtMul", this.hurtMul);
+    if (this.transBackMul !== undefined && this.transBackMul !== 1) addTag("transBackMul", this.transBackMul);
     addTag("attackType", this.attackType);
 
     addTag("bulletLife", this.bulletLife);
@@ -199,23 +196,23 @@ export class BulletDefine extends BulletPositionDefine {
     addTag("attackDelay", this.attackDelay);
     addTag("bulletNum", this.bulletNum);
     addTag("shootGap", this.shootGap);
-    if (this.shootAngle !== 0) addTag("shootAngle", this.shootAngle);
+    if (this.shootAngle !== undefined && this.shootAngle !== 0) addTag("shootAngle", this.shootAngle);
     addTag("shootNum", this.shootNum);
 
-    if (this.gatlinNum !== 0) addTag("gatlinNum", this.gatlinNum);
-    if (this.gatlinRange !== 0) addTag("gatlinRange", this.gatlinRange);
-    if (this.shootPoint !== "0,0") addTag("shootPoint", this.shootPoint);
+    if (this.gatlinNum !== undefined && this.gatlinNum !== 0) addTag("gatlinNum", this.gatlinNum);
+    if (this.gatlinRange !== undefined && this.gatlinRange !== 0) addTag("gatlinRange", this.gatlinRange);
+    if (this.shootPoint !== undefined && this.shootPoint !== "0,0") addTag("shootPoint", this.shootPoint);
 
     addTag("bulletSpeed", this.bulletSpeed);
     addTag("shootRecoil", this.shootRecoil);
     addTag("screenShakeValue", this.screenShakeValue);
     addTag("gravity", this.gravity);
     addTag("bulletVra", this.bulletVra);
-    if (this.bulletAngle !== -1000) addTag("bulletAngle", this.bulletAngle);
-    if (this.bulletAngleRange !== 0) addTag("bulletAngleRange", this.bulletAngleRange);
-    if (this.extendGap !== 0) addTag("extendGap", this.extendGap);
+    if (this.bulletAngle !== undefined && this.bulletAngle !== -1000) addTag("bulletAngle", this.bulletAngle);
+    if (this.bulletAngleRange !== undefined && this.bulletAngleRange !== 0) addTag("bulletAngleRange", this.bulletAngleRange);
+    if (this.extendGap !== undefined && this.extendGap !== 0) addTag("extendGap", this.extendGap);
 
-    const addArr = (tag: string, arr: string[]) => {
+    const addArr = (tag: string, arr: string[] | undefined) => {
       if (arr && arr.length > 0) addTag(tag, arr.join(","));
     }
     addArr("skillArr", this.skillArr);
@@ -223,28 +220,28 @@ export class BulletDefine extends BulletPositionDefine {
     addArr("bulletSkillArr", this.bulletSkillArr);
 
     // 子对象导出
-    const critDXml = this.critD.toXml();
+    const critDXml = this.critD?.toXml();
     if (critDXml) xml += `      <critD>\n${critDXml}      </critD>\n`;
 
-    const critD3Xml = this.critD3.toXml();
+    const critD3Xml = this.critD3?.toXml();
     if (critD3Xml) xml += `      <critD3>\n${critD3Xml}      </critD3>\n`;
 
-    const speedDXml = this.speedD.toXml();
+    const speedDXml = this.speedD?.toXml();
     if (speedDXml) xml += `      <speedD>\n${speedDXml}      </speedD>\n`;
 
-    const followDXml = this.followD.toXml();
+    const followDXml = this.followD?.toXml();
     if (followDXml) xml += `      <followD>\n${followDXml}      </followD>\n`;
 
-    const bounceDXml = this.bounceD.toXml();
+    const bounceDXml = this.bounceD?.toXml();
     if (bounceDXml) xml += `      <bounceD>\n${bounceDXml}      </bounceD>\n`;
 
-    const boomDXml = this.boomD.toXml();
+    const boomDXml = this.boomD?.toXml();
     if (boomDXml) xml += `      <boomD>\n${boomDXml}      </boomD>\n`;
 
-    const bindingDXml = this.bindingD.toXml();
+    const bindingDXml = this.bindingD?.toXml();
     if (bindingDXml) xml += `      <bindingD>\n${bindingDXml}      </bindingD>\n`;
 
-    const lineDXml = this.lineD.toXml();
+    const lineDXml = this.lineD?.toXml();
     if (lineDXml) xml += `      <lineD>\n${lineDXml}      </lineD>\n`;
 
     if (this.positionD) {
@@ -256,13 +253,13 @@ export class BulletDefine extends BulletPositionDefine {
     addTag("targetShakeValue", this.targetShakeValue);
     addTag("playImgLabel", this.playImgLabel);
 
-    if (this.bulletImg.url) xml += `      ${this.bulletImg.toXml("bulletImgUrl")}\n`;
-    if (this.fireImg.url) xml += `      ${this.fireImg.toXml("fireImgUrl")}\n`;
-    if (this.bulletLeftImg.url) xml += `      ${this.bulletLeftImg.toXml("bulletLeftImgUrl")}\n`;
-    if (this.hitImg.url) xml += `      ${this.hitImg.toXml("hitImgUrl")}\n`;
-    if (this.hitFloorImg.url) xml += `      ${this.hitFloorImg.toXml("hitFloorImgUrl")}\n`;
-    if (this.smokeImg.url) xml += `      ${this.smokeImg.toXml("smokeImgUrl")}\n`;
-    if (this.selfBoomImg.url) xml += `      ${this.selfBoomImg.toXml("selfBoomImgUrl")}\n`;
+    if (this.bulletImg?.url) xml += `      ${this.bulletImg.toXml("bulletImgUrl")}\n`;
+    if (this.fireImg?.url) xml += `      ${this.fireImg.toXml("fireImgUrl")}\n`;
+    if (this.bulletLeftImg?.url) xml += `      ${this.bulletLeftImg.toXml("bulletLeftImgUrl")}\n`;
+    if (this.hitImg?.url) xml += `      ${this.hitImg.toXml("hitImgUrl")}\n`;
+    if (this.hitFloorImg?.url) xml += `      ${this.hitFloorImg.toXml("hitFloorImgUrl")}\n`;
+    if (this.smokeImg?.url) xml += `      ${this.smokeImg.toXml("smokeImgUrl")}\n`;
+    if (this.selfBoomImg?.url) xml += `      ${this.selfBoomImg.toXml("selfBoomImgUrl")}\n`;
 
     xml += `    </bullet>`;
     return xml;
@@ -272,6 +269,10 @@ export class BulletDefine extends BulletPositionDefine {
     const d = new BulletDefine();
     d.name = name;
     d.cnName = "新子弹";
+    d.critD3 = new BulletCritDefine();
+    d.critD3.mul = 3;
+    d.bulletImg = new ImageUrlDefine();
+    d.bulletImg.url = "";
     return d;
   }
 }

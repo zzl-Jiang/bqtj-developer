@@ -27,8 +27,8 @@ export class BodyAttackDefine {
 
   // --- 子弹与技能 ---
   @Expose() public bulletLabel: string | undefined = undefined; // 单个子弹ID
-  @Expose() public bulletArr: string[] = []; // 多个子弹ID
-  @Expose() public skillArr: string[] = []; // 触发技能ID
+  @Expose() public bulletArr: string[] | undefined = undefined; // 多个子弹ID
+  @Expose() public skillArr: string[] | undefined = undefined; // 触发技能ID
 
   // --- 物理效果 ---
   @Expose() public beatBack: number | undefined = undefined; // 击退敌人
@@ -48,7 +48,7 @@ export class BodyAttackDefine {
 
   // --- 特效图像 ---
   @Expose() @Type(() => ImageUrlDefine)
-  public hitImg: ImageUrlDefine = new ImageUrlDefine();
+  public hitImg: ImageUrlDefine | undefined = undefined;
 
   /**
    * 创建一个默认的攻击定义
@@ -106,8 +106,8 @@ export class BodyAttackDefine {
 
     // 子弹与技能
     addTag("bulletLabel", this.bulletLabel);
-    if (this.bulletArr.length > 0) addTag("bulletArr", this.bulletArr.join(","));
-    if (this.skillArr.length > 0) addTag("skillArr", this.skillArr.join(","));
+    if (this.bulletArr && this.bulletArr.length > 0) addTag("bulletArr", this.bulletArr.join(","));
+    if (this.skillArr && this.skillArr.length > 0) addTag("skillArr", this.skillArr.join(","));
 
     // 物理
     addTag("beatBack", this.beatBack);
@@ -126,7 +126,7 @@ export class BodyAttackDefine {
     addBool("ingfollowB", this.ingfollowB);
 
     // 图像效果
-    const hitImgXml = this.hitImg.toXml("hitImgUrl");
+    const hitImgXml = this.hitImg?.toXml("hitImgUrl");
     if (hitImgXml) xml += `        ${hitImgXml}\n`;
 
     xml += `      </hurt>`;

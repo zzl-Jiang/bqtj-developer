@@ -9,7 +9,7 @@ export class SayListDefine {
 
   /** 内部名称 (ID) */
   @Expose()
-  public name: string = "new_say_list";
+  public name: string | undefined = undefined;
 
   /** 关联的关卡 ID */
   @Expose()
@@ -22,7 +22,7 @@ export class SayListDefine {
   /** 对话列表 */
   @Expose()
   @Type(() => SayDefine)
-  public arr: SayDefine[] = [];
+  public arr: SayDefine[] | undefined = undefined;
 
   /**
    * 创建默认模板
@@ -33,6 +33,7 @@ export class SayListDefine {
     const firstSay = new SayDefine();
     firstSay.target = "p1";
     firstSay.contentArr = ["Ciallo～&#10;(∠・ω&lt; )⌒★"];
+    if (!list.arr) list.arr = [];
     list.arr.push(firstSay);
     return list;
   }
@@ -51,7 +52,7 @@ export class SayListDefine {
     if (this.oneB != null && this.oneB === true) xml += ` oneB="1"`;
     xml += `>\n`;
     
-    this.arr.forEach(say => {
+    this.arr?.forEach(say => {
       xml += `${say.toXml()}\n`;
     });
     

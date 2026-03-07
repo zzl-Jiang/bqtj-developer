@@ -24,7 +24,7 @@ export class SayDefine {
 
   /** 对话内容数组 (源码中支持随机抽取，通常我们填一个) */
   @Expose()
-  public contentArr: string[] = [""];
+  public contentArr: string[] | undefined = undefined;
 
   /**
    * 生成 <say> 标签
@@ -38,7 +38,7 @@ export class SayDefine {
     xml += `>\n`;
 
     // 内容节点
-    this.contentArr.forEach(content => {
+    this.contentArr?.forEach(content => {
       xml += `            <content>${content}</content>\n`;
     });
 

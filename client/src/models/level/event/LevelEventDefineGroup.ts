@@ -7,10 +7,11 @@ import { LevelEventDefine } from "./LevelEventDefine";
 export class LevelEventGroup {
   @Expose()
   @Type(() => LevelEventDefine)
-  public events: LevelEventDefine[] = [];
+  public events: LevelEventDefine[] | undefined = undefined;
 
   static createDefault(): LevelEventGroup {
     const group = new LevelEventGroup();
+    if (!group.events) group.events = [];
     group.events.push(LevelEventDefine.createDefault());
     return group;
   }
@@ -19,23 +20,24 @@ export class LevelEventGroup {
 export class LevelEventDefineGroup {
   @Expose()
   @Type(() => LevelEventGroup)
-  public groups: LevelEventGroup[] = [];
+  public groups: LevelEventGroup[] | undefined = undefined;
   
   // 默认示例发兵集
   static createDefault(): LevelEventDefineGroup {
     const groupG = new LevelEventDefineGroup();
     // 组装中层的发兵组
+    if (!groupG.groups) groupG.groups = [];
     groupG.groups.push(LevelEventGroup.createDefault());
     return groupG;
   }
 
   public toXml(): string {
-    if (this.groups.length === 0) return "";
-    
+    if (!this.groups || this.groups.length === 0) return "";
+
     let xml = `        <eventG>\n`;
     this.groups.forEach(g => {
       xml += `          <group>\n`;
-      g.events.forEach(e => {
+      g.events?.forEach(e => {
         xml += `      ${e.toXml()}\n`;
       });
       xml += `          </group>\n`;

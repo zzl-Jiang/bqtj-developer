@@ -7,12 +7,12 @@ export class LevelEventConditionDefine {
 
   // 属性位 (Attributes)
   @Expose() public delay: number | undefined = undefined;
-  @Expose() public doNumber: number = 1;
+  @Expose() public doNumber: number | undefined = undefined;
   @Expose() public extraText: string | undefined = undefined;
   @Expose() public orderChooseType: string | undefined = undefined; // randomOne, sequenceOne 等
 
   // 文本位 (内容)，例如 "hitMapRect:r1;p1"
-  @Expose() public xmlText: string = "";
+  @Expose() public xmlText: string | undefined = undefined;
 
   static createDefault(text: string = 'enemyNumber:less_1'): LevelEventConditionDefine {
     const cond = new LevelEventConditionDefine();

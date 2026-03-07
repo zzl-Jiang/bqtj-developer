@@ -8,18 +8,20 @@ export class UnitOrderDefineGroup {
   /** 全局默认单位属性 */
   @Expose()
   @Type(() => OneUnitOrderDefine)
-  public allDefault: OneUnitOrderDefine = new OneUnitOrderDefine();
+  public allDefault: OneUnitOrderDefine | undefined = undefined;
 
   /** 单位组列表 (原版是 Object，可视化建议用 Array) */
   @Expose()
   @Type(() => UnitOrderDefine)
-  public unitOrders: UnitOrderDefine[] = [];
+  public unitOrders: UnitOrderDefine[] | undefined = undefined;
 
   // 默认示例发兵集
   static createDefault(): UnitOrderDefineGroup {
     const groupG = new UnitOrderDefineGroup();
     // 组装中层的发兵组
+    if (!groupG.unitOrders) groupG.unitOrders = [];
     groupG.unitOrders.push(UnitOrderDefine.createDefault());
+    if (!groupG.allDefault) groupG.allDefault = new OneUnitOrderDefine();
     groupG.allDefault.aiOrder = "patrolGlobal";
     return groupG;
   }
@@ -28,11 +30,11 @@ export class UnitOrderDefineGroup {
     let xml = `        <unitG>\n`;
     let tempXml = "";
     // 全局默认
-    const defXml = this.allDefault.toXml().replace('<unit', '<allDefault').replace('/>', '/>');
+    const defXml = this.allDefault?.toXml().replace('<unit', '<allDefault').replace('/>', '/>');
     if (defXml) tempXml += `          ${defXml}\n`;
-    
+
     // 遍历组
-    this.unitOrders.forEach(order => {
+    this.unitOrders?.forEach(order => {
       tempXml += order.toXml() + "\n";
     });
     if (!tempXml) return "";

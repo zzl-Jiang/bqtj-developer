@@ -5,15 +5,15 @@ import { LevelEventConditionDefine } from "./LevelEventConditionDefine";
 import { LevelEventOrderDefine } from "./LevelEventOrderDefine";
 
 export class LevelEventDefine {
-  @Expose() public id: string = "";
+  @Expose() public id: string | undefined = undefined;
 
   @Expose()
   @Type(() => LevelEventConditionDefine)
-  public condition: LevelEventConditionDefine = new LevelEventConditionDefine();
+  public condition: LevelEventConditionDefine | undefined = undefined;
 
   @Expose()
   @Type(() => LevelEventOrderDefine)
-  public orders: LevelEventOrderDefine[] = [];
+  public orders: LevelEventOrderDefine[] | undefined = undefined;
 
   static createDefault(id: string = 'e1_1'): LevelEventDefine {
     const event = new LevelEventDefine();
@@ -21,8 +21,9 @@ export class LevelEventDefine {
     
     // 默认条件：敌人数小于1
     event.condition = LevelEventConditionDefine.createDefault();
-    
+
     // 默认指令：生成 enemy1
+    if (!event.orders) event.orders = [];
     event.orders.push(LevelEventOrderDefine.createDefault('createUnit:enemy1;r1'));
     event.orders.push(LevelEventOrderDefine.createDefault('createUnit:enemy1;r2'));
     event.orders.push(LevelEventOrderDefine.createDefault('createUnit:enemy1;r3'));
@@ -32,8 +33,8 @@ export class LevelEventDefine {
 
   public toXml(): string {
     let xml = `      <event id="${this.id}">\n`;
-    xml += `${this.condition.toXml()}\n`;
-    this.orders.forEach(order => {
+    if (this.condition) xml += `${this.condition.toXml()}\n`;
+    this.orders?.forEach(order => {
       xml += `${order.toXml()}\n`;
     });
     xml += `            </event>`;

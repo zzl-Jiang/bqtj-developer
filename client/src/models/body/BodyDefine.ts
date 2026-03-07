@@ -23,7 +23,7 @@ export class BodyDefine {
   public father: string | undefined = undefined;
 
   @Expose()
-  public systemType: string = "normal"; // normal / hero
+  public systemType: string | undefined = undefined; // normal / hero
 
   @Expose()
   public shell: string | undefined = undefined;
@@ -64,8 +64,8 @@ export class BodyDefine {
   @Expose() public swfName: string | undefined = undefined;
   @Expose() public imgType: string | undefined = undefined; // bmp / swf
   @Expose() public imgClass: string | undefined = undefined;
-  @Expose() public imgArr: string[] = [];
-  @Expose() public bossImgArr: string[] = [];
+  @Expose() public imgArr: string[] | undefined = undefined;
+  @Expose() public bossImgArr: string[] | undefined = undefined;
   @Expose() public headIconUrl: string | undefined = undefined;
   @Expose() public bmpUrl: string | undefined = undefined;
   @Expose() public normalScaleX: number | undefined = undefined;
@@ -73,7 +73,7 @@ export class BodyDefine {
   @Expose() public lifeBarExtraHeight: number | undefined = undefined;
   @Expose() public doubleLifeBarB: boolean | undefined = undefined; // (虚晶蝎专属)
   @Expose() public handAddRa: number | undefined = undefined; // 角度
-  @Expose() public lowerImgArr: string[] = [];
+  @Expose() public lowerImgArr: string[] | undefined = undefined;
   @Expose() public dieEffectPartName: string | undefined = undefined;
   @Expose() public rotateBySlopeB: boolean | undefined = undefined;
   @Expose() public dieJumpMul: number | undefined = undefined;
@@ -103,56 +103,56 @@ export class BodyDefine {
   @Expose() public nextAttackTime: number | undefined = undefined;
 
   // --- 技能列表 ---
-  @Expose() public skillArr: string[] = [];
-  @Expose() public bossSkillArr: string[] = [];
-  @Expose() public preBulletArr: string[] = [];
-  @Expose() public demSkillArr: string[] = [];
-  @Expose() public demBossSkillArr: string[] = [];
-  @Expose() public wilderSkillArr: string[] = [];
-  @Expose() public uiSkillArr: string[] = [];
-  @Expose() public otherUnitCnNameArr: string[] = [];
+  @Expose() public skillArr: string[] | undefined = undefined;
+  @Expose() public bossSkillArr: string[] | undefined = undefined;
+  @Expose() public preBulletArr: string[] | undefined = undefined;
+  @Expose() public demSkillArr: string[] | undefined = undefined;
+  @Expose() public demBossSkillArr: string[] | undefined = undefined;
+  @Expose() public wilderSkillArr: string[] | undefined = undefined;
+  @Expose() public uiSkillArr: string[] | undefined = undefined;
+  @Expose() public otherUnitCnNameArr: string[] | undefined = undefined;
   @Expose() public avtiveSkillCdOverT: number | undefined = undefined;
 
-  @Expose() public canBossB: boolean | undefined = true;
+  @Expose() public canBossB: boolean | undefined = undefined;
   @Expose() public extraDropArmsB: boolean | undefined = undefined;
 
   // --- Hero 专属属性 (可选) ---
   @Expose() public movieLink: string | undefined = undefined;
   @Expose() public armsNumber: number | undefined = undefined;
   @Expose() public aircraft: string | undefined = undefined;
-  @Expose() public upperImgArr: string[] = [];
+  @Expose() public upperImgArr: string[] | undefined = undefined;
   @Expose() public headPlayB: boolean | undefined = undefined;
   @Expose() public squatMaxVx: number | undefined = undefined;
-  @Expose() public randomArmsRange: string[] = [];
-  @Expose() public studyCnNameArr: string[] = [];
-  @Expose() public p1SkillArr: string[] = [];
+  @Expose() public randomArmsRange: string[] | undefined = undefined;
+  @Expose() public studyCnNameArr: string[] | undefined = undefined;
+  @Expose() public p1SkillArr: string[] | undefined = undefined;
   @Expose() public addMoreText: string | undefined = undefined;
 
   @Expose() public hitRect: IO_Rectangle | undefined = undefined;
   @Expose() public squatHitRect: IO_Rectangle | undefined = undefined;
-  @Expose() public hurtRectArr: IO_Rectangle[] = [];
+  @Expose() public hurtRectArr: IO_Rectangle[] | undefined = undefined;
 
 
   // --- 子对象定义 ---
   @Expose() @Type(() => BodyMotionDefine)
-  public motionD: BodyMotionDefine = new BodyMotionDefine();
+  public motionD: BodyMotionDefine | undefined = undefined;
 
   @Expose() @Type(() => BodyMoreDefine)
-  public moreD: BodyMoreDefine = new BodyMoreDefine();
+  public moreD: BodyMoreDefine | undefined = undefined;
 
   @Expose() @Type(() => BodyDropDefine)
-  public dropD: BodyDropDefine = new BodyDropDefine();
+  public dropD: BodyDropDefine | undefined = undefined;
 
   @Expose() @Type(() => BodyEditDefine)
-  public editD: BodyEditDefine = new BodyEditDefine();
+  public editD: BodyEditDefine | undefined = undefined;
 
   @Expose() @Type(() => ImageUrlDefine)
-  public dieImg: ImageUrlDefine = new ImageUrlDefine();
+  public dieImg: ImageUrlDefine | undefined = undefined;
 
   /** 所有的攻击行为定义列表 */
   @Expose()
   @Type(() => BodyAttackDefine)
-  public hurtArr: BodyAttackDefine[] = [];
+  public hurtArr: BodyAttackDefine[] | undefined = undefined;
 
   static createDefault(name: string): BodyDefine {
     const d = new BodyDefine();
@@ -254,7 +254,7 @@ export class BodyDefine {
     }
 
     // 数组
-    const addArr = (tag: string, arr: string[]) => {
+    const addArr = (tag: string, arr: string[] | undefined) => {
       if (arr && arr.length > 0) addTag(tag, arr.join(","));
     }
 
@@ -271,7 +271,7 @@ export class BodyDefine {
     addArr("otherUnitCnNameArr", this.otherUnitCnNameArr);
 
     // 导出攻击定义列表
-    if (this.hurtArr.length > 0) {
+    if (this.hurtArr && this.hurtArr.length > 0) {
       xml += `      <hurtArr>\n`;
       this.hurtArr.forEach(hurt => {
         xml += `${hurt.toXml()}\n`;
@@ -305,20 +305,20 @@ export class BodyDefine {
 
 
     // 子模块 XML
-    const motionXml = this.motionD.toXml();
+    const motionXml = this.motionD?.toXml();
     if (motionXml) xml += `      ${motionXml}\n`;
 
-    const moreXml = this.moreD.toXml();
+    const moreXml = this.moreD?.toXml();
     if (moreXml) xml += `      ${moreXml}\n`;
 
-    const dropXml = this.dropD.toXml();
+    const dropXml = this.dropD?.toXml();
     if (dropXml) xml += `      ${dropXml}\n`;
 
-    const editXml = this.editD.toXml();
+    const editXml = this.editD?.toXml();
     if (editXml) xml += `      ${editXml}\n`;
 
     // 死亡图像
-    const dieImgXml = this.dieImg.toXml("dieImg");
+    const dieImgXml = this.dieImg?.toXml("dieImg");
     if (dieImgXml) xml += `      ${dieImgXml}\n`;
 
     xml += `    </body>`;
