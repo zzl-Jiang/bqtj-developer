@@ -10,7 +10,7 @@
                     </n-space>
                 </template>
                 <div class="section-content">
-                    <n-grid :cols="3" :x-gap="12" :y-gap="12">
+                    <n-grid cols="1 s:2 m:3" :x-gap="12" :y-gap="12" responsive="screen">
                         <n-gi v-for="meta in ARMS_BULLET_DAMAGE_METAS" :key="meta.key">
                             <MetaFormItem :meta="meta" v-model:modelValue="arms" :show-label="true" />
                         </n-gi>
@@ -27,7 +27,7 @@
                     </n-space>
                 </template>
                 <div class="section-content">
-                    <n-grid :cols="3" :x-gap="12" :y-gap="12">
+                    <n-grid cols="1 s:2 m:3" :x-gap="12" :y-gap="12" responsive="screen">
                         <n-gi v-for="meta in ARMS_BULLET_FLAG_METAS" :key="meta.key">
                             <MetaFormItem :meta="meta" v-model:modelValue="arms" :show-label="true" />
                         </n-gi>
@@ -44,7 +44,7 @@
                     </n-space>
                 </template>
                 <div class="section-content">
-                    <n-grid :cols="3" :x-gap="12" :y-gap="12">
+                    <n-grid cols="1 s:2 m:3" :x-gap="12" :y-gap="12" responsive="screen">
                         <n-gi v-for="meta in ARMS_BULLET_LIFECYCLE_METAS.concat(ARMS_BULLET_TIMING_METAS)" :key="meta.key">
                             <MetaFormItem :meta="meta" v-model:modelValue="arms" :show-label="true" />
                         </n-gi>
@@ -61,7 +61,7 @@
                     </n-space>
                 </template>
                 <div class="section-content">
-                    <n-grid :cols="3" :x-gap="12" :y-gap="12">
+                    <n-grid cols="1 s:2 m:3" :x-gap="12" :y-gap="12" responsive="screen">
                         <n-gi v-for="meta in ARMS_BULLET_SHOOT_METAS.concat(ARMS_BULLET_MOTION_METAS)" :key="meta.key">
                             <MetaFormItem :meta="meta" v-model:modelValue="arms" :show-label="true" />
                         </n-gi>
@@ -78,7 +78,7 @@
                     </n-space>
                 </template>
                 <div class="section-content">
-                    <n-grid :cols="3" :x-gap="12" :y-gap="12">
+                    <n-grid cols="1 s:2 m:3" :x-gap="12" :y-gap="12" responsive="screen">
                         <n-gi v-for="meta in ARMS_BULLET_SKILL_METAS.concat(ARMS_BULLET_SUBOBJECT_METAS)" :key="meta.key">
                             <MetaFormItem :meta="meta" v-model:modelValue="arms" :show-label="true" />
                         </n-gi>

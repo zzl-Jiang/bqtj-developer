@@ -10,7 +10,7 @@
                     </n-space>
                 </template>
                 <div class="section-content">
-                    <n-grid :cols="2" :x-gap="12" :y-gap="12">
+                    <n-grid cols="1 m:2" :x-gap="12" :y-gap="12" responsive="screen">
                         <n-gi v-for="meta in ARMS_VISUAL_METAS.slice(0, 2)" :key="meta.key">
                             <MetaFormItem :meta="meta" v-model:modelValue="arms" :show-label="true" />
                         </n-gi>
@@ -27,7 +27,7 @@
                     </n-space>
                 </template>
                 <div class="section-content">
-                    <n-grid :cols="2" :x-gap="12" :y-gap="12">
+                    <n-grid cols="1 m:2" :x-gap="12" :y-gap="12" responsive="screen">
                         <n-gi v-for="meta in ARMS_VISUAL_METAS.slice(2)" :key="meta.key">
                             <MetaFormItem :meta="meta" v-model:modelValue="arms" :show-label="true" />
                         </n-gi>

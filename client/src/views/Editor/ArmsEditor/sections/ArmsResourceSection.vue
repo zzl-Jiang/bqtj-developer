@@ -13,7 +13,7 @@
                     <n-alert type="info" class="mb-4" :show-icon="false">
                         这些设置主要用于“随机武器”生成逻辑，定义了各个部件可供随机选择的路径。
                     </n-alert>
-                    <n-grid :cols="2" :x-gap="12" :y-gap="12">
+                    <n-grid cols="1 m:2" :x-gap="12" :y-gap="12" responsive="screen">
                         <n-gi v-for="meta in ARMS_RESOURCE_RANGE_METAS" :key="meta.key">
                             <MetaFormItem :meta="meta" v-model:modelValue="arms" :show-label="true" />
                         </n-gi>
