@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { ImageOutline } from '@vicons/ionicons5';
 import { useDropState } from '../hooks/useDropState';
-import { DROP_VISUAL_METAS } from '../config/drop';
+import { DROP_VISUAL_METAS } from '../config';
 import MetaFormItem from '../../../components/MetaFormItem.vue';
 
 const { selectedDrop: drop } = useDropState();

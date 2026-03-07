@@ -131,7 +131,7 @@ import {
     ARMS_VISUAL_METAS,
     ARMS_RESOURCE_RANGE_METAS,
     ARMS_ADVANCED_METAS
-} from './config/arms';
+} from './config';
 
 // 导入向导配置
 import {

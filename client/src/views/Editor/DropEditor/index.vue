@@ -107,7 +107,7 @@ import {
     DROP_VISUAL_METAS,
     DROP_LOGIC_METAS,
     DROP_PROBABILITY_METAS
-} from './config/drop';
+} from './config';
 import type { DropMetaItem } from './config/types';
 
 // 导入向导配置

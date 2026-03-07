@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { inject } from 'vue';
 import type { ComputedRef } from 'vue';
-import { PNG_UI_META } from '../config/pngMeta';
+import { PNG_UI_META } from '../config';
 import { PngDefine } from '../../../../models/png/PngDefine';
 import MetaFormItem from '../../../components/MetaFormItem.vue';
 

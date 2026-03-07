@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import { ExtensionPuzzleOutline, BarChartOutline } from '@vicons/ionicons5';
 import { useDropState } from '../hooks/useDropState';
-import { DROP_LOGIC_METAS, DROP_PROBABILITY_METAS } from '../config/drop';
+import { DROP_LOGIC_METAS, DROP_PROBABILITY_METAS } from '../config';
 import MetaFormItem from '../../../components/MetaFormItem.vue';
 
 const { selectedDrop: drop } = useDropState();
