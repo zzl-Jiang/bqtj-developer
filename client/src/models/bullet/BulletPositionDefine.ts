@@ -33,4 +33,17 @@ export class BulletPositionDefine {
     /** 额外间隔 */
     @Expose()
     public extendGap: number = 0;
+
+    public toXml(): string {
+        let xml = '';
+        if (this.shakeAngle !== 0) xml += `          <shakeAngle>${this.shakeAngle}</shakeAngle>\n`;
+        if (this.shootAngle !== 0) xml += `          <shootAngle>${this.shootAngle}</shootAngle>\n`;
+        if (this.gatlinNum !== 0) xml += `          <gatlinNum>${this.gatlinNum}</gatlinNum>\n`;
+        if (this.gatlinRange !== 0) xml += `          <gatlinRange>${this.gatlinRange}</gatlinRange>\n`;
+        if (this.shootPoint !== '0,0') xml += `          <shootPoint>${this.shootPoint}</shootPoint>\n`;
+        if (this.bulletAngle !== -1000) xml += `          <bulletAngle>${this.bulletAngle}</bulletAngle>\n`;
+        if (this.bulletAngleRange !== 0) xml += `          <bulletAngleRange>${this.bulletAngleRange}</bulletAngleRange>\n`;
+        if (this.extendGap !== 0) xml += `          <extendGap>${this.extendGap}</extendGap>\n`;
+        return xml;
+    }
 }

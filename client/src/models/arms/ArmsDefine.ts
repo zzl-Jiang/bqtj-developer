@@ -10,7 +10,7 @@ export class ArmsDefine extends BulletDefine {
   @Expose() public index: number = 1;
   @Expose() public rareDropLevel: number = 1;
   @Expose() public color: string = "";
-  @Expose() public dropLevelArr: string[] = [];
+  @Expose() public dropLevelArr: number[] = [];
   @Expose() public dropBodyArr: string[] = [];
   @Expose() public chipB: boolean = false;
   @Expose() public description: string = "";
@@ -71,7 +71,7 @@ export class ArmsDefine extends BulletDefine {
   }
 
   public override toXml(): string {
-    let xml = `    <arms name="${this.name || ""}"`;
+    let xml = `    <bullet name="${this.name || ""}"`;
     if (this.kind) xml += ` kind="${this.kind}"`;
     if (this.index !== 1) xml += ` index="${this.index}"`;
     if (this.color) xml += ` color="${this.color}"`;
@@ -143,13 +143,107 @@ export class ArmsDefine extends BulletDefine {
     addArr("stockImgRange", this.stockImgRange);
     addArr("glassImgRange", this.glassImgRange);
 
-    // 基础 Bullet 属性 (这里仅列出 ArmsData 常见的 override 或补充)
-    if (this.hurtRatio !== 0) addTag("hurtRatio", this.hurtRatio);
-    if (this.attackGap !== 0.2) addTag("attackGap", this.attackGap);
-    if (this.bulletNum !== 1) addTag("bulletNum", this.bulletNum);
-    if (this.bulletSpeed !== 0) addTag("bulletSpeed", this.bulletSpeed);
+    // 基础 Bullet 属性 - 行为标志
+    if (this.sameCampB !== true) addTag("sameCampB", 0);
+    if (this.whippB !== true) addTag("whippB", 0);
+    if (this.noHitB) addTag("noHitB", 1);
+    if (this.noHurtEffectB) addTag("noHurtEffectB", 1);
+    if (this.noMagneticB) addTag("noMagneticB", 1);
+    if (this.noBeClearB) addTag("noBeClearB", 1);
+    if (this.implodingB) addTag("implodingB", 1);
+    if (this.twoHitSameNameB) addTag("twoHitSameNameB", 1);
+    if (this.oneHitBodyB) addTag("oneHitBodyB", 1);
 
-    xml += `    </arms>`;
+    // 基础 Bullet 属性 - 伤害与效果
+    if (this.hurtRatio !== 0) addTag("hurtRatio", this.hurtRatio);
+    if (this.hurtMul !== 0) addTag("hurtMul", this.hurtMul);
+    if (this.transBackMul !== 1) addTag("transBackMul", this.transBackMul);
+    addTag("attackType", this.attackType, "");
+    if (this.beatBack !== 0) addTag("beatBack", this.beatBack);
+    if (this.targetShakeValue !== 0) addTag("targetShakeValue", this.targetShakeValue);
+
+    // 基础 Bullet 属性 - 生命周期与碰撞
+    if (this.bulletLife !== 2) addTag("bulletLife", this.bulletLife);
+    if (this.lifeRandom !== 0) addTag("lifeRandom", this.lifeRandom);
+    if (this.imgClearDelay !== 0) addTag("imgClearDelay", this.imgClearDelay);
+    if (this.bulletWidth !== 7) addTag("bulletWidth", this.bulletWidth);
+    if (this.bulletShakeWidth !== 0) addTag("bulletShakeWidth", this.bulletShakeWidth);
+    addTag("hitType", this.hitType, "");
+    if (this.penetrationNum !== 0) addTag("penetrationNum", this.penetrationNum);
+    if (this.penetrationGap !== 0) addTag("penetrationGap", this.penetrationGap);
+
+    // 基础 Bullet 属性 - 攻击频率与时机
+    if (this.attackGap !== 0) addTag("attackGap", this.attackGap);
+    if (this.attackDelay !== 0) addTag("attackDelay", this.attackDelay);
+    if (this.noHitTime !== 0) addTag("noHitTime", this.noHitTime);
+    if (this.hideTime !== 0) addTag("hideTime", this.hideTime);
+    if (this.hitGap !== 0) addTag("hitGap", this.hitGap);
+    if (this.twoHitGap !== 0) addTag("twoHitGap", this.twoHitGap);
+
+    // 基础 Bullet 属性 - 发射属性
+    if (this.shootGap !== 0) addTag("shootGap", this.shootGap);
+    if (this.shootNum !== 1) addTag("shootNum", this.shootNum);
+    if (this.shootRecoil !== 0) addTag("shootRecoil", this.shootRecoil);
+    if (this.screenShakeValue !== 0) addTag("screenShakeValue", this.screenShakeValue);
+    if (this.aiShootRange !== 0) addTag("aiShootRange", this.aiShootRange);
+    if (this.gatlinNum !== 0) addTag("gatlinNum", this.gatlinNum);
+    if (this.gatlinRange !== 0) addTag("gatlinRange", this.gatlinRange);
+    if (this.shootPoint !== "0,0") addTag("shootPoint", this.shootPoint);
+
+    // 基础 Bullet 属性 - 运动学
+    if (this.bulletSpeed !== 0) addTag("bulletSpeed", this.bulletSpeed);
+    if (this.gravity !== 0) addTag("gravity", this.gravity);
+    if (this.bulletVra !== 0) addTag("bulletVra", this.bulletVra);
+    if (this.bulletAngle !== -1000) addTag("bulletAngle", this.bulletAngle);
+    if (this.bulletAngleRange !== 0) addTag("bulletAngleRange", this.bulletAngleRange);
+    if (this.extendGap !== 0) addTag("extendGap", this.extendGap);
+
+    // 基础 Bullet 属性 - 技能数组
+    addArr("skillArr", this.skillArr);
+    addArr("godSkillArr", this.godSkillArr);
+    addArr("bulletSkillArr", this.bulletSkillArr);
+
+    // 基础 Bullet 属性 - 子对象
+    const critDXml = this.critD.toXml();
+    if (critDXml) xml += `      <critD>\n${critDXml}      </critD>\n`;
+
+    const critD3Xml = this.critD3.toXml();
+    if (critD3Xml) xml += `      <critD3>\n${critD3Xml}      </critD3>\n`;
+
+    const speedDXml = this.speedD.toXml();
+    if (speedDXml) xml += `      <speedD>\n${speedDXml}      </speedD>\n`;
+
+    const followDXml = this.followD.toXml();
+    if (followDXml) xml += `      <followD>\n${followDXml}      </followD>\n`;
+
+    const bounceDXml = this.bounceD.toXml();
+    if (bounceDXml) xml += `      <bounceD>\n${bounceDXml}      </bounceD>\n`;
+
+    const boomDXml = this.boomD.toXml();
+    if (boomDXml) xml += `      <boomD>\n${boomDXml}      </boomD>\n`;
+
+    const bindingDXml = this.bindingD.toXml();
+    if (bindingDXml) xml += `      <bindingD>\n${bindingDXml}      </bindingD>\n`;
+
+    const lineDXml = this.lineD.toXml();
+    if (lineDXml) xml += `      <lineD>\n${lineDXml}      </lineD>\n`;
+
+    if (this.positionD) {
+      const positionDXml = this.positionD.toXml();
+      if (positionDXml) xml += `      <positionD>\n${positionDXml}      </positionD>\n`;
+    }
+
+    // 基础 Bullet 属性 - 视觉资源
+    addTag("playImgLabel", this.playImgLabel, "");
+    if (this.bulletImg?.url) xml += `      ${this.bulletImg.toXml("bulletImgUrl")}\n`;
+    if (this.fireImg?.url) xml += `      ${this.fireImg.toXml("fireImgUrl")}\n`;
+    if (this.bulletLeftImg?.url) xml += `      ${this.bulletLeftImg.toXml("bulletLeftImgUrl")}\n`;
+    if (this.hitImg?.url) xml += `      ${this.hitImg.toXml("hitImgUrl")}\n`;
+    if (this.hitFloorImg?.url) xml += `      ${this.hitFloorImg.toXml("hitFloorImgUrl")}\n`;
+    if (this.smokeImg?.url) xml += `      ${this.smokeImg.toXml("smokeImgUrl")}\n`;
+    if (this.selfBoomImg?.url) xml += `      ${this.selfBoomImg.toXml("selfBoomImgUrl")}\n`;
+
+    xml += `    </bullet>`;
     return xml;
   }
 

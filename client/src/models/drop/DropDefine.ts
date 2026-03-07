@@ -16,6 +16,12 @@ export class DropDefine {
   @Expose() public lightImg: string = "";
   @Expose() public keyB: boolean = false;
 
+  // 掉落概率属性
+  @Expose() public normalPro: number = 0;      // 普通小怪掉率
+  @Expose() public superPro: number = 0;       // 精英怪掉率
+  @Expose() public bossPro: number = 0;        // 首领掉率
+  @Expose() public itemsLvRange: number[] = []; // 物品等级范围 [min, max]
+
   public toXml(): string {
     let xml = `    <drop name="${this.name || ""}"`;
     if (this.type) xml += ` type="${this.type}"`;
@@ -38,6 +44,12 @@ export class DropDefine {
     if (this.smallMapColor) addTag("smallMapColor", this.smallMapColor);
     if (this.lightImg) addTag("lightImg", this.lightImg);
     if (this.keyB) xml += `      <keyB>1</keyB>\n`;
+
+    // 掉落概率
+    if (this.normalPro > 0) addTag("normalPro", this.normalPro);
+    if (this.superPro > 0) addTag("superPro", this.superPro);
+    if (this.bossPro > 0) addTag("bossPro", this.bossPro);
+    if (this.itemsLvRange.length > 0) addTag("itemsLvRange", this.itemsLvRange.join(","));
 
     xml += `    </drop>`;
     return xml;

@@ -222,9 +222,35 @@ export class BulletDefine extends BulletPositionDefine {
     addArr("godSkillArr", this.godSkillArr);
     addArr("bulletSkillArr", this.bulletSkillArr);
 
-    // 子对象导出 (略，实际实现需调用子对象的 toXml)
-    // 爆炸、速度、追踪、反弹、暴击、绑定、直线、位置组等
-    // 为了简化，这里先保证基础属性和图像导出
+    // 子对象导出
+    const critDXml = this.critD.toXml();
+    if (critDXml) xml += `      <critD>\n${critDXml}      </critD>\n`;
+
+    const critD3Xml = this.critD3.toXml();
+    if (critD3Xml) xml += `      <critD3>\n${critD3Xml}      </critD3>\n`;
+
+    const speedDXml = this.speedD.toXml();
+    if (speedDXml) xml += `      <speedD>\n${speedDXml}      </speedD>\n`;
+
+    const followDXml = this.followD.toXml();
+    if (followDXml) xml += `      <followD>\n${followDXml}      </followD>\n`;
+
+    const bounceDXml = this.bounceD.toXml();
+    if (bounceDXml) xml += `      <bounceD>\n${bounceDXml}      </bounceD>\n`;
+
+    const boomDXml = this.boomD.toXml();
+    if (boomDXml) xml += `      <boomD>\n${boomDXml}      </boomD>\n`;
+
+    const bindingDXml = this.bindingD.toXml();
+    if (bindingDXml) xml += `      <bindingD>\n${bindingDXml}      </bindingD>\n`;
+
+    const lineDXml = this.lineD.toXml();
+    if (lineDXml) xml += `      <lineD>\n${lineDXml}      </lineD>\n`;
+
+    if (this.positionD) {
+      const positionDXml = this.positionD.toXml();
+      if (positionDXml) xml += `      <positionD>\n${positionDXml}      </positionD>\n`;
+    }
 
     addTag("beatBack", this.beatBack);
     addTag("targetShakeValue", this.targetShakeValue);
