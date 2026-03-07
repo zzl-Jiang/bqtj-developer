@@ -4,6 +4,48 @@ import type { Changelog } from '../types/changelog';
 
 export const UPDATES_DATA: Changelog[] = [
   {
+    version: 'v0.6.3',
+    date: '2026-03-07',
+    isMajor: false,
+    blocks: [
+      { type: 'title', content: '全局布局重构：释放编辑器空间' },
+      { type: 'text', content: '本次更新统一了所有编辑器模块的布局结构，将右侧面板功能整合至左侧，为中央编辑区腾出更多空间，提升编辑体验。' },
+      {
+        type: 'feature',
+        title: '双栏布局统一',
+        desc: '所有模块（技能/武器/子弹/单位/关卡/掉落/对话/图片）统一采用左侧列表+中央编辑区的双栏布局，移除固定的右侧面板，中央区域最大宽度从1000px扩展至1200px。',
+        tag: '布局'
+      },
+      {
+        type: 'feature',
+        title: 'XML预览抽屉化',
+        desc: 'XML预览从固定右侧面板改为抽屉弹窗，点击左侧底部"查看XML"按钮从右侧滑出，支持复制代码，不占用常驻空间。',
+        tag: '交互'
+      },
+      {
+        type: 'feature',
+        title: '列表项快捷删除',
+        desc: '删除按钮从底部移到每个列表项末尾，鼠标悬停时显示，带确认弹窗，操作更直观高效。',
+        tag: '体验'
+      },
+      {
+        type: 'feature',
+        title: 'SkillEditor视觉资源',
+        desc: '向导模式新增"视觉资源"分类，支持7种图片特效的配置入口，与专业模式保持一致。',
+        tag: '编辑器'
+      },
+      {
+        type: 'list', content: [
+          '统一8个编辑器模块的侧边栏交互（ModuleSidebar）',
+          'EditorLayout改为grid-cols-2两栏布局',
+          '修复VisualSection未配置状态的空值报错',
+          'ModuleSidebar支持string|number类型的key',
+          '所有模块支持通过左侧底部按钮打开XML预览抽屉'
+        ]
+      }
+    ]
+  },
+  {
     version: 'v0.6.2',
     date: '2026-03-07',
     isMajor: false,
