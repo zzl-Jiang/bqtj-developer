@@ -17,7 +17,7 @@
             v-for="item in menuOptions"
             :key="item.key"
             class="menu-item"
-            :class="{ active: modelValue === item.key }"
+            :class="{ active: modelValue === item.key || String(modelValue) === String(item.key) }"
             @click="handleSelect(item.key)"
           >
             <div class="menu-item-content">
