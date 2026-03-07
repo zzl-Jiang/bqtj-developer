@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, h } from 'vue';
+import { computed } from 'vue';
 import { useModStore } from '../store/useModStore';
 import DashboardNav from './components/DashboardNav.vue';
 import SummaryModule from './Editor/SummaryModule.vue';
@@ -25,7 +25,6 @@ import BodyEditor from './Editor/BodyEditor/index.vue';
 import BulletEditor from './Editor/BulletEditor/index.vue';
 import ArmsEditor from './Editor/ArmsEditor/index.vue';
 import DropEditor from './Editor/DropEditor/index.vue';
-import GenericModule from './Editor/GenericModule.vue';
 
 const modStore = useModStore();
 
