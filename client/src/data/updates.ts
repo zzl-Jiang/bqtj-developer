@@ -4,6 +4,51 @@ import type { Changelog } from '../types/changelog';
 
 export const UPDATES_DATA: Changelog[] = [
   {
+    version: 'v0.6.5',
+    date: '2026-03-08',
+    isMajor: false,
+    blocks: [
+      { type: 'title', content: '响应式设计全面改造' },
+      { type: 'text', content: '本次更新实现了全设备的响应式适配，确保编辑器在电脑、平板、手机等各种屏幕尺寸下都能正常使用。从核心布局到表单网格、从导航栏到向导卡片，所有界面元素都进行了响应式优化。' },
+      {
+        type: 'feature',
+        title: '响应式断点系统',
+        desc: '新增 useResponsive Hook，提供统一的断点检测：移动端(<768px)、平板(768-1024px)、桌面(>=1024px)。所有组件共享同一套断点逻辑，确保响应式行为一致。',
+        tag: '架构'
+      },
+      {
+        type: 'feature',
+        title: '核心布局响应式改造',
+        desc: 'EditorLayout 组件支持移动端抽屉模式，侧边栏在窄屏下自动切换为左侧抽屉。DashboardNav 导航栏支持自动换行和响应式字号。ModuleSidebar 在中等屏幕下自动调整宽度(200-260px)。',
+        tag: '布局'
+      },
+      {
+        type: 'feature',
+        title: '表单网格自适应',
+        desc: '所有编辑器模块的表单网格统一改为响应式布局：手机单列(s:1)、小平板双列(s:2)、桌面三列(m:3)、大屏四列(l:4)。涉及武器、子弹、技能、关卡、对话、掉落、图片等全部编辑器。',
+        tag: '表单'
+      },
+      {
+        type: 'feature',
+        title: '向导模式紧凑布局',
+        desc: 'WizardPanel 分类卡片网格在 1400px 以下改为三列、1200px 以下双列、900px 以下单列。小屏幕下(640px)卡片隐藏描述和进度条，仅显示图标和标题，大幅节省垂直空间。',
+        tag: '向导'
+      },
+      {
+        type: 'feature',
+        title: '抽屉组件全屏适配',
+        desc: '所有复杂字段编辑器抽屉在移动端自动全屏显示，避免内容溢出。事件编辑、单位配置、XML预览等抽屉组件都支持 `isMobile ? "100%" : 650` 的自适应宽度。',
+        tag: '移动端'
+      },
+      {
+        type: 'feature',
+        title: '中等屏幕优化',
+        desc: '针对 768-1023px 的平板设备特别优化：侧边栏宽度调整为 240px、帮助面板缩小至 220px、卡片内边距适当减小，在有限宽度下最大化内容显示区域。',
+        tag: '平板'
+      }
+    ]
+  },
+  {
     version: 'v0.6.4',
     date: '2026-03-07',
     isMajor: false,
