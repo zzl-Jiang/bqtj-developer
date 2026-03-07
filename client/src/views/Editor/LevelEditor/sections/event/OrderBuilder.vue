@@ -133,9 +133,9 @@ const parseRaw = (text: string) => {
     if (primaryMatch) return true;
 
     // 检查二级匹配 (遍历 fields 里的 select options)
-    return m.fields.some(field => {
+    return m.fields.some((field: any) => {
       if (field.type === 'select' && field.options) {
-        return field.options.some(opt => 
+        return field.options.some((opt: any) =>
           text.startsWith(opt.value + ':') || text.startsWith(opt.value + ';')
         );
       }

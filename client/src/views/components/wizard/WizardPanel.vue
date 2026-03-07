@@ -156,7 +156,8 @@ import CategoryCard from './CategoryCard.vue';
 import FieldCard from './FieldCard.vue';
 import HelperPanel from './HelperPanel.vue';
 import MetaFormItem from '../MetaFormItem.vue';
-import type { CategoryConfig, BulletMetaItem, ImportanceLevel } from '../../Editor/BulletEditor/config/types';
+import type { CategoryConfig, BulletMetaItem } from '../../Editor/BulletEditor/config/types';
+import type { ImportanceLevel } from '../../Editor/config/sharedTypes';
 
 const props = defineProps<{
     categories: CategoryConfig[];

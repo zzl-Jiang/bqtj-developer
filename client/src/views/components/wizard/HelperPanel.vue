@@ -100,7 +100,8 @@ import {
     ChevronUpOutline,
     ChevronDownOutline
 } from '@vicons/ionicons5';
-import type { CategoryConfig, BulletMetaItem, ImportanceLevel } from '../../Editor/BulletEditor/config/types';
+import type { CategoryConfig, BulletMetaItem } from '../../Editor/BulletEditor/config/types';
+import type { ImportanceLevel } from '../../Editor/config/sharedTypes';
 
 const props = defineProps<{
     category?: CategoryConfig;

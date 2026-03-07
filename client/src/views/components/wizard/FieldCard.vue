@@ -80,7 +80,8 @@ import {
     SpeedometerOutline,
     RocketOutline
 } from '@vicons/ionicons5';
-import type { BulletMetaItem, ImportanceLevel } from '../../Editor/BulletEditor/config/types';
+import type { BulletMetaItem } from '../../Editor/BulletEditor/config/types';
+import type { ImportanceLevel } from '../../Editor/config/sharedTypes';
 
 const props = defineProps<{
     meta: BulletMetaItem;
