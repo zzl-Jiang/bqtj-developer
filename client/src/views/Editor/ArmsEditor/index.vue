@@ -34,6 +34,19 @@
                         <ArmsCombatSection />
                     </n-tab-pane>
 
+                    <!-- 子弹特性 -->
+                    <n-tab-pane name="bullet" tab="子弹特性">
+                        <template #tab>
+                            <n-space :size="6" align="center" :wrap="false">
+                                <n-icon>
+                                    <RocketOutline />
+                                </n-icon>
+                                <span>子弹特性</span>
+                            </n-space>
+                        </template>
+                        <ArmsBulletSection />
+                    </n-tab-pane>
+
                     <!-- 视觉资源 -->
                     <n-tab-pane name="visual" tab="视觉资源">
                         <template #tab>
@@ -58,7 +71,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { FingerPrintOutline, FlashOutline, ImageOutline } from '@vicons/ionicons5';
+import { FingerPrintOutline, FlashOutline, RocketOutline, ImageOutline } from '@vicons/ionicons5';
 import EditorLayout from '../../components/EditorLayout.vue';
 import ModuleSidebar from '../../components/ModuleSidebar.vue';
 import ModuleXmlPreview from '../../components/ModuleXmlPreview.vue';
@@ -67,6 +80,7 @@ import { useArmsState } from './hooks/useArmsState';
 // 导入分栏组件
 import ArmsBasicSection from './sections/ArmsBasicSection.vue';
 import ArmsCombatSection from './sections/ArmsCombatSection.vue';
+import ArmsBulletSection from './sections/ArmsBulletSection.vue';
 import ArmsVisualSection from './sections/ArmsVisualSection.vue';
 
 const { selectedIndex, selectedArms, menuOptions, addArms, removeArms } = useArmsState();
