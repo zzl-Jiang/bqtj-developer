@@ -41,18 +41,20 @@ export const OPERATOR_OPTIONS = LEVEL_EVENT_METAS.operator;
 export const CONDITION_METAS = LEVEL_EVENT_METAS.conditionTypes;
 
 // 指令元数据（用于 OrderBuilder.vue）
-// 原始代码期望 ORDER_METAS 是一个数组，每个元素有 label, value, group, fields, parse, build 等属性
-// 但从当前的配置看，这些属性不存在。我们需要保持兼容性
+// 支持两种模式：
+// 1. 简单模式：只有 label, value, group, desc - 使用默认参数处理
+// 2. 完整模式：有 fields, parse, build - 使用自定义表单
 export const ORDER_METAS: any[] = [
   ...LEVEL_EVENT_METAS.visualOrder.map((m: any) => ({ ...m, group: '图像效果' })),
   ...LEVEL_EVENT_METAS.systemOrder.map((m: any) => ({ ...m, group: '系统操作' })),
   ...LEVEL_EVENT_METAS.groupOrder.map((m: any) => ({ ...m, group: '群体控制' })),
   ...LEVEL_EVENT_METAS.levelOrder.map((m: any) => ({ ...m, group: '关卡控制' })),
-  // 处理 bodyOrder（嵌套 children 结构）
+  // 处理 bodyOrder（嵌套 children 结构）- 统一归入"单位操作"分类
   ...LEVEL_EVENT_METAS.bodyOrder.flatMap((group: any) =>
     group.children.map((child: any) => ({
       ...child,
-      group: group.label
+      group: '单位操作',
+      subGroup: group.label // 保留子分类信息
     }))
   )
 ];

@@ -704,12 +704,20 @@ export const LEVEL_EVENT_METAS = {
 
   /** 关卡指令选项 */
   levelOrder: [
+    { label: '创建单位 (createUnit)', value: 'createUnit', desc: '从指定发兵组创建单位。参数: 发兵组ID (如 enemy1, we1)' },
+    { label: '创建掉落 (createDrop)', value: 'createDrop', desc: '在指定位置创建掉落物。参数: 掉落配置ID' },
+    { label: '创建特效 (createEffect)', value: 'createEffect', desc: '在指定位置播放特效。参数: 特效路径;坐标x,坐标y;图层' },
     { label: '关卡胜利 (win)', value: 'win', desc: '直接判定玩家过关并弹出结算界面' },
     { label: '关卡失败 (fail)', value: 'fail', desc: '直接判定失败' },
     { label: '显示通关指引 (showPointer)', value: 'showPointer', desc: '在指定Rect显示动态绿色箭头' },
     { label: '全屏震动 (shake)', value: 'shake', desc: '触发屏幕抖动，可填震动幅度名' },
     { label: '杀光所有敌人 (killAllEnemy)', value: 'killAllEnemy', desc: '瞬间消灭所有已生成的敌军' },
-    { label: '停止倒计时 (taskTimingB:false)', value: 'taskTimingB:false', desc: '暂停任务界面的倒计时时钟' }
+    { label: '停止倒计时 (taskTimingB:false)', value: 'taskTimingB:false', desc: '暂停任务界面的倒计时时钟' },
+    { label: '开启倒计时 (taskTimingB:true)', value: 'taskTimingB:true', desc: '恢复任务界面的倒计时时钟' },
+    { label: '隐藏血条 (hideLifeBar)', value: 'hideLifeBar', desc: '隐藏玩家血条UI' },
+    { label: '显示血条 (showLifeBar)', value: 'showLifeBar', desc: '显示玩家血条UI' },
+    { label: '镜头聚焦 (cameraFocus)', value: 'cameraFocus', desc: '将镜头聚焦到指定单位。参数: 单位ID' },
+    { label: '镜头恢复 (cameraReset)', value: 'cameraReset', desc: '恢复镜头正常跟随' }
   ]
 };
 
