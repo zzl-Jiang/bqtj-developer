@@ -8,8 +8,8 @@ export const UPDATES_DATA: Changelog[] = [
     date: '2026-03-07',
     isMajor: false,
     blocks: [
-      { type: 'title', content: '配置系统重构：统一规范与代码整洁' },
-      { type: 'text', content: '本次更新对所有编辑器模块的配置文件夹进行了全面重构，统一命名规范，消除重复属性字段，使代码结构更清晰、易于维护和扩展。' },
+      { type: 'title', content: '配置系统重构与关卡指令优化' },
+      { type: 'text', content: '本次更新对所有编辑器模块的配置文件夹进行了全面重构，统一命名规范；同时根据 LevelDefine.as 参考代码完善了关卡事件指令系统，优化指令选择交互体验。' },
       {
         type: 'feature',
         title: '统一命名规范',
@@ -29,11 +29,37 @@ export const UPDATES_DATA: Changelog[] = [
         tag: '重构'
       },
       {
+        type: 'feature',
+        title: '关卡指令系统完善',
+        desc: '根据 LevelDefine.as 参考代码补充核心指令：createUnit（创建单位）、createDrop（创建掉落）、createEffect（创建特效）、cameraFocus（镜头聚焦）等。新增开关倒计时、血条显示控制、镜头控制等实用指令。',
+        tag: '关卡编辑'
+      },
+      {
+        type: 'feature',
+        title: '指令选择器两级交互',
+        desc: '优化 OrderBuilder 指令选择体验：第一级选择分类（图像效果/系统操作/群体控制/单位操作/关卡控制），第二级选择具体指令。解决原单选框选项过多（44个）难以查找的问题。',
+        tag: '体验'
+      },
+      {
+        type: 'feature',
+        title: '智能参数输入提示',
+        desc: '为常用指令添加参数占位提示：createUnit 提示"发兵组ID"、addWeather 提示"天气类型;强度;持续时间"、movePoint 提示"x,y坐标"等，降低指令编写难度。',
+        tag: '体验'
+      },
+      {
+        type: 'feature',
+        title: '侧边栏选中修复',
+        desc: '修复点击"+"新建项目后左侧栏不会自动高亮选中的问题。原因是 menu key（字符串）与 selectedIndex（数字）类型不匹配，现统一兼容处理。',
+        tag: '修复'
+      },
+      {
         type: 'list', content: [
           'ArmsEditor/DropEditor/PngEditor/SayEditor 重命名配置文件为 fields.ts',
           '统一使用 index.ts 作为配置入口（barrel export 模式）',
           '修复所有 Vue 组件的导入路径，统一从 ./config 导入',
           '添加必要的别名导出以兼容现有代码',
+          '单位操作指令统一归入"单位操作"分类，不再分散到子分类',
+          '简单指令使用统一参数输入框，复杂指令保留表单字段',
           '构建测试通过，无 TypeScript 错误'
         ]
       }
