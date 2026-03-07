@@ -7,59 +7,77 @@
 
         <template #content>
             <div class="h-full flex flex-col">
-                <n-tabs v-model:value="activeTab" type="line" animated class="flex-1" pane-class="tab-content">
-                    <!-- 基础信息 -->
-                    <n-tab-pane name="basic" tab="基础信息">
-                        <template #tab>
-                            <n-space :size="6" align="center" :wrap="false">
-                                <n-icon>
-                                    <FingerPrintOutline />
-                                </n-icon>
-                                <span>基础属性</span>
-                            </n-space>
-                        </template>
-                        <ArmsBasicSection />
-                    </n-tab-pane>
+                <!-- 模式切换器 -->
+                <EditorModeSwitch v-model="editorMode" />
 
-                    <!-- 战斗设定 -->
-                    <n-tab-pane name="combat" tab="战斗设定">
-                        <template #tab>
-                            <n-space :size="6" align="center" :wrap="false">
-                                <n-icon>
-                                    <FlashOutline />
-                                </n-icon>
-                                <span>战斗设定</span>
-                            </n-space>
-                        </template>
-                        <ArmsCombatSection />
-                    </n-tab-pane>
+                <!-- 专业模式 -->
+                <template v-if="editorMode === 'pro'">
+                    <n-tabs v-model:value="activeTab" type="line" animated class="flex-1" pane-class="tab-content">
+                        <!-- 基础信息 -->
+                        <n-tab-pane name="basic" tab="基础信息">
+                            <template #tab>
+                                <n-space :size="6" align="center" :wrap="false">
+                                    <n-icon>
+                                        <FingerPrintOutline />
+                                    </n-icon>
+                                    <span>基础属性</span>
+                                </n-space>
+                            </template>
+                            <ArmsBasicSection />
+                        </n-tab-pane>
 
-                    <!-- 子弹特性 -->
-                    <n-tab-pane name="bullet" tab="子弹特性">
-                        <template #tab>
-                            <n-space :size="6" align="center" :wrap="false">
-                                <n-icon>
-                                    <RocketOutline />
-                                </n-icon>
-                                <span>子弹特性</span>
-                            </n-space>
-                        </template>
-                        <ArmsBulletSection />
-                    </n-tab-pane>
+                        <!-- 战斗设定 -->
+                        <n-tab-pane name="combat" tab="战斗设定">
+                            <template #tab>
+                                <n-space :size="6" align="center" :wrap="false">
+                                    <n-icon>
+                                        <FlashOutline />
+                                    </n-icon>
+                                    <span>战斗设定</span>
+                                </n-space>
+                            </template>
+                            <ArmsCombatSection />
+                        </n-tab-pane>
 
-                    <!-- 视觉资源 -->
-                    <n-tab-pane name="visual" tab="视觉资源">
-                        <template #tab>
-                            <n-space :size="6" align="center" :wrap="false">
-                                <n-icon>
-                                    <ImageOutline />
-                                </n-icon>
-                                <span>视觉资源</span>
-                            </n-space>
-                        </template>
-                        <ArmsVisualSection />
-                    </n-tab-pane>
-                </n-tabs>
+                        <!-- 子弹特性 -->
+                        <n-tab-pane name="bullet" tab="子弹特性">
+                            <template #tab>
+                                <n-space :size="6" align="center" :wrap="false">
+                                    <n-icon>
+                                        <RocketOutline />
+                                    </n-icon>
+                                    <span>子弹特性</span>
+                                </n-space>
+                            </template>
+                            <ArmsBulletSection />
+                        </n-tab-pane>
+
+                        <!-- 视觉资源 -->
+                        <n-tab-pane name="visual" tab="视觉资源">
+                            <template #tab>
+                                <n-space :size="6" align="center" :wrap="false">
+                                    <n-icon>
+                                        <ImageOutline />
+                                    </n-icon>
+                                    <span>视觉资源</span>
+                                </n-space>
+                            </template>
+                            <ArmsVisualSection />
+                        </n-tab-pane>
+                    </n-tabs>
+                </template>
+
+                <!-- 向导模式 -->
+                <template v-else>
+                    <WizardPanel
+                        v-if="selectedArms"
+                        :categories="categories"
+                        :all-fields="allFields"
+                        :data="selectedArms"
+                        @update:data="updateArms"
+                        class="flex-1"
+                    />
+                </template>
             </div>
         </template>
 
@@ -70,11 +88,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { FingerPrintOutline, FlashOutline, RocketOutline, ImageOutline } from '@vicons/ionicons5';
+import type { BulletMetaItem } from '../BulletEditor/config/types';
 import EditorLayout from '../../components/EditorLayout.vue';
 import ModuleSidebar from '../../components/ModuleSidebar.vue';
 import ModuleXmlPreview from '../../components/ModuleXmlPreview.vue';
+import EditorModeSwitch from '../../components/EditorModeSwitch.vue';
+import WizardPanel from '../../components/wizard/WizardPanel.vue';
 import { useArmsState } from './hooks/useArmsState';
 
 // 导入分栏组件
@@ -83,9 +104,65 @@ import ArmsCombatSection from './sections/ArmsCombatSection.vue';
 import ArmsBulletSection from './sections/ArmsBulletSection.vue';
 import ArmsVisualSection from './sections/ArmsVisualSection.vue';
 
+// 导入字段配置
+import {
+    ARMS_BASIC_METAS,
+    ARMS_COMBAT_METAS,
+    ARMS_BULLET_DAMAGE_METAS,
+    ARMS_BULLET_FLAG_METAS,
+    ARMS_BULLET_LIFECYCLE_METAS,
+    ARMS_BULLET_TIMING_METAS,
+    ARMS_BULLET_SHOOT_METAS,
+    ARMS_BULLET_MOTION_METAS,
+    ARMS_BULLET_SKILL_METAS,
+    ARMS_BULLET_SUBOBJECT_METAS,
+    ARMS_VISUAL_METAS,
+    ARMS_RESOURCE_RANGE_METAS,
+    ARMS_ADVANCED_METAS
+} from './config/arms';
+
+// 导入向导配置
+import {
+    ARMS_WIZARD_CATEGORIES,
+    enhanceFieldMeta
+} from './config/wizard';
+
 const { selectedIndex, selectedArms, menuOptions, addArms, removeArms } = useArmsState();
 
+// 编辑器模式: 'pro' 专业模式 | 'wizard' 向导模式
+const editorMode = ref<'pro' | 'wizard'>('pro');
 const activeTab = ref('basic');
+
+// 向导模式配置
+const categories = ARMS_WIZARD_CATEGORIES;
+
+// 合并所有字段配置并增强
+const allFields = computed(() => {
+    const allMetas: BulletMetaItem[] = [
+        ...ARMS_BASIC_METAS as BulletMetaItem[],
+        ...ARMS_COMBAT_METAS as BulletMetaItem[],
+        ...ARMS_BULLET_DAMAGE_METAS as BulletMetaItem[],
+        ...ARMS_BULLET_FLAG_METAS as BulletMetaItem[],
+        ...ARMS_BULLET_LIFECYCLE_METAS as BulletMetaItem[],
+        ...ARMS_BULLET_TIMING_METAS as BulletMetaItem[],
+        ...ARMS_BULLET_SHOOT_METAS as BulletMetaItem[],
+        ...ARMS_BULLET_MOTION_METAS as BulletMetaItem[],
+        ...ARMS_BULLET_SKILL_METAS as BulletMetaItem[],
+        ...ARMS_BULLET_SUBOBJECT_METAS as BulletMetaItem[],
+        ...ARMS_VISUAL_METAS as BulletMetaItem[],
+        ...ARMS_RESOURCE_RANGE_METAS as BulletMetaItem[],
+        ...ARMS_ADVANCED_METAS as BulletMetaItem[]
+    ];
+    return allMetas.map(enhanceFieldMeta);
+});
+
+// 更新武器数据
+function updateArms(newData: any) {
+    if (selectedArms.value && selectedIndex.value !== null) {
+        // 更新 store 中的数据
+        Object.assign(selectedArms.value, newData);
+    }
+}
 </script>
 
 <style scoped>
