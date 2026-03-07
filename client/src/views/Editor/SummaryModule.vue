@@ -19,7 +19,7 @@
         <div class="header-title">项目基础配置</div>
       </div>
       <n-form :label-width="80" label-placement="top">
-        <n-grid :cols="3" :x-gap="24">
+        <n-grid cols="1 s:2 m:3" :x-gap="24" responsive="screen">
           <n-gi>
             <n-form-item label="Mod ID">
               <n-input v-model:value="modStore.info.id" placeholder="唯一标识符" class="premium-input" />
@@ -44,7 +44,7 @@
     </div>
 
     <!-- 数据统计网格 -->
-    <n-grid :cols="4" :x-gap="16" :y-gap="16">
+    <n-grid cols="1 s:2 m:3 l:4" :x-gap="16" :y-gap="16" responsive="screen">
       <n-gi v-for="stat in statistics" :key="stat.label">
         <div class="stat-card">
           <div class="stat-icon" :style="{ background: stat.color }">
@@ -400,5 +400,52 @@ const downloadXml = () => {
 
 .primary-glow {
   box-shadow: 0 4px 14px rgba(24, 160, 88, 0.3);
+}
+
+/* 响应式样式 */
+@media (max-width: 768px) {
+  .summary-container {
+    margin-left: 0;
+    padding: 0 12px;
+  }
+
+  .premium-card {
+    padding: 16px;
+  }
+
+  .stat-card {
+    padding: 16px;
+  }
+
+  .status-card {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .export-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .notice-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .status-main {
+    flex-direction: column;
+    gap: 12px;
+  }
 }
 </style>
