@@ -2,92 +2,210 @@
 <template>
   <EditorLayout :has-selection="!!selectedLevel" empty-text="请在左侧选择关卡或点击新增">
     <template #sidebar>
-      <ModuleSidebar title="关卡" :menu-options="menuOptions" v-model:model-value="selectedIndex" @add="addLevel" />
+      <ModuleSidebar
+        title="关卡"
+        :menu-options="menuOptions"
+        v-model:model-value="selectedIndex"
+        show-xml-button
+        @add="addLevel"
+        @delete="removeLevel"
+        @view-xml="showXmlDrawer = true"
+      />
     </template>
 
     <template #content>
       <div class="h-full flex flex-col">
-        <n-tabs v-model:value="activeTab" type="line" animated class="flex-1" pane-class="tab-content">
+        <!-- XML 预览抽屉 -->
+        <n-drawer v-model:show="showXmlDrawer" :width="500" placement="right">
+          <n-drawer-content title="XML 预览" closable>
+            <div class="xml-drawer-content">
+              <n-button type="primary" size="small" @click="copyXml" style="margin-bottom: 12px">
+                复制代码
+              </n-button>
+              <pre class="xml-preview-box">{{ selectedLevel?.toXml() }}</pre>
+            </div>
+          </n-drawer-content>
+        </n-drawer>
 
-          <!-- 基础与规则 (包含 Level 属性和 Info 属性) -->
-          <n-tab-pane name="basic" tab="基础设置">
-            <template #tab>
-              <n-space :size="6" align="center" :wrap="false">
-                <n-icon>
-                  <SettingsOutline />
-                </n-icon>
-                <span>基础设置</span>
-              </n-space>
-            </template>
-            <LevelBasicSection />
-          </n-tab-pane>
+        <!-- 复杂字段编辑器抽屉 -->
+        <n-drawer v-model:show="showComplexDrawer" :width="700" placement="right">
+          <n-drawer-content :title="complexFieldTitle" closable>
+            <div v-if="complexFieldType === 'eventG'" class="complex-editor">
+              <EventSection />
+            </div>
+            <div v-else-if="complexFieldType === 'unitG'" class="complex-editor">
+              <UnitGroupSection />
+            </div>
+            <div v-else-if="complexFieldType === 'rectG'" class="complex-editor">
+              <MapRectSection />
+            </div>
+          </n-drawer-content>
+        </n-drawer>
 
-          <!-- 怪物与单位 (对应 unitG) -->
-          <n-tab-pane name="units" tab="单位配置 (unitG)">
-            <template #tab>
-              <n-space :size="6" align="center" :wrap="false">
-                <n-icon>
-                  <PeopleOutline />
-                </n-icon>
-                <span>单位配置</span>
-              </n-space>
-            </template>
-            <UnitGroupSection />
-          </n-tab-pane>
+        <!-- 专业模式 -->
+        <template v-if="editorModeStore.isProMode">
+          <n-tabs v-model:value="activeTab" type="line" animated class="flex-1" pane-class="tab-content">
 
-          <!-- 区域配置 (对应 rectG) -->
-          <n-tab-pane name="rects" tab="区域配置 (rectG)">
-            <template #tab>
-              <n-space :size="6" align="center" :wrap="false">
-                <n-icon>
-                  <MapOutline />
-                </n-icon>
-                <span>区域配置</span>
-              </n-space>
-            </template>
-            <MapRectSection />
-          </n-tab-pane>
+            <!-- 基础与规则 (包含 Level 属性和 Info 属性) -->
+            <n-tab-pane name="basic" tab="基础设置">
+              <template #tab>
+                <n-space :size="6" align="center" :wrap="false">
+                  <n-icon>
+                    <SettingsOutline />
+                  </n-icon>
+                  <span>基础设置</span>
+                </n-space>
+              </template>
+              <LevelBasicSection />
+            </n-tab-pane>
 
-          <!-- 事件逻辑 (对应 eventG) -->
-          <n-tab-pane name="events" tab="事件组 (eventG)">
-            <template #tab>
-              <n-space :size="6" align="center" :wrap="false">
-                <n-icon>
-                  <ListOutline />
-                </n-icon>
-                <span>事件组</span>
-              </n-space>
-            </template>
-            <EventSection />
-          </n-tab-pane>
-        </n-tabs>
+            <!-- 怪物与单位 (对应 unitG) -->
+            <n-tab-pane name="units" tab="单位配置 (unitG)">
+              <template #tab>
+                <n-space :size="6" align="center" :wrap="false">
+                  <n-icon>
+                    <PeopleOutline />
+                  </n-icon>
+                  <span>单位配置</span>
+                </n-space>
+              </template>
+              <UnitGroupSection />
+            </n-tab-pane>
+
+            <!-- 区域配置 (对应 rectG) -->
+            <n-tab-pane name="rects" tab="区域配置 (rectG)">
+              <template #tab>
+                <n-space :size="6" align="center" :wrap="false">
+                  <n-icon>
+                    <MapOutline />
+                  </n-icon>
+                  <span>区域配置</span>
+                </n-space>
+              </template>
+              <MapRectSection />
+            </n-tab-pane>
+
+            <!-- 事件逻辑 (对应 eventG) -->
+            <n-tab-pane name="events" tab="事件组 (eventG)">
+              <template #tab>
+                <n-space :size="6" align="center" :wrap="false">
+                  <n-icon>
+                    <ListOutline />
+                  </n-icon>
+                  <span>事件组</span>
+                </n-space>
+              </template>
+              <EventSection />
+            </n-tab-pane>
+          </n-tabs>
+        </template>
+
+        <!-- 向导模式 -->
+        <template v-if="editorModeStore.isWizardMode">
+          <WizardPanel
+            v-if="selectedLevel"
+            :categories="categories"
+            :all-fields="allFields"
+            :data="selectedLevel"
+            @update:data="updateLevel"
+            @edit:complex="handleComplexEdit"
+            class="flex-1"
+          />
+        </template>
       </div>
-    </template>
-
-    <template #preview>
-      <ModuleXmlPreview v-if="selectedLevel" :item="selectedLevel" @delete="() => removeLevel(selectedIndex!)" />
     </template>
   </EditorLayout>
 </template>
 
 <script setup lang="ts">
 import { SettingsOutline, PeopleOutline, MapOutline, ListOutline } from '@vicons/ionicons5';
+import { useMessage, NDrawer, NDrawerContent } from 'naive-ui';
 import { useLevelState } from './hooks/useLevelState';
 import EditorLayout from '../../components/EditorLayout.vue';
 import ModuleSidebar from '../../components/ModuleSidebar.vue';
-import ModuleXmlPreview from '../../components/ModuleXmlPreview.vue';
+import WizardPanel from '../../components/wizard/WizardPanel.vue';
+import { useModStore } from '../../../store/useModStore';
+import { useEditorModeStore } from '../../../store/useEditorModeStore';
+import { ref, watch, computed } from 'vue';
+import type { BulletMetaItem } from '../../Editor/BulletEditor/config/types';
+
 import LevelBasicSection from './sections/LevelBasicSection.vue';
 import UnitGroupSection from './sections/UnitGroupSection.vue';
 import MapRectSection from './sections/MapRectSection.vue';
 import EventSection from './sections/EventSection.vue';
-import { useModStore } from '../../../store/useModStore';
-import { ref, watch } from 'vue';
 
+// 导入字段配置
+import {
+  LEVEL_BASIC_METAS,
+  LEVEL_INFO_METAS
+} from './config';
+import type { LevelMetaItem } from './config/types';
+
+// 导入向导配置
+import {
+  LEVEL_WIZARD_CATEGORIES,
+  enhanceFieldMeta
+} from './config/wizard';
+
+const message = useMessage();
 const { selectedIndex, selectedLevel, menuOptions, addLevel, removeLevel } = useLevelState();
 const modStore = useModStore();
+const editorModeStore = useEditorModeStore();
 
 // 管理当前激活的页签
 const activeTab = ref('basic');
+
+// XML 预览抽屉状态
+const showXmlDrawer = ref(false);
+
+// 复制 XML
+const copyXml = () => {
+  if (selectedLevel.value) {
+    navigator.clipboard.writeText(selectedLevel.value.toXml());
+    message.success('已复制到剪贴板');
+  }
+};
+
+// 复杂字段编辑器状态
+const showComplexDrawer = ref(false);
+const complexFieldType = ref<string>('');
+const complexFieldTitle = computed(() => {
+  const titles: Record<string, string> = {
+    eventG: '编辑事件逻辑',
+    unitG: '编辑单位配置',
+    rectG: '编辑区域配置'
+  };
+  return titles[complexFieldType.value] || '编辑配置';
+});
+
+// 处理复杂字段编辑
+function handleComplexEdit(field: BulletMetaItem, _data: any) {
+  if (field.complexType === 'eventG' || field.complexType === 'unitG' || field.complexType === 'rectG') {
+    complexFieldType.value = field.complexType;
+    showComplexDrawer.value = true;
+  }
+}
+
+// 向导模式配置
+const categories = LEVEL_WIZARD_CATEGORIES;
+
+// 合并所有字段配置并增强
+const allFields = computed(() => {
+  const allMetas: LevelMetaItem[] = [
+    ...LEVEL_BASIC_METAS,
+    ...LEVEL_INFO_METAS.runtime,
+    ...LEVEL_INFO_METAS.restrictions,
+    ...LEVEL_INFO_METAS.misc
+  ];
+  return allMetas.map(enhanceFieldMeta);
+});
+
+// 更新关卡数据
+function updateLevel(newData: any) {
+  if (selectedLevel.value && selectedIndex.value !== null) {
+    Object.assign(selectedLevel.value, newData);
+  }
+}
 
 // 监听全局跳转请求
 watch(() => modStore.navigationRequest.timestamp, () => {
@@ -124,5 +242,33 @@ watch(() => modStore.navigationRequest.timestamp, () => {
   overflow-y: auto;
   height: calc(100% - 45px);
   box-sizing: border-box;
+}
+
+.complex-editor {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.complex-editor :deep(.n-card) {
+  margin-bottom: 16px;
+}
+
+.xml-drawer-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.xml-preview-box {
+  background: #101014;
+  color: #8abeb7;
+  padding: 12px;
+  font-size: 11px;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  font-family: 'Fira Code', monospace;
+  flex: 1;
+  overflow-y: auto;
 }
 </style>
