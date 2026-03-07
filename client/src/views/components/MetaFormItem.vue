@@ -91,8 +91,33 @@ const modStore = useModStore();
 
 // Model implementation
 const modelValue = computed({
-  get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val)
+  get: () => {
+    if (typeof props.modelValue === 'object' && props.modelValue !== null && props.meta?.key) {
+      const keys = props.meta.key.split('.');
+      let val = props.modelValue;
+      for (const k of keys) {
+        val = val?.[k];
+        if (val === undefined) break;
+      }
+      return val;
+    }
+    return props.modelValue;
+  },
+  set: (val) => {
+    if (typeof props.modelValue === 'object' && props.modelValue !== null && props.meta?.key) {
+      const keys = props.meta.key.split('.');
+      let obj = props.modelValue;
+      for (let i = 0; i < keys.length - 1; i++) {
+        obj = obj?.[keys[i]];
+      }
+      if (obj) {
+        obj[keys[keys.length - 1]] = val;
+        emit('update:modelValue', props.modelValue);
+      }
+    } else {
+      emit('update:modelValue', val);
+    }
+  }
 });
 
 // PNG Options

@@ -22,6 +22,9 @@ import SkillEditor from './Editor/SkillEditor/index.vue';
 import LevelEditor from './Editor/LevelEditor/index.vue';
 import SayEditor from './Editor/SayEditor/index.vue';
 import BodyEditor from './Editor/BodyEditor/index.vue';
+import BulletEditor from './Editor/BulletEditor/index.vue';
+import ArmsEditor from './Editor/ArmsEditor/index.vue';
+import DropEditor from './Editor/DropEditor/index.vue';
 import GenericModule from './Editor/GenericModule.vue';
 
 const modStore = useModStore();
@@ -34,28 +37,9 @@ const currentModuleComponent = computed(() => {
     case 'level': return LevelEditor;
     case 'body': return BodyEditor;
     case 'say': return SayEditor;
-
-    case 'bullet':
-      return h(GenericModule, {
-        title: '子弹',
-        dataList: modStore.bulletList,
-        onAdd: () => modStore.addBullet(),
-        onRemove: (i: number) => modStore.removeBullet(i)
-      });
-    case 'arms':
-      return h(GenericModule, {
-        title: '武器',
-        dataList: modStore.armsList,
-        onAdd: () => modStore.addArms(),
-        onRemove: (i: number) => modStore.removeArms(i)
-      });
-    case 'drop':
-      return h(GenericModule, {
-        title: '掉落',
-        dataList: modStore.dropList,
-        onAdd: () => modStore.addDrop(),
-        onRemove: (i: number) => modStore.removeDrop(i)
-      });
+    case 'bullet': return BulletEditor;
+    case 'arms': return ArmsEditor;
+    case 'drop': return DropEditor;
 
     default: return SummaryModule;
   }
