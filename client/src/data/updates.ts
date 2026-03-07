@@ -4,6 +4,43 @@ import type { Changelog } from '../types/changelog';
 
 export const UPDATES_DATA: Changelog[] = [
   {
+    version: 'v0.6.1',
+    date: '2026-03-07',
+    isMajor: false,
+    blocks: [
+      { type: 'title', content: '属性补全与编辑器优化' },
+      { type: 'text', content: '本次更新根据 materials 参考代码补全了 Drop、Bullet、Arms 模块的缺失属性，并重构了 ArmsEditor 的布局以提升编辑体验。' },
+      {
+        type: 'feature',
+        title: '数据模型属性补全',
+        desc: '补全 DropDefine 掉率属性（normalPro/superPro/bossPro/itemsLvRange）。为所有 Bullet 子对象类（暴击、反弹、追踪、爆炸、绑定、射线、速度、位置）添加 toXml() 方法，确保 XML 导出数据完整。',
+        tag: '数据'
+      },
+      {
+        type: 'feature',
+        title: 'ArmsEditor 布局重构',
+        desc: '新增"子弹特性"标签页，将 80+ 继承自 Bullet 的属性独立展示。战斗设定标签页精简为仅展示 Arms 特有属性。通过 5 个折叠区组织子弹属性：伤害效果、行为标志、生命周期、发射运动、技能特效。',
+        tag: '编辑器'
+      },
+      {
+        type: 'feature',
+        title: 'BulletEditor & DropEditor 增强',
+        desc: 'BulletEditor 新增加特林模式配置区。DropEditor 新增掉率配置字段。完善各类字段的中文说明与图标标识。',
+        tag: '编辑器'
+      },
+      {
+        type: 'list', content: [
+          'ArmsDefine 完善 toXml() 导出所有继承自 Bullet 的属性',
+          'BulletDefine 在 toXml() 中集成所有子对象的 XML 导出',
+          '优化编辑器配置文件的类型定义，解决 concat 类型兼容问题',
+          '更新 .gitignore 添加 claude.md 忽略',
+          '构建测试通过，无 TypeScript 错误'
+        ]
+      },
+      { type: 'action', label: '查看更新后的武器编辑器', module: 'arms' }
+    ]
+  },
+  {
     version: 'v0.6.0',
     date: '2026-03-07',
     isMajor: true,
