@@ -1,4 +1,4 @@
-// client/src/views/Editor/PngEditor/config/pngMeta.ts
+// client/src/views/Editor/PngEditor/config/fields.ts
 
 import { PngDefine } from '../../../../models/png/PngDefine';
 
@@ -17,7 +17,7 @@ export interface PngMetaItem {
   desc?: string;
 }
 
-export const PNG_UI_META: PngMetaItem[] = [
+export const PNG_UI_METAS: PngMetaItem[] = [
   {
     key: 'name',
     label: '名称',
