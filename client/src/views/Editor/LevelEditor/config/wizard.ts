@@ -74,8 +74,10 @@ export const LEVEL_WIZARD_FIELD_CONFIG: Record<string, Partial<LevelMetaItem>> =
     // ===== 基础设置 - 核心 =====
     name: {
         importance: 'core',
-        docContent: '关卡的唯一标识名，用于代码和XML中引用。建议使用英文小写+下划线格式，如 level_1、chapter_1_stage_2。',
-        exampleValue: 'level_1_1'
+        docContent: `关卡的唯一标识名，用于代码和XML中引用。建议使用英文小写+下划线格式，如 level_1、chapter_1_stage_2。
+        当然使用中文也可以，相对打字会麻烦一点。
+        注意不能和任何已有关卡 id 重名，否则会报错。`,
+        exampleValue: 'level_1'
     },
     cnName: {
         importance: 'core',
