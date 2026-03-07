@@ -4,6 +4,42 @@ import type { Changelog } from '../types/changelog';
 
 export const UPDATES_DATA: Changelog[] = [
   {
+    version: 'v0.6.4',
+    date: '2026-03-07',
+    isMajor: false,
+    blocks: [
+      { type: 'title', content: '配置系统重构：统一规范与代码整洁' },
+      { type: 'text', content: '本次更新对所有编辑器模块的配置文件夹进行了全面重构，统一命名规范，消除重复属性字段，使代码结构更清晰、易于维护和扩展。' },
+      {
+        type: 'feature',
+        title: '统一命名规范',
+        desc: '所有模块配置文件夹统一采用标准化文件结构：types.ts（类型定义）、fields.ts（字段配置）、options.ts（选项配置）、wizard.ts（向导配置）、index.ts（统一导出）。导出命名统一为 {MODULE}_{CATEGORY}_FIELDS 格式。',
+        tag: '架构'
+      },
+      {
+        type: 'feature',
+        title: '提取共享类型',
+        desc: '新建 sharedTypes.ts 定义全局共享类型（FieldMetaItem、CategoryConfig、ImportanceLevel 等），消除各模块间的类型重复定义，实现类型复用。',
+        tag: '类型系统'
+      },
+      {
+        type: 'feature',
+        title: '配置合并与简化',
+        desc: '将分散在多个文件中的字段配置合并为统一的 fields.ts。BodyEditor 合并 5 个文件，BulletEditor 合并 5 个文件，LevelEditor 合并 5 个文件，SkillEditor 合并 4 个文件，显著减少文件数量。',
+        tag: '重构'
+      },
+      {
+        type: 'list', content: [
+          'ArmsEditor/DropEditor/PngEditor/SayEditor 重命名配置文件为 fields.ts',
+          '统一使用 index.ts 作为配置入口（barrel export 模式）',
+          '修复所有 Vue 组件的导入路径，统一从 ./config 导入',
+          '添加必要的别名导出以兼容现有代码',
+          '构建测试通过，无 TypeScript 错误'
+        ]
+      }
+    ]
+  },
+  {
     version: 'v0.6.3',
     date: '2026-03-07',
     isMajor: false,
