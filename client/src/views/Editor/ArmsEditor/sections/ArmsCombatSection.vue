@@ -1,34 +1,34 @@
 <template>
     <div v-if="arms" class="arms-combat-section">
-        <n-collapse :default-expanded-names="['power', 'reload']" arrow-placement="right">
-            <!-- 威力与规模 -->
+        <n-collapse :default-expanded-names="['power', 'fire']" arrow-placement="right">
+            <!-- 威力与弹药 -->
             <n-collapse-item name="power" class="premium-collapse-item">
                 <template #header>
                     <n-space align="center" :size="8">
                         <n-icon :component="FlashOutline" color="#f2c97d" />
-                        <span>威力与弹药规模 (Power & Capacity)</span>
+                        <span>威力与弹药 (Power & Capacity)</span>
                     </n-space>
                 </template>
                 <div class="section-content">
                     <n-grid :cols="3" :x-gap="12" :y-gap="12">
-                        <n-gi v-for="meta in ARMS_COMBAT_METAS" :key="meta.key">
+                        <n-gi v-for="meta in ARMS_COMBAT_METAS.slice(0, 9)" :key="meta.key">
                             <MetaFormItem :meta="meta" v-model:modelValue="arms" :show-label="true" />
                         </n-gi>
                     </n-grid>
                 </div>
             </n-collapse-item>
 
-            <!-- 频率与手感 -->
-            <n-collapse-item name="reload" class="premium-collapse-item">
+            <!-- 射击手感 -->
+            <n-collapse-item name="fire" class="premium-collapse-item">
                 <template #header>
                     <n-space align="center" :size="8">
                         <n-icon :component="ReloadOutline" color="#70c0e8" />
-                        <span>射击手感与频率 (Fire Rate & Handling)</span>
+                        <span>射击手感 (Fire Rate & Handling)</span>
                     </n-space>
                 </template>
                 <div class="section-content">
                     <n-grid :cols="3" :x-gap="12" :y-gap="12">
-                        <n-gi v-for="meta in ARMS_COMBAT_METAS.slice(6)" :key="meta.key">
+                        <n-gi v-for="meta in ARMS_COMBAT_METAS.slice(9)" :key="meta.key">
                             <MetaFormItem :meta="meta" v-model:modelValue="arms" :show-label="true" />
                         </n-gi>
                     </n-grid>

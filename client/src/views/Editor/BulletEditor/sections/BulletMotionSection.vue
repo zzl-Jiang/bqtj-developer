@@ -41,17 +41,35 @@
                     </n-grid>
                 </div>
             </n-collapse-item>
+
+            <!-- 加特林模式 -->
+            <n-collapse-item name="gatlin" class="premium-collapse-item">
+                <template #header>
+                    <n-space align="center" :size="8">
+                        <n-icon :component="FlashOutline" color="#f2c97d" />
+                        <span>加特林模式 (Gatling Mode)</span>
+                    </n-space>
+                </template>
+                <div class="section-content">
+                    <n-grid :cols="3" :x-gap="12" :y-gap="12">
+                        <n-gi v-for="meta in BULLET_GATLIN_METAS" :key="meta.key">
+                            <MetaFormItem :meta="meta" v-model:modelValue="bullet" :show-label="true" />
+                        </n-gi>
+                    </n-grid>
+                </div>
+            </n-collapse-item>
         </n-collapse>
     </div>
 </template>
 
 <script setup lang="ts">
-import { SpeedometerOutline, SyncOutline } from '@vicons/ionicons5';
+import { SpeedometerOutline, SyncOutline, FlashOutline } from '@vicons/ionicons5';
 import { useBulletState } from '../hooks/useBulletState';
 import {
     BULLET_MOTION_METAS,
     BULLET_BOUNCE_METAS,
-    BULLET_FOLLOW_METAS
+    BULLET_FOLLOW_METAS,
+    BULLET_GATLIN_METAS
 } from '../config';
 import MetaFormItem from '../../../components/MetaFormItem.vue';
 

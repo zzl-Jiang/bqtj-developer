@@ -16,14 +16,30 @@
                     </n-grid>
                 </div>
             </n-collapse-item>
+
+            <n-collapse-item name="probability" class="premium-collapse-item">
+                <template #header>
+                    <n-space align="center" :size="8">
+                        <n-icon :component="BarChartOutline" color="#63e2b7" />
+                        <span>掉落概率设置 (Probability)</span>
+                    </n-space>
+                </template>
+                <div class="section-content">
+                    <n-grid :cols="2" :x-gap="12" :y-gap="12">
+                        <n-gi v-for="meta in DROP_PROBABILITY_METAS" :key="meta.key">
+                            <MetaFormItem :meta="meta" v-model:modelValue="drop" :show-label="true" />
+                        </n-gi>
+                    </n-grid>
+                </div>
+            </n-collapse-item>
         </n-collapse>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ExtensionPuzzleOutline } from '@vicons/ionicons5';
+import { ExtensionPuzzleOutline, BarChartOutline } from '@vicons/ionicons5';
 import { useDropState } from '../hooks/useDropState';
-import { DROP_LOGIC_METAS } from '../config/drop';
+import { DROP_LOGIC_METAS, DROP_PROBABILITY_METAS } from '../config/drop';
 import MetaFormItem from '../../../components/MetaFormItem.vue';
 
 const { selectedDrop: drop } = useDropState();
