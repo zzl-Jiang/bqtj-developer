@@ -1,1 +1,26 @@
-export * from './arms';
+// client/src/views/Editor/ArmsEditor/config/index.ts
+// 武器编辑器配置统一导出
+
+// 字段配置
+export {
+  ARMS_BASIC_METAS,
+  ARMS_COMBAT_METAS,
+  ARMS_BULLET_DAMAGE_METAS,
+  ARMS_BULLET_FLAG_METAS,
+  ARMS_BULLET_LIFECYCLE_METAS,
+  ARMS_BULLET_TIMING_METAS,
+  ARMS_BULLET_SHOOT_METAS,
+  ARMS_BULLET_MOTION_METAS,
+  ARMS_BULLET_SKILL_METAS,
+  ARMS_BULLET_SUBOBJECT_METAS,
+  ARMS_VISUAL_METAS,
+  ARMS_RESOURCE_RANGE_METAS,
+  ARMS_ADVANCED_METAS
+} from './fields';
+
+// 向导模式配置
+export {
+  ARMS_WIZARD_CATEGORIES,
+  ARMS_WIZARD_FIELD_CONFIG,
+  enhanceFieldMeta
+} from './wizard';
