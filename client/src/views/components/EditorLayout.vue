@@ -17,11 +17,6 @@
         <n-empty :description="emptyText" />
       </div>
     </div>
-
-    <!-- 右侧预览区 -->
-    <div v-if="hasSelection" class="preview-wrapper">
-      <slot name="preview"></slot>
-    </div>
   </div>
 </template>
 
@@ -36,7 +31,7 @@ defineProps<{
 <style scoped>
 .editor-layout {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr;
   gap: 24px;
   height: calc(100vh - 120px);
   padding: 0 24px;
@@ -63,7 +58,7 @@ defineProps<{
 }
 
 .content-inner {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -72,15 +67,6 @@ defineProps<{
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.preview-wrapper {
-  width: 320px;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: var(--premium-rounded);
-  padding: 20px;
-  overflow-y: auto;
 }
 
 /* Scrollbar adjustment */
