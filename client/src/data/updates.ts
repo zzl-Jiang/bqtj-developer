@@ -4,6 +4,49 @@ import type { Changelog } from '../types/changelog';
 
 export const UPDATES_DATA: Changelog[] = [
   {
+    version: 'v0.6.0',
+    date: '2026-03-07',
+    isMajor: true,
+    blocks: [
+      { type: 'title', content: '武器系统深度重构：弹道与战斗机制建模' },
+      { type: 'text', content: '本次更新完成了武器与子弹系统的深度建模，实现了从通用表单到专业战斗编辑器的跨越。子弹系统现在支持完整的物理行为建模，包括追踪、反弹、暴击、爆炸等高级机制。' },
+      {
+        type: 'feature',
+        title: '子弹深度编辑器 (BulletEditor)',
+        desc: '告别通用表单，新增专属子弹编辑器。支持分模块编辑子弹的生命周期、碰撞检测、发射属性、运动学参数以及各类特殊效果。',
+        tag: '核心'
+      },
+      {
+        type: 'feature',
+        title: '武器专业编辑器 (ArmsEditor)',
+        desc: '新增武器专用编辑器，整合弹夹容量、换弹时间、后坐力、枪口抖动等战斗属性。支持弩箭模式与武器记录数据的高级配置。',
+        tag: '核心'
+      },
+      {
+        type: 'feature',
+        title: '子弹行为模型库',
+        desc: '建立了完整的子弹行为数据模型体系：暴击 (BulletCritDefine)、反弹 (BulletBounceDefine)、追踪 (BulletFollowDefine)、爆炸 (BulletBoomDefine)、绑定 (BulletBindingDefine)、直线 (BulletLineDefine)、速度变化 (BulletSpeedDefine) 等。',
+        tag: '架构'
+      },
+      {
+        type: 'feature',
+        title: '掉落编辑器 (DropEditor)',
+        desc: '新增掉落系统编辑器，支持配置物品掉落规则与概率分布，完善 Mod 的游戏性设计能力。',
+        tag: '新增'
+      },
+      {
+        type: 'list', content: [
+          '扩展 ArmsDefine 模型，新增弩箭配置 (crossbowD) 与武器记录数据 (recordD)',
+          '完善 BulletDefine 模型，新增速度变化与位置组的嵌套支持',
+          '优化 MetaFormItem 组件，增强对复杂嵌套对象的处理能力',
+          '更新 .gitignore，排除 .claude/ 辅助工具目录',
+          '修正 server/tsconfig.json 编译配置'
+        ]
+      },
+      { type: 'action', label: '设计你的专属武器', module: 'arms' }
+    ]
+  },
+  {
     version: 'v0.5.0',
     date: '2026-03-05',
     isMajor: true,
