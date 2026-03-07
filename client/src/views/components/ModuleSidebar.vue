@@ -60,6 +60,7 @@
 </template>
 
 <script setup lang="ts">
+import { inject } from 'vue';
 import { AddOutline, TrashOutline, CodeOutline } from '@vicons/ionicons5';
 
 interface MenuOption {
@@ -77,8 +78,13 @@ const props = defineProps<{
 
 const emit = defineEmits(['add', 'delete', 'view-xml', 'update:modelValue']);
 
+// 注入关闭抽屉的方法
+const closeMobileDrawer = inject<() => void>('closeMobileDrawer', () => {});
+
 const handleSelect = (key: string | number) => {
   emit('update:modelValue', key);
+  // 在移动端选择后关闭抽屉
+  closeMobileDrawer();
 };
 </script>
 
@@ -87,6 +93,7 @@ const handleSelect = (key: string | number) => {
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-height: 0;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: var(--premium-rounded);
@@ -100,6 +107,7 @@ const handleSelect = (key: string | number) => {
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   background: rgba(255, 255, 255, 0.02);
+  flex-shrink: 0;
 }
 
 .header-title {
@@ -116,12 +124,15 @@ const handleSelect = (key: string | number) => {
   flex: 1;
   padding: 8px;
   overflow-y: auto;
+  min-height: 0;
+  position: relative;
 }
 
 .menu-list {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-height: 0;
 }
 
 .menu-item {
@@ -177,5 +188,40 @@ const handleSelect = (key: string | number) => {
   padding: 12px 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   background: rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+}
+
+/* 中等屏幕下调整内边距 */
+@media (max-width: 1023px) {
+  .sidebar-header {
+    padding: 14px 16px;
+  }
+
+  .header-title {
+    font-size: 14px;
+  }
+
+  .menu-wrapper {
+    padding: 8px;
+  }
+
+  .menu-item {
+    padding: 10px 12px;
+  }
+
+  .menu-item-label {
+    font-size: 13px;
+  }
+
+  .sidebar-footer {
+    padding: 10px 12px;
+  }
+}
+
+/* 小屏幕下隐藏删除按钮（总是显示） */
+@media (max-width: 640px) {
+  .delete-btn {
+    opacity: 1;
+  }
 }
 </style>

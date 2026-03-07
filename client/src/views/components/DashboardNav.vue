@@ -52,6 +52,10 @@ const handleSelect = (key: string) => {
     border-radius: 100px;
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: var(--premium-glow);
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 100%;
+    overflow-x: auto;
 }
 
 .nav-item {
@@ -63,6 +67,23 @@ const handleSelect = (key: string) => {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     color: rgba(255, 255, 255, 0.6);
     user-select: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* 小屏幕下调整导航项 */
+@media (max-width: 768px) {
+    .nav-item {
+        padding: 6px 16px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-item {
+        padding: 4px 12px;
+        font-size: 12px;
+    }
 }
 
 .nav-item:hover {
