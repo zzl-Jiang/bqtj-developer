@@ -2,7 +2,7 @@
 <template>
   <n-space vertical size="large" v-if="selectedSkill">
     <n-card title="核心配置" size="small">
-      <n-grid :cols="3" :x-gap="20" :y-gap="12">
+      <n-grid cols="1 s:2 m:3" :x-gap="20" :y-gap="12" responsive="screen">
         <n-gi v-for="meta in coreMetas" :key="meta.key" :span="meta.key === 'effectType' ? 2 : 1">
           <MetaFormItem 
             v-bind="getProps(meta)"
@@ -15,7 +15,7 @@
     
     <!-- 已激活的进阶配置 -->
     <n-card v-if="activeOptionalMetas.length > 0" title="进阶数值 (已开启)" size="small" segmented>
-      <n-grid :cols="3" :x-gap="20" :y-gap="12">
+      <n-grid cols="1 s:2 m:3" :x-gap="20" :y-gap="12" responsive="screen">
         <n-gi v-for="meta in activeOptionalMetas" :key="meta.key">
           <div class="optional-item-box">
             <div class="item-header">

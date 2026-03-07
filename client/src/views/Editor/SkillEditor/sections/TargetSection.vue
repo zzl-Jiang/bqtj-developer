@@ -1,7 +1,7 @@
 <!-- client/src/views/Editor/SkillEditor/sections/TargetSection.vue -->
 <template>
   <n-card title="Target 节点详细配置" size="small" v-if="selectedSkill">
-    <n-grid :cols="3" :x-gap="12" :y-gap="8">
+    <n-grid cols="1 s:2 m:3" :x-gap="12" :y-gap="8" responsive="screen">
       <n-gi v-for="meta in SKILL_TARGET_FIELDS" :key="meta.key">
         <!-- 注意：这里 v-model 绑定的是 selectedSkill.target[key] -->
         <MetaFormItem

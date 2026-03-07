@@ -18,7 +18,7 @@
     <template #content>
       <div class="h-full flex flex-col">
         <!-- 复杂字段编辑器抽屉 -->
-        <n-drawer v-model:show="showComplexDrawer" :width="650" placement="right">
+        <n-drawer v-model:show="showComplexDrawer" :width="isMobile ? '100%' : 650" placement="right">
           <n-drawer-content :title="complexDrawerTitle" closable>
             <div v-if="complexFieldType === 'target'" class="complex-editor">
               <TargetSection />
@@ -30,7 +30,7 @@
         </n-drawer>
 
         <!-- XML 预览抽屉 -->
-        <n-drawer v-model:show="showXmlDrawer" :width="500" placement="right">
+        <n-drawer v-model:show="showXmlDrawer" :width="isMobile ? '100%' : 500" placement="right">
           <n-drawer-content title="XML 预览" closable>
             <div class="xml-drawer-content">
               <n-button type="primary" size="small" @click="copyXml" style="margin-bottom: 12px">
@@ -126,6 +126,7 @@ import { useSkillState } from './hooks/useSkillState';
 import { useMessage, NDrawer, NDrawerContent } from 'naive-ui';
 import { computed, ref } from 'vue';
 import type { BulletMetaItem } from '../../Editor/BulletEditor/config/types';
+import { useResponsive } from '../../../hooks/useResponsive';
 
 // 引入通用组件
 import EditorLayout from '../../components/EditorLayout.vue';
@@ -160,6 +161,7 @@ import {
 const message = useMessage();
 const { selectedSkill, selectedIndex, menuOptions, addSkill, removeSkill } = useSkillState();
 const editorModeStore = useEditorModeStore();
+const { isMobile } = useResponsive();
 
 // 复杂字段编辑器状态
 const showComplexDrawer = ref(false);

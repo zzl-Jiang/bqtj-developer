@@ -5,7 +5,7 @@
 
       <!-- 基础标识卡片 -->
       <n-card title="基础标识" size="small" segmented>
-        <n-grid :cols="3" :x-gap="12">
+        <n-grid cols="1 s:2 m:3" :x-gap="12" responsive="screen">
           <!-- 遍历基础元数据 -->
           <n-gi v-for="meta in baseMetas" :key="meta.key">
             <MetaFormItem :meta="meta" :show-label="true" v-model:modelValue="selectedSkill[meta.key]" />
@@ -15,7 +15,7 @@
 
       <!-- 状态标志卡片 (开关类) -->
       <n-card title="状态标志 (开关)" size="small" segmented>
-        <n-grid :cols="4" :x-gap="12" :y-gap="12">
+        <n-grid cols="2 s:3 m:4" :x-gap="12" :y-gap="12" responsive="screen">
           <n-gi v-for="meta in flagMetas" :key="meta.key">
             <MetaFormItem :meta="meta" :show-label="true" v-model:modelValue="selectedSkill[meta.key]" />
           </n-gi>
