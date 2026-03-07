@@ -29,19 +29,19 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useSkillState } from '../hooks/useSkillState';
-import { BASE_META, FLAG_META } from '../config';
+import { SKILL_BASE_FIELDS, SKILL_FLAG_FIELDS } from '../config';
 import MetaFormItem from '../../../components/MetaFormItem.vue';
 
 const { selectedSkill } = useSkillState();
 
 // 提取基础信息配置
 const baseMetas = computed(() =>
-  BASE_META.filter(m => m.group === 'base')
+  SKILL_BASE_FIELDS.filter(m => m.group === 'base')
 );
 
 // 提取标志位配置
 const flagMetas = computed(() =>
-  FLAG_META.filter(m => m.group === 'flags')
+  SKILL_FLAG_FIELDS.filter(m => m.group === 'flags')
 );
 </script>
 

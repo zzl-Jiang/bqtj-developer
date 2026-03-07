@@ -2,7 +2,7 @@
 <template>
   <n-card title="Target 节点详细配置" size="small" v-if="selectedSkill">
     <n-grid :cols="3" :x-gap="12" :y-gap="8">
-      <n-gi v-for="meta in TARGET_META" :key="meta.key">
+      <n-gi v-for="meta in SKILL_TARGET_FIELDS" :key="meta.key">
         <!-- 注意：这里 v-model 绑定的是 selectedSkill.target[key] -->
         <MetaFormItem
           :meta="meta"
@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { useSkillState } from '../hooks/useSkillState';
-import { TARGET_META } from '../config';
+import { SKILL_TARGET_FIELDS } from '../config';
 import MetaFormItem from '../../../components/MetaFormItem.vue';
 
 const { selectedSkill } = useSkillState();

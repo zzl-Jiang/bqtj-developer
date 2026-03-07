@@ -143,10 +143,10 @@ import { useEditorModeStore } from '../../../store/useEditorModeStore';
 
 // 导入字段配置
 import {
-  BASE_META,
-  LOGIC_META,
-  TARGET_META,
-  FLAG_META
+  SKILL_BASE_FIELDS,
+  SKILL_LOGIC_FIELDS,
+  SKILL_TARGET_FIELDS,
+  SKILL_FLAG_FIELDS
 } from './config';
 import type { SkillMetaItem } from './config/types';
 
@@ -207,10 +207,10 @@ const categories = SKILL_WIZARD_CATEGORIES;
 // 合并所有字段配置并增强
 const allFields = computed(() => {
   const allMetas: SkillMetaItem[] = [
-    ...BASE_META,
-    ...LOGIC_META,
-    ...TARGET_META,
-    ...FLAG_META
+    ...SKILL_BASE_FIELDS,
+    ...SKILL_LOGIC_FIELDS,
+    ...SKILL_TARGET_FIELDS,
+    ...SKILL_FLAG_FIELDS
   ];
   return allMetas.map(enhanceFieldMeta);
 });

@@ -83,7 +83,7 @@
 import { ref, computed, nextTick } from 'vue';
 import { useSkillState } from '../hooks/useSkillState';
 import { useEffectLogic } from '../hooks/useEffectLogic';
-import { CONDITION_OPTIONS_MAP, LOGIC_META } from '../config';
+import { CONDITION_OPTIONS_MAP, SKILL_LOGIC_FIELDS } from '../config';
 import MetaFormItem from '../../../components/MetaFormItem.vue';
 
 const { selectedSkill } = useSkillState();
@@ -101,7 +101,7 @@ const pendingPropKey = ref<string | null>(null);
 const pendingPropPreview = computed(() => {
   if (!pendingPropKey.value) return null;
   // 从原始配置中找到对应的 meta 对象
-  const meta = LOGIC_META.find(m => m.key === pendingPropKey.value);
+  const meta = SKILL_LOGIC_FIELDS.find(m => m.key === pendingPropKey.value);
   return meta ? { label: meta.label, desc: meta.desc, key: meta.key } : null;
 });
 

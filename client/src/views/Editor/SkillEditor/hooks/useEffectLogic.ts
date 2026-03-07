@@ -1,5 +1,5 @@
 import { computed } from 'vue';
-import { EFFECT_TYPE_OPTIONS, LOGIC_META } from '../config';
+import { EFFECT_TYPE_OPTIONS, SKILL_LOGIC_FIELDS } from '../config';
 
 export function useEffectLogic(selectedSkill: any) {
   
@@ -43,7 +43,7 @@ export function useEffectLogic(selectedSkill: any) {
   // 根据 vIf 规则，计算当前应该显示的配置项
   const visibleLogicMetas = computed(() => {
     if (!selectedSkill.value) return [];
-    return LOGIC_META.filter(meta => {
+    return SKILL_LOGIC_FIELDS.filter(meta => {
       if (!meta.vIf) return true;
       return meta.vIf(selectedSkill.value);
     });
