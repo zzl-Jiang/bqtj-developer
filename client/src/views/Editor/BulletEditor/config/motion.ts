@@ -9,6 +9,12 @@ export const BULLET_MOTION_METAS: BulletMetaItem[] = [
     { key: 'shootAngle', label: '发射夹角 (shootAngle)', type: 'number' },
     { key: 'bulletAngle', label: '初始角度 (bulletAngle)', type: 'number', desc: '-1000 为不设置' },
     { key: 'bulletAngleRange', label: '角度随机范围 (bulletAngleRange)', type: 'number' },
+    { key: 'extendGap', label: '延伸间隔 (extendGap)', type: 'number' },
+];
+
+export const BULLET_GATLIN_METAS: BulletMetaItem[] = [
+    { key: 'gatlinNum', label: '加特林子弹数 (gatlinNum)', type: 'number', desc: '加特林模式下的连续发射数量' },
+    { key: 'gatlinRange', label: '加特林散射范围 (gatlinRange)', type: 'number', desc: '加特林模式下的角度散射范围' },
 ];
 
 export const BULLET_SPEED_DETAIL_METAS: BulletMetaItem[] = [

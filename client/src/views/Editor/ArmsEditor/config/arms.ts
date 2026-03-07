@@ -1,4 +1,6 @@
-export const ARMS_BASIC_METAS = [
+import type { BulletMetaItem } from '../../BulletEditor/config/types';
+
+export const ARMS_BASIC_METAS: BulletMetaItem[] = [
     { key: 'cnName', label: '中文名称', type: 'string' },
     { key: 'name', label: '内部标识 (name)', type: 'string' },
     { key: 'armsType', label: '武器类型', type: 'string', desc: '对应 ArmsType 中的定义' },
@@ -19,7 +21,8 @@ export const ARMS_BASIC_METAS = [
     { key: 'randomPro', label: '随机几率', type: 'number', desc: '用于随机属性生成的权重' }
 ];
 
-export const ARMS_COMBAT_METAS = [
+// 武器自身战斗属性
+export const ARMS_COMBAT_METAS: BulletMetaItem[] = [
     { key: 'dpsMul', label: 'DPS 修正系数', type: 'number', desc: '1 为默认' },
     { key: 'capacity', label: '弹量 (capacity)', type: 'number' },
     { key: 'armsWeight', label: '武器重量', type: 'number' },
@@ -32,7 +35,115 @@ export const ARMS_COMBAT_METAS = [
     { key: 'attackGap', label: '攻击间隔', type: 'number' },
     { key: 'uiDpsMul', label: 'UI DPS 修正', type: 'number' },
     { key: 'extraMul', label: '额外系数', type: 'number' },
-    { key: 'upValue', label: '升级价值', type: 'number' }
+    { key: 'upValue', label: '升级价值', type: 'number' },
+    { key: 'handShootGap', label: '双手射击间隔', type: 'number' },
+    { key: 'noShakeTime', label: '无后坐力时间', type: 'number' },
+    { key: 'focusAngleRange', label: '聚焦角度范围', type: 'number' },
+    { key: 'leftHandImg', label: '左手贴图索引', type: 'number' }
+];
+
+// 继承自 BulletDefine 的伤害效果属性
+export const ARMS_BULLET_DAMAGE_METAS: BulletMetaItem[] = [
+    { key: 'hurtMul', label: '伤害倍率 (hurtMul)', type: 'number' },
+    { key: 'transBackMul', label: '反击倍率', type: 'number', desc: '默认 1' },
+    { key: 'attackType', label: '攻击类型', type: 'select', options: [
+        { label: '直接伤害 (direct)', value: 'direct' },
+        { label: '其他类型', value: 'other' }
+    ]},
+    { key: 'beatBack', label: '击退值', type: 'number' },
+    { key: 'targetShakeValue', label: '目标震动值', type: 'number' },
+    { key: 'critD.pro', label: '暴击几率', type: 'number' },
+    { key: 'critD.mul', label: '暴击倍率', type: 'number', desc: '默认 2' },
+    { key: 'critD3.pro', label: '3倍暴击几率', type: 'number' },
+    { key: 'critD3.mul', label: '3倍暴击倍率', type: 'number', desc: '默认 3' }
+];
+
+// 继承自 BulletDefine 的行为标志
+export const ARMS_BULLET_FLAG_METAS: BulletMetaItem[] = [
+    { key: 'sameCampB', label: '同阵营有效', type: 'switch' },
+    { key: 'noHitB', label: '不命中目标', type: 'switch' },
+    { key: 'noHurtEffectB', label: '无伤害特效', type: 'switch' },
+    { key: 'whippB', label: '鞭策效果', type: 'switch' },
+    { key: 'noMagneticB', label: '无磁力吸附', type: 'switch' },
+    { key: 'noBeClearB', label: '不可被清除', type: 'switch' },
+    { key: 'implodingB', label: '内爆效果', type: 'switch' },
+    { key: 'twoHitSameNameB', label: '同名双hit', type: 'switch' },
+    { key: 'oneHitBodyB', label: '单体命中', type: 'switch' }
+];
+
+// 继承自 BulletDefine 的生命周期属性
+export const ARMS_BULLET_LIFECYCLE_METAS: BulletMetaItem[] = [
+    { key: 'bulletLife', label: '子弹生命周期', type: 'number', desc: '秒，默认 2' },
+    { key: 'lifeRandom', label: '寿命随机值', type: 'number' },
+    { key: 'imgClearDelay', label: '图像清除延迟', type: 'number' },
+    { key: 'bulletWidth', label: '碰撞宽度', type: 'number', desc: '默认 7' },
+    { key: 'bulletShakeWidth', label: '抖动宽度', type: 'number' },
+    { key: 'hitType', label: '碰撞类型', type: 'select', options: [
+        { label: '矩形 (rect)', value: 'rect' },
+        { label: '长射线 (longLine)', value: 'longLine' }
+    ]},
+    { key: 'penetrationNum', label: '穿透次数', type: 'number' },
+    { key: 'penetrationGap', label: '穿透间隔', type: 'number' }
+];
+
+// 继承自 BulletDefine 的攻击时机属性
+export const ARMS_BULLET_TIMING_METAS: BulletMetaItem[] = [
+    { key: 'attackDelay', label: '攻击延迟', type: 'number' },
+    { key: 'noHitTime', label: '无命中时间', type: 'number' },
+    { key: 'hideTime', label: '隐藏时间', type: 'number' },
+    { key: 'hitGap', label: '击中间隔', type: 'number' },
+    { key: 'twoHitGap', label: '双hit间隔', type: 'number' }
+];
+
+// 继承自 BulletDefine 的发射属性
+export const ARMS_BULLET_SHOOT_METAS: BulletMetaItem[] = [
+    { key: 'shootRecoil', label: '射击后坐力', type: 'number' },
+    { key: 'screenShakeValue', label: '屏幕震动值', type: 'number' },
+    { key: 'aiShootRange', label: 'AI 射程', type: 'number' },
+    { key: 'gatlinNum', label: '加特林子弹数', type: 'number' },
+    { key: 'gatlinRange', label: '加特林散射范围', type: 'number' },
+    { key: 'shootPoint', label: '发射点偏移', type: 'string', desc: '格式: x,y' }
+];
+
+// 继承自 BulletDefine 的运动学属性
+export const ARMS_BULLET_MOTION_METAS: BulletMetaItem[] = [
+    { key: 'bulletSpeed', label: '子弹速度', type: 'number' },
+    { key: 'gravity', label: '重力', type: 'number' },
+    { key: 'bulletVra', label: '旋转速度', type: 'number' },
+    { key: 'bulletAngle', label: '初始角度', type: 'number', desc: '-1000 为不设置' },
+    { key: 'bulletAngleRange', label: '角度随机范围', type: 'number' },
+    { key: 'extendGap', label: '延伸间隔', type: 'number' }
+];
+
+// 继承自 BulletDefine 的技能数组
+export const ARMS_BULLET_SKILL_METAS: BulletMetaItem[] = [
+    { key: 'skillArr', label: '技能数组', type: 'string', desc: '逗号分隔' },
+    { key: 'godSkillArr', label: '神级技能数组', type: 'string', desc: '逗号分隔' },
+    { key: 'bulletSkillArr', label: '子弹技能数组', type: 'string', desc: '逗号分隔' }
+];
+
+// 继承自 BulletDefine 的子对象配置
+export const ARMS_BULLET_SUBOBJECT_METAS: BulletMetaItem[] = [
+    { key: 'speedD.min', label: '速度-最小值', type: 'number' },
+    { key: 'speedD.max', label: '速度-最大值', type: 'number' },
+    { key: 'speedD.a', label: '速度-加速度', type: 'number' },
+    { key: 'speedD.random', label: '速度-随机比例', type: 'number' },
+    { key: 'speedD.selfVra', label: '速度-自转速度', type: 'number' },
+    { key: 'speedD.raBackV', label: '速度-后坐速度', type: 'number' },
+    { key: 'followD.value', label: '追踪强度', type: 'number' },
+    { key: 'followD.maxTime', label: '追踪最长时间', type: 'number' },
+    { key: 'followD.delay', label: '追踪延迟', type: 'number' },
+    { key: 'followD.hitIsTargetB', label: '追踪命中目标', type: 'switch' },
+    { key: 'bounceD.body', label: '反弹-单位次数', type: 'number' },
+    { key: 'bounceD.floor', label: '反弹-地面次数', type: 'number' },
+    { key: 'bounceD.vMul', label: '反弹-速度倍数', type: 'number' },
+    { key: 'bounceD.noDieB', label: '反弹-不消失', type: 'switch' },
+    { key: 'boomD.floorB', label: '爆炸-地面触发', type: 'switch' },
+    { key: 'boomD.bodyB', label: '爆炸-单位触发', type: 'switch' },
+    { key: 'boomD.radius', label: '爆炸-半径', type: 'number' },
+    { key: 'boomD.hurtMul', label: '爆炸-伤害倍率', type: 'number' },
+    { key: 'lineD.color', label: '射线-颜色', type: 'string', desc: '如 0xFFFFFF' },
+    { key: 'lineD.size', label: '射线-粗细', type: 'number' }
 ];
 
 export const ARMS_VISUAL_METAS = [

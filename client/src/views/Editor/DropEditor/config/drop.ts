@@ -29,3 +29,10 @@ export const DROP_LOGIC_METAS = [
     { key: 'keyB', label: '关键物品', type: 'switch' },
     { key: 'extraSkill', label: '附加技能', type: 'string' }
 ];
+
+export const DROP_PROBABILITY_METAS = [
+    { key: 'normalPro', label: '普通怪掉率', type: 'number', desc: '0-1 之间的小数' },
+    { key: 'superPro', label: '精英怪掉率', type: 'number', desc: '0-1 之间的小数' },
+    { key: 'bossPro', label: '首领掉率', type: 'number', desc: '0-1 之间的小数' },
+    { key: 'itemsLvRange', label: '物品等级范围', type: 'string', desc: '格式: min,max (如: 1,99)' }
+];
