@@ -11,7 +11,7 @@
                     </n-space>
                 </template>
                 <div class="section-content">
-                    <n-grid :cols="3" :x-gap="12" :y-gap="12">
+                    <n-grid cols="1 s:2 m:3" :x-gap="12" :y-gap="12" responsive="screen">
                         <n-gi v-for="meta in BULLET_HURT_METAS" :key="meta.key">
                             <MetaFormItem :meta="meta" v-model:modelValue="bullet[meta.key]" :show-label="true" />
                         </n-gi>
@@ -28,7 +28,7 @@
                     </n-space>
                 </template>
                 <div class="section-content">
-                    <n-grid :cols="3" :x-gap="12" :y-gap="12">
+                    <n-grid cols="1 s:2 m:3" :x-gap="12" :y-gap="12" responsive="screen">
                         <n-gi>
                             <div class="meta-label">暴击系数 (critD.mul)</div>
                             <n-input-number v-model:value="bullet.critD!.mul" :precision="2" placeholder="默认 1.5" />

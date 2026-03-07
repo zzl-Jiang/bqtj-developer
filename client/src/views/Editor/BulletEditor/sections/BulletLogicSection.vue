@@ -11,7 +11,7 @@
                     </n-space>
                 </template>
                 <div class="section-content">
-                    <n-grid :cols="3" :x-gap="12" :y-gap="12">
+                    <n-grid cols="1 s:2 m:3" :x-gap="12" :y-gap="12" responsive="screen">
                         <n-gi v-for="meta in BULLET_BEHAVIOR_METAS" :key="meta.key">
                             <MetaFormItem :meta="meta" v-model:modelValue="bullet[meta.key]" :show-label="true" />
                         </n-gi>
@@ -28,7 +28,7 @@
                     </n-space>
                 </template>
                 <div class="section-content">
-                    <n-grid :cols="2" :x-gap="24" :y-gap="12">
+                    <n-grid cols="1 m:2" :x-gap="24" :y-gap="12" responsive="screen">
                         <!-- 直接暴露一些关键的数字属性，如果 MetaFormItem 不够直观 -->
                         <n-gi>
                             <div class="meta-label">存活时间 (bulletLife)</div>

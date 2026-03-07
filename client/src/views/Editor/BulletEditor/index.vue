@@ -16,7 +16,7 @@
         <template #content>
             <div class="h-full flex flex-col">
                 <!-- XML 预览抽屉 -->
-                <n-drawer v-model:show="showXmlDrawer" :width="500" placement="right">
+                <n-drawer v-model:show="showXmlDrawer" :width="isMobile ? '100%' : 500" placement="right">
                     <n-drawer-content title="XML 预览" closable>
                         <div class="xml-drawer-content">
                             <n-button type="primary" size="small" @click="copyXml" style="margin-bottom: 12px">
@@ -105,6 +105,7 @@ import { ref, computed } from 'vue';
 import { FingerPrintOutline, FlashOutline, ExtensionPuzzleOutline, SpeedometerOutline } from '@vicons/ionicons5';
 import { useMessage, NDrawer, NDrawerContent } from 'naive-ui';
 import type { BulletMetaItem } from './config/types';
+import { useResponsive } from '../../../hooks/useResponsive';
 import EditorLayout from '../../components/EditorLayout.vue';
 import ModuleSidebar from '../../components/ModuleSidebar.vue';
 import WizardPanel from '../../components/wizard/WizardPanel.vue';
@@ -146,6 +147,7 @@ const message = useMessage();
 const modStore = useModStore();
 const { selectedIndex, selectedBullet, menuOptions } = useBulletState();
 const editorModeStore = useEditorModeStore();
+const { isMobile } = useResponsive();
 
 const activeTab = ref('basic');
 

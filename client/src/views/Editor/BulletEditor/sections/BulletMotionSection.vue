@@ -11,7 +11,7 @@
                     </n-space>
                 </template>
                 <div class="section-content">
-                    <n-grid :cols="3" :x-gap="12" :y-gap="12">
+                    <n-grid cols="1 s:2 m:3" :x-gap="12" :y-gap="12" responsive="screen">
                         <n-gi v-for="meta in BULLET_MOTION_METAS" :key="meta.key">
                             <MetaFormItem :meta="meta" v-model:modelValue="bullet" :show-label="true" />
                         </n-gi>
@@ -28,7 +28,7 @@
                     </n-space>
                 </template>
                 <div class="section-content">
-                    <n-grid :cols="3" :x-gap="12" :y-gap="12">
+                    <n-grid cols="1 s:2 m:3" :x-gap="12" :y-gap="12" responsive="screen">
                         <!-- 反弹设置 -->
                         <n-gi v-for="meta in BULLET_BOUNCE_METAS" :key="meta.key">
                             <MetaFormItem :meta="meta" v-model:modelValue="bullet" :show-label="true" />
@@ -51,7 +51,7 @@
                     </n-space>
                 </template>
                 <div class="section-content">
-                    <n-grid :cols="3" :x-gap="12" :y-gap="12">
+                    <n-grid cols="1 s:2 m:3" :x-gap="12" :y-gap="12" responsive="screen">
                         <n-gi v-for="meta in BULLET_GATLIN_METAS" :key="meta.key">
                             <MetaFormItem :meta="meta" v-model:modelValue="bullet" :show-label="true" />
                         </n-gi>
