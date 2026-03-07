@@ -86,7 +86,7 @@
     </n-collapse>
 
     <!-- 事件编辑详情抽屉 -->
-    <n-drawer v-model:show="showDrawer" :width="650" placement="right">
+    <n-drawer v-model:show="showDrawer" :width="isMobile ? '100%' : 650" placement="right">
       <n-drawer-content :title="`编辑事件: ${editingEvent?.id || '新事件'}`" closable>
         <div v-if="editingEvent">
           <n-form :label-width="100">
@@ -97,7 +97,7 @@
 
             <!-- 条件配置 (Condition) -->
             <n-card title="触发条件 (Condition)" size="small" embedded class="mb-4">
-              <n-grid :cols="2" :x-gap="12" class="mb-2">
+              <n-grid cols="1 m:2" :x-gap="12" class="mb-2" responsive="screen">
                 <n-gi v-for="meta in EVENT_CONDITION_METAS" :key="meta.key">
                   <MetaFormItem :meta="meta" v-model:modelValue="editingEvent.condition![meta.key]" :show-label="true" />
                 </n-gi>
@@ -149,8 +149,10 @@ import ConditionBuilder from './event/ConditionBuilder.vue';
 import OrderBuilder from './event/OrderBuilder.vue';
 import { TrashOutline, AddOutline, ReorderFourOutline } from '@vicons/ionicons5';
 import { useSectionNavigator } from '../../../../hooks/useSectionNavigator';
+import { useResponsive } from '../../../../hooks/useResponsive';
 
 const { selectedLevel: level } = useLevelState();
+const { isMobile } = useResponsive();
 
 const showDrawer = ref(false);
 const editingEvent = ref<LevelEventDefine | null>(null);

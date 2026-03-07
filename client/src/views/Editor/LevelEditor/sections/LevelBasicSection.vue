@@ -7,7 +7,7 @@
 
     <!-- 基础参数卡片 -->
     <n-card title="基础参数" size="small" class="mb-4">
-      <n-grid :cols="3" :x-gap="12">
+      <n-grid cols="1 s:2 m:3" :x-gap="12" responsive="screen">
         <n-gi v-for="meta in LEVEL_BASIC_METAS" :key="meta.key">
           <div :id="`basic-${meta.key}`">
             <MetaFormItem
@@ -24,7 +24,7 @@
     <n-card title="运行规则 (Info)" size="small">
       <n-tabs type="line" animated>
         <n-tab-pane name="basic" tab="核心数值">
-          <n-grid :cols="3" :x-gap="12">
+          <n-grid cols="1 s:2 m:3" :x-gap="12" responsive="screen">
             <n-gi v-for="meta in LEVEL_INFO_METAS.runtime" :key="meta.key">
               <!-- 注意这里绑定的是 level.info[key] -->
               <MetaFormItem
@@ -37,7 +37,7 @@
         </n-tab-pane>
 
         <n-tab-pane name="limit" tab="功能限制">
-          <n-grid :cols="4" :x-gap="12">
+          <n-grid cols="2 s:3 m:4" :x-gap="12" responsive="screen">
             <n-gi v-for="meta in LEVEL_INFO_METAS.restrictions" :key="meta.key">
               <!-- 布尔值会自动渲染成开关/勾选框 -->
               <MetaFormItem
@@ -50,7 +50,7 @@
         </n-tab-pane>
         
         <n-tab-pane name="other" tab="扩展">
-           <n-grid :cols="2" :x-gap="12">
+           <n-grid cols="1 m:2" :x-gap="12" responsive="screen">
             <n-gi v-for="meta in LEVEL_INFO_METAS.misc" :key="meta.key">
               <MetaFormItem
                 :meta="meta"

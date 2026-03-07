@@ -16,7 +16,7 @@
         </n-dropdown>
       </template>
 
-      <n-grid :cols="3" :x-gap="12" :y-gap="12">
+      <n-grid cols="1 s:2 m:3" :x-gap="12" :y-gap="12" responsive="screen">
         <!-- 固定显示的 AI 指令 -->
         <n-gi>
           <MetaFormItem :meta="AI_ORDER_META" v-model:modelValue="level.unitG.allDefault!.aiOrder" :show-label="true" />
@@ -99,33 +99,33 @@
     </n-collapse>
 
     <!-- 单位详情编辑抽屉 -->
-    <n-drawer v-model:show="showDrawer" :width="600" placement="right">
+    <n-drawer v-model:show="showDrawer" :width="isMobile ? '100%' : 600" placement="right">
       <n-drawer-content :title="`编辑单位: ${editingUnit?.cnName || '未命名'}`" closable>
         <div v-if="editingUnit">
           <n-tabs type="line" animated>
             <n-tab-pane name="basic" tab="基础信息">
-              <n-grid :cols="2" :x-gap="12" :y-gap="8">
+              <n-grid cols="1 m:2" :x-gap="12" :y-gap="8" responsive="screen">
                 <n-gi v-for="meta in UNIT_METAS.basic" :key="meta.key">
                   <MetaFormItem :meta="meta" v-model:modelValue="editingUnit[meta.key]" :show-label="true" />
                 </n-gi>
               </n-grid>
             </n-tab-pane>
             <n-tab-pane name="stats" tab="数值倍率">
-              <n-grid :cols="2" :x-gap="12" :y-gap="8">
+              <n-grid cols="1 m:2" :x-gap="12" :y-gap="8" responsive="screen">
                 <n-gi v-for="meta in UNIT_METAS.stats" :key="meta.key">
                   <MetaFormItem :meta="meta" v-model:modelValue="editingUnit[meta.key]" :show-label="true" />
                 </n-gi>
               </n-grid>
             </n-tab-pane>
             <n-tab-pane name="flags" tab="开关标志">
-              <n-grid :cols="2" :x-gap="12" :y-gap="8">
+              <n-grid cols="1 m:2" :x-gap="12" :y-gap="8" responsive="screen">
                 <n-gi v-for="meta in UNIT_METAS.flags" :key="meta.key">
                   <MetaFormItem :meta="meta" v-model:modelValue="editingUnit[meta.key]" :show-label="true" />
                 </n-gi>
               </n-grid>
             </n-tab-pane>
             <n-tab-pane name="logic" tab="战斗逻辑">
-              <n-grid :cols="2" :x-gap="12" :y-gap="8">
+              <n-grid cols="1 m:2" :x-gap="12" :y-gap="8" responsive="screen">
                 <n-gi v-for="meta in UNIT_METAS.logic" :key="meta.key">
                   <MetaFormItem :meta="meta" v-model:modelValue="editingUnit[meta.key]" :show-label="true" />
                 </n-gi>
@@ -147,8 +147,10 @@ import { UnitOrderDefine } from '../../../../models/level/unit/UnitOrderDefine';
 import { OneUnitOrderDefine } from '../../../../models/level/unit/OneUnitOrderDefine';
 import { TrashOutline, AddOutline } from '@vicons/ionicons5';
 import { useSectionNavigator } from '../../../../hooks/useSectionNavigator';
+import { useResponsive } from '../../../../hooks/useResponsive';
 
 const { selectedLevel: level } = useLevelState();
+const { isMobile } = useResponsive();
 
 const showDrawer = ref(false);
 const editingUnit = ref<any>(null);

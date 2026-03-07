@@ -16,7 +16,7 @@
     <template #content>
       <div class="h-full flex flex-col">
         <!-- XML 预览抽屉 -->
-        <n-drawer v-model:show="showXmlDrawer" :width="500" placement="right">
+        <n-drawer v-model:show="showXmlDrawer" :width="isMobile ? '100%' : 500" placement="right">
           <n-drawer-content title="XML 预览" closable>
             <div class="xml-drawer-content">
               <n-button type="primary" size="small" @click="copyXml" style="margin-bottom: 12px">
@@ -28,7 +28,7 @@
         </n-drawer>
 
         <!-- 复杂字段编辑器抽屉 -->
-        <n-drawer v-model:show="showComplexDrawer" :width="700" placement="right">
+        <n-drawer v-model:show="showComplexDrawer" :width="isMobile ? '100%' : 700" placement="right">
           <n-drawer-content :title="complexFieldTitle" closable>
             <div v-if="complexFieldType === 'eventG'" class="complex-editor">
               <EventSection />
@@ -121,6 +121,7 @@
 import { SettingsOutline, PeopleOutline, MapOutline, ListOutline } from '@vicons/ionicons5';
 import { useMessage, NDrawer, NDrawerContent } from 'naive-ui';
 import { useLevelState } from './hooks/useLevelState';
+import { useResponsive } from '../../../hooks/useResponsive';
 import EditorLayout from '../../components/EditorLayout.vue';
 import ModuleSidebar from '../../components/ModuleSidebar.vue';
 import WizardPanel from '../../components/wizard/WizardPanel.vue';
@@ -151,6 +152,7 @@ const message = useMessage();
 const { selectedIndex, selectedLevel, menuOptions, addLevel, removeLevel } = useLevelState();
 const modStore = useModStore();
 const editorModeStore = useEditorModeStore();
+const { isMobile } = useResponsive();
 
 // 管理当前激活的页签
 const activeTab = ref('basic');
