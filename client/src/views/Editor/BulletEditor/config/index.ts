@@ -1,7 +1,30 @@
 // client/src/views/Editor/BulletEditor/config/index.ts
+// 子弹编辑器配置统一导出
+
+// 类型定义
 export * from './types';
-export * from './basic';
-export * from './behavior';
-export * from './motion';
-export * from './visual';
-export * from './skill';
+
+// 字段配置 - 使用 _METAS 别名导出以兼容现有代码
+export {
+  BULLET_BASIC_FIELDS as BULLET_BASIC_METAS,
+  BULLET_HURT_FIELDS as BULLET_HURT_METAS,
+  BULLET_BEHAVIOR_FIELDS as BULLET_BEHAVIOR_METAS,
+  BULLET_SHOOT_FIELDS as BULLET_SHOOT_METAS,
+  BULLET_FLAG_FIELDS as BULLET_FLAG_METAS,
+  BULLET_MOTION_FIELDS as BULLET_MOTION_METAS,
+  BULLET_GATLIN_FIELDS as BULLET_GATLIN_METAS,
+  BULLET_SPEED_DETAIL_FIELDS as BULLET_SPEED_DETAIL_METAS,
+  BULLET_FOLLOW_FIELDS as BULLET_FOLLOW_METAS,
+  BULLET_BOUNCE_FIELDS as BULLET_BOUNCE_METAS,
+  BULLET_SKILL_FIELDS as BULLET_SKILL_METAS,
+  BULLET_BOOM_FIELDS as BULLET_BOOM_METAS,
+  BULLET_LINE_FIELDS as BULLET_LINE_METAS,
+  BULLET_VISUAL_FIELDS as BULLET_VISUAL_METAS
+} from './fields';
+
+// 向导模式配置
+export {
+  BULLET_WIZARD_CATEGORIES,
+  BULLET_WIZARD_FIELD_CONFIG,
+  enhanceFieldMeta
+} from './wizard';
