@@ -9,7 +9,7 @@ export type EditorMode = 'pro' | 'wizard';
 export const useEditorModeStore = defineStore('editorMode', () => {
     // 从 localStorage 读取保存的模式，默认专业模式
     const savedMode = localStorage.getItem('editor_mode') as EditorMode | null;
-    const currentMode = ref<EditorMode>(savedMode || 'pro');
+    const currentMode = ref<EditorMode>(savedMode || 'wizard');
 
     // 是否为向导模式
     const isWizardMode = computed(() => currentMode.value === 'wizard');
