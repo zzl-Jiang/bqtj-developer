@@ -1,18 +1,22 @@
 <script setup lang="ts">
 import { h, computed, ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { darkTheme, NIcon, NBadge, NH1, NTag, NText, NSpace, NLayout, NLayoutSider, NLayoutContent, NButton, NConfigProvider, NLoadingBarProvider, NMessageProvider, NDialogProvider, NNotificationProvider, NModal, NScrollbar, NMenu } from 'naive-ui'
+import { darkTheme, NIcon, NBadge, NH1, NTag, NText, NSpace, NLayout, NLayoutSider, NLayoutContent, NButton, NConfigProvider, NLoadingBarProvider, NMessageProvider, NDialogProvider, NNotificationProvider, NModal, NScrollbar, NMenu, NTooltip } from 'naive-ui'
 import { RouterLink } from 'vue-router'
 import type { MenuOption } from 'naive-ui'
-import { RocketOutline, TimeOutline, HomeOutline, BuildOutline, PersonOutline, ChevronBackOutline, ChevronForwardOutline } from '@vicons/ionicons5'
+import { RocketOutline, TimeOutline, HomeOutline, BuildOutline, PersonOutline, ChevronBackOutline, ChevronForwardOutline, FlashOutline, CompassOutline } from '@vicons/ionicons5'
 
 import { UPDATES_DATA } from './data/updates'
 import UpdateLogRenderer from './views/components/UpdateLogRenderer.vue'
+import { useEditorModeStore } from './store/useEditorModeStore'
 
 const route = useRoute()
 const showChangelog = ref(false)
 const hasNewUpdate = ref(false)
 const isSidebarCollapsed = ref(true)
+
+// 全局编辑器模式
+const editorModeStore = useEditorModeStore()
 
 // 管理当前选中的版本索引（默认 0，即最新版本）
 const activeVersionIdx = ref(0)
@@ -155,6 +159,29 @@ const menuOptions: MenuOption[] = [
   background: rgba(255, 255, 255, 0.08);
 }
 
+/* 模式切换 */
+.mode-switch-wrapper {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mode-btn {
+  flex: 1;
+  font-size: 12px;
+}
+
+.footer-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.05);
+  margin: 4px 0;
+}
+
 .user-placeholder {
   display: flex;
   flex-direction: column;
@@ -243,6 +270,50 @@ body {
                   :options="menuOptions" :value="activeKey" class="sidebar-menu" />
 
                 <div class="sidebar-footer">
+                  <!-- 编辑器模式切换 -->
+                  <div class="mode-switch-wrapper" v-if="!isSidebarCollapsed">
+                    <n-button
+                      quaternary
+                      size="small"
+                      :type="editorModeStore.isProMode ? 'primary' : 'default'"
+                      @click="editorModeStore.setMode('pro')"
+                      class="mode-btn"
+                    >
+                      <template #icon>
+                        <n-icon><FlashOutline /></n-icon>
+                      </template>
+                      专业
+                    </n-button>
+                    <n-button
+                      quaternary
+                      size="small"
+                      :type="editorModeStore.isWizardMode ? 'primary' : 'default'"
+                      @click="editorModeStore.setMode('wizard')"
+                      class="mode-btn"
+                    >
+                      <template #icon>
+                        <n-icon><CompassOutline /></n-icon>
+                      </template>
+                      向导
+                    </n-button>
+                  </div>
+                  <n-tooltip v-else placement="right">
+                    <template #trigger>
+                      <n-button quaternary circle size="medium" class="footer-btn" @click="editorModeStore.toggleMode()">
+                        <template #icon>
+                          <n-icon>
+                            <FlashOutline v-if="editorModeStore.isProMode" />
+                            <CompassOutline v-else />
+                          </n-icon>
+                        </template>
+                      </n-button>
+                    </template>
+                    {{ editorModeStore.isProMode ? '专业模式' : '向导模式' }}
+                  </n-tooltip>
+
+                  <!-- 分隔线 -->
+                  <div class="footer-divider" v-if="!isSidebarCollapsed"></div>
+
                   <!-- 版本信息 -->
                   <n-badge :dot="hasNewUpdate" color="#18a058" :offset="[0, 0]">
                     <n-button quaternary circle size="medium" @click="handleOpenLog" class="footer-btn">

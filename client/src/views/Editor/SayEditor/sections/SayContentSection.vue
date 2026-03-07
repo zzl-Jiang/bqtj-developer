@@ -10,9 +10,10 @@
     </div>
 
     <n-list bordered style="margin-top: 10px;">
-      <draggable 
-        v-model="sayList.arr" 
-        item-key="index" 
+      <draggable
+        :model-value="sayList.arr || []"
+        @update:model-value="(val: SayDefine[]) => { if (sayList) sayList.arr = val }"
+        item-key="index"
         handle=".drag-handle"
         animation="300"
       >
@@ -48,7 +49,7 @@
                 <template #header-extra>
                   <div @click.stop> <!-- 阻止点击删除时触发折叠 -->
                     <n-popconfirm
-                      @positive-click="sayList.arr.splice(rIdx, 1)"
+                      @positive-click="sayList.arr?.splice(rIdx, 1)"
                       positive-text="确定"
                       negative-text="取消"
                     >
@@ -129,7 +130,7 @@ useSectionNavigator({
   tab: 'list',
   list: () => sayList.value?.arr || [],
   onFound: (item) => {
-    const idx = sayList.value?.arr.indexOf(item);
+    const idx = sayList.value?.arr?.indexOf(item);
     const el = document.getElementById(`sayRow-${idx}`);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -138,7 +139,7 @@ useSectionNavigator({
 });
 
 const handleAddSayRow = () => {
-  sayList.value?.arr.push(new SayDefine());
+  sayList.value?.arr?.push(new SayDefine());
 };
 </script>
 

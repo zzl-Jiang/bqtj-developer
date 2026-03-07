@@ -47,7 +47,7 @@
               </div>
               <n-grid :cols="2" :x-gap="12" :y-gap="12">
                 <n-gi v-for="meta in forceMetas" :key="meta.key">
-                  <MetaFormItem :meta="meta" v-model:modelValue="body.motionD[meta.key]" :show-label="true" />
+                  <MetaFormItem :meta="meta" v-model:modelValue="body.motionD![meta.key]" :show-label="true" />
                 </n-gi>
               </n-grid>
             </div>
@@ -61,7 +61,7 @@
               </div>
               <n-grid :cols="2" :x-gap="12" :y-gap="12">
                 <n-gi v-for="meta in behaviorMetas" :key="meta.key">
-                  <MetaFormItem :meta="meta" v-model:modelValue="body.motionD[meta.key]" :show-label="true" />
+                  <MetaFormItem :meta="meta" v-model:modelValue="body.motionD![meta.key]" :show-label="true" />
                 </n-gi>
               </n-grid>
             </div>

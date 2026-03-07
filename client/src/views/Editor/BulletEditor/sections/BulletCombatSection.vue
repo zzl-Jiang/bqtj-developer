@@ -31,7 +31,7 @@
                     <n-grid :cols="3" :x-gap="12" :y-gap="12">
                         <n-gi>
                             <div class="meta-label">暴击系数 (critD.mul)</div>
-                            <n-input-number v-model:value="bullet.critD.mul" :precision="2" placeholder="默认 1.5" />
+                            <n-input-number v-model:value="bullet.critD!.mul" :precision="2" placeholder="默认 1.5" />
                         </n-gi>
                         <n-gi>
                             <div class="meta-label">击退力 (beatBack)</div>

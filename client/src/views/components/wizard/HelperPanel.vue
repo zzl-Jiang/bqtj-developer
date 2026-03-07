@@ -20,12 +20,16 @@
 
         <!-- 字段列表 -->
         <div v-if="fields.length > 0" class="panel-section">
-            <div class="section-header">
+            <div class="section-header" @click="toggleFieldsList" style="cursor: pointer;">
                 <n-icon :component="ListOutline" :size="18" />
                 <span>字段说明 ({{ fields.length }})</span>
+                <n-button text size="tiny" class="toggle-all-btn" @click.stop="toggleFieldsList">
+                    <n-icon :component="isFieldsExpanded ? ChevronUpOutline : ChevronDownOutline" :size="16" />
+                    <span>{{ isFieldsExpanded ? '折叠' : '展开' }}</span>
+                </n-button>
             </div>
 
-            <div class="fields-list">
+            <div v-show="isFieldsExpanded" class="fields-list">
                 <div
                     v-for="field in fields"
                     :key="field.key"
@@ -43,7 +47,6 @@
                         </n-tag>
                     </div>
                     <p v-if="field.desc" class="field-item-desc">{{ field.desc }}</p>
-                    <p v-if="field.docContent" class="field-item-doc">{{ field.docContent }}</p>
                 </div>
             </div>
         </div>
@@ -85,15 +88,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { NIcon, NTag } from 'naive-ui';
+import { computed, ref } from 'vue';
+import { NIcon, NTag, NButton } from 'naive-ui';
 import {
     BookOutline,
     HelpCircleOutline,
     ListOutline,
     LinkOutline,
     OpenOutline,
-    BulbOutline
+    BulbOutline,
+    ChevronUpOutline,
+    ChevronDownOutline
 } from '@vicons/ionicons5';
 import type { CategoryConfig, BulletMetaItem, ImportanceLevel } from '../../Editor/BulletEditor/config/types';
 
@@ -103,6 +108,14 @@ const props = defineProps<{
     wikiLink?: string;
     tips?: string[];
 }>();
+
+// 字段列表展开状态（默认折叠）
+const isFieldsExpanded = ref(false);
+
+// 切换字段列表展开/折叠
+const toggleFieldsList = () => {
+    isFieldsExpanded.value = !isFieldsExpanded.value;
+};
 
 const wikiBaseUrl = 'https://bqtj.huijiwiki.com/wiki/';
 
@@ -122,8 +135,8 @@ const getImportanceType = (level: ImportanceLevel) => {
 
 const getImportanceText = (level: ImportanceLevel) => {
     const map: Record<ImportanceLevel, string> = {
-        core: '核心',
-        advanced: '进阶',
+        core: '必填',
+        advanced: '推荐',
         optional: '可选'
     };
     return map[level] || '';
@@ -132,7 +145,6 @@ const getImportanceText = (level: ImportanceLevel) => {
 
 <style scoped>
 .helper-panel {
-    width: 320px;
     height: 100%;
     background: rgba(255, 255, 255, 0.02);
     border-left: 1px solid rgba(255, 255, 255, 0.05);
@@ -197,11 +209,25 @@ const getImportanceText = (level: ImportanceLevel) => {
     font-size: 13px;
 }
 
+/* 展开/折叠按钮 */
+.toggle-all-btn {
+    margin-left: auto;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.toggle-all-btn:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
 /* 字段列表 */
 .fields-list {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    /* 防止内容溢出导致宽度增长 */
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .field-item {
@@ -209,6 +235,9 @@ const getImportanceText = (level: ImportanceLevel) => {
     border-radius: 8px;
     padding: 12px;
     border-left: 2px solid transparent;
+    /* 防止内容溢出 */
+    min-width: 0;
+    overflow: hidden;
 }
 
 .field-item.is-core {
@@ -222,9 +251,16 @@ const getImportanceText = (level: ImportanceLevel) => {
     justify-content: space-between;
     gap: 8px;
     margin-bottom: 4px;
+    /* 确保 flex 子项可以正确收缩 */
+    min-width: 0;
 }
 
 .field-item-label {
+    /* 防止长文本撑开布局 */
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-size: 13px;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.85);
@@ -235,15 +271,9 @@ const getImportanceText = (level: ImportanceLevel) => {
     color: rgba(255, 255, 255, 0.4);
     line-height: 1.5;
     margin: 4px 0 0 0;
-}
-
-.field-item-doc {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.6);
-    line-height: 1.5;
-    margin: 8px 0 0 0;
-    padding-top: 8px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    /* 防止长文本撑开布局 */
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 /* 链接 */

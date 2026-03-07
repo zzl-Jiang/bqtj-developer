@@ -172,8 +172,8 @@ const drawerVisible = ref(false);
 const editingHurt = ref<any>(null);
 
 const addHurt = () => {
-  const newHurt = BodyAttackDefine.createDefault(`attack_${(body.value?.hurtArr.length || 0) + 1}`);
-  body.value?.hurtArr.push(newHurt);
+  const newHurt = BodyAttackDefine.createDefault(`attack_${(body.value?.hurtArr?.length || 0) + 1}`);
+  body.value?.hurtArr?.push(newHurt);
 };
 
 const openHurtDrawer = (hurt: any) => {
@@ -188,7 +188,7 @@ const handleRemove = (row: any, index: number) => {
     positiveText: '确认删除',
     negativeText: '手滑了',
     onPositiveClick: () => {
-      body.value?.hurtArr.splice(index, 1);
+      body.value?.hurtArr?.splice(index, 1);
     }
   });
 };

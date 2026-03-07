@@ -13,7 +13,7 @@
     <!-- 顶层：事件组 Collapse -->
     <n-collapse arrow-placement="right" >
       <n-collapse-item 
-        v-for="(group, gIdx) in level.eventG.groups" 
+        v-for="(group, gIdx) in level.eventG?.groups ?? []" 
         :key="gIdx" 
         :name="gIdx"
         class="group-item"
@@ -22,7 +22,7 @@
           <n-space align="center">
             <n-badge :value="Number(gIdx) + 1" color="#18a058" />
             <n-text strong>事件波次 / 逻辑包</n-text>
-            <n-text depth="3">({{ group.events.length }} 个事件)</n-text>
+            <n-text depth="3">({{ group.events?.length ?? 0 }} 个事件)</n-text>
           </n-space>
         </template>
 
@@ -30,7 +30,7 @@
           <n-button-group size="tiny" style="margin-right: 8px;">
             <n-button @click.stop="handleAddEvent(group, 0)">开头添加</n-button>
             <n-button @click.stop="handleAddEvent(group)">末尾添加</n-button>
-            <n-button type="error" ghost @click.stop="level.eventG.groups.splice(gIdx, 1)">删除组</n-button>
+            <n-button type="error" ghost @click.stop="level.eventG?.groups?.splice(gIdx, 1)">删除组</n-button>
           </n-button-group>
         </template>
 
@@ -64,23 +64,23 @@
                       <n-button size="tiny" quaternary circle @click.stop="handleAddEvent(group, eIdx + 1)">
                         <template #icon><n-icon><AddOutline /></n-icon></template>
                       </n-button>
-                      <n-button size="tiny" quaternary type="error" @click.stop="group.events.splice(eIdx, 1)">
+                      <n-button size="tiny" quaternary type="error" @click.stop="group.events?.splice(eIdx, 1)">
                         <template #icon><n-icon><TrashOutline /></n-icon></template>
                       </n-button>
                     </n-space>
                   </template>
 
                   <div class="event-brief">
-                    <n-text depth="2" small>条件: {{ event.condition.xmlText || '(未设置)' }}</n-text>
+                    <n-text depth="2" small>条件: {{ event.condition?.xmlText || '(未设置)' }}</n-text>
                     <div class="order-preview">
-                      指令数: <n-number-animation :from="0" :to="event.orders.length" /> 条
+                      指令数: <n-number-animation :from="0" :to="event.orders?.length ?? 0" /> 条
                     </div>
                   </div>
                 </n-thing>
               </n-list-item>
             </template>
           </draggable>
-          <n-empty v-if="group.events.length === 0" size="small" description="该组暂无事件，请点击右上角添加" />
+          <n-empty v-if="(group.events?.length ?? 0) === 0" size="small" description="该组暂无事件，请点击右上角添加" />
         </n-list>
       </n-collapse-item>
     </n-collapse>
@@ -99,13 +99,13 @@
             <n-card title="触发条件 (Condition)" size="small" embedded class="mb-4">
               <n-grid :cols="2" :x-gap="12" class="mb-2">
                 <n-gi v-for="meta in EVENT_CONDITION_METAS" :key="meta.key">
-                  <MetaFormItem :meta="meta" v-model:modelValue="editingEvent.condition[meta.key]" :show-label="true" />
+                  <MetaFormItem :meta="meta" v-model:modelValue="editingEvent.condition![meta.key]" :show-label="true" />
                 </n-gi>
               </n-grid>
               
               <n-divider title-placement="left">详细逻辑</n-divider>
               
-              <ConditionBuilder v-model="editingEvent.condition.xmlText" />
+              <ConditionBuilder v-model="editingEvent.condition!.xmlText!" />
             </n-card>
 
             <!-- 指令列表 (Orders) -->
@@ -118,15 +118,15 @@
               </template>
 
               <div class="orders-container">
-                <OrderBuilder 
-                  v-for="(order, oIdx) in editingEvent.orders" 
+                <OrderBuilder
+                  v-for="(order, oIdx) in editingEvent.orders ?? []"
                   :key="oIdx"
-                  v-model="order.xmlText"
+                  :model-value="order.xmlText ?? ''"
                   :index="oIdx"
-                  @delete="editingEvent.orders.splice(oIdx, 1)"
+                  @delete="editingEvent.orders?.splice(oIdx, 1)"
                 />
 
-                <n-empty v-if="editingEvent.orders.length === 0" description="暂无指令，点击右上角添加" />
+                <n-empty v-if="(editingEvent.orders?.length ?? 0) === 0" description="暂无指令，点击右上角添加" />
               </div>
             </n-card>
           </n-form>
@@ -157,17 +157,20 @@ const editingEvent = ref<LevelEventDefine | null>(null);
 
 const handleAddGroup = () => {
   const newGroup = new LevelEventGroup();
-  level.value?.eventG.groups.push(newGroup);
+  if (!level.value?.eventG?.groups) {
+    level.value!.eventG!.groups = [];
+  }
+  level.value!.eventG!.groups.push(newGroup);
 };
 
 const handleAddEvent = (group: LevelEventGroup, index?: number) => {
   // 使用工厂方法确保新事件带有默认属性
-  const newEvent = LevelEventDefine.createDefault("e_" + (group.events.length + 1));
-  
+  const newEvent = LevelEventDefine.createDefault("e_" + ((group.events?.length ?? 0) + 1));
+
   if (typeof index === 'number') {
-    group.events.splice(index, 0, newEvent);
+    group.events?.splice(index, 0, newEvent);
   } else {
-    group.events.push(newEvent);
+    group.events?.push(newEvent);
   }
 };
 
@@ -179,7 +182,7 @@ const editEvent = (event: LevelEventDefine) => {
 const handleAddOrder = () => {
   if (editingEvent.value) {
     const newOrder = new LevelEventOrderDefine();
-    editingEvent.value.orders.push(newOrder);
+    editingEvent.value.orders?.push(newOrder);
   }
 };
 
@@ -187,7 +190,7 @@ const handleAddOrder = () => {
 useSectionNavigator({
   module: 'level',
   tab: 'events',
-  list: () => level.value?.eventG.groups.flatMap(g => g.events),
+  list: () => level.value?.eventG?.groups?.flatMap(g => g.events ?? []) ?? [],
   onFound: (event) => editEvent(event)
 });
 </script>

@@ -32,7 +32,10 @@
 
                 <!-- 值预览 -->
                 <div class="field-value-wrapper">
-                    <template v-if="hasValue">
+                    <template v-if="meta.isComplex">
+                        <span class="field-complex-hint">{{ meta.complexDesc || '点击配置' }}</span>
+                    </template>
+                    <template v-else-if="hasValue">
                         <span class="field-value" :title="displayValue">
                             {{ displayValue }}
                         </span>
@@ -53,7 +56,7 @@
                 @click.stop="$emit('edit')"
             >
                 <template #icon>
-                    <n-icon :component="hasValue ? CreateOutline : AddOutline" />
+                    <n-icon :component="getEditIcon" />
                 </template>
             </n-button>
         </div>
@@ -66,13 +69,13 @@ import { NIcon, NTag, NButton } from 'naive-ui';
 import {
     CreateOutline,
     AddOutline,
+    SettingsOutline,
     FlashOutline,
     HeartOutline,
     ShieldCheckmarkOutline,
     ImageOutline,
     ListOutline,
     ToggleOutline,
-    SettingsOutline,
     ColorWandOutline,
     SpeedometerOutline,
     RocketOutline
@@ -128,8 +131,8 @@ const importanceType = computed(() => {
 
 const importanceText = computed(() => {
     const map: Record<ImportanceLevel, string> = {
-        core: '核心',
-        advanced: '进阶',
+        core: '必填',
+        advanced: '推荐',
         optional: '可选'
     };
     return map[props.meta.importance!] || '';
@@ -138,6 +141,14 @@ const importanceText = computed(() => {
 // 是否有值
 const hasValue = computed(() => {
     return props.value !== undefined && props.value !== null && props.value !== '';
+});
+
+// 编辑按钮图标
+const getEditIcon = computed(() => {
+    if (props.meta.isComplex) {
+        return SettingsOutline;
+    }
+    return hasValue.value ? CreateOutline : AddOutline;
 });
 
 // 显示值
@@ -172,11 +183,11 @@ const displayValue = computed(() => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    padding: 12px 16px;
+    gap: 8px;
+    padding: 8px 12px;
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.04);
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.25s ease;
 }
@@ -212,10 +223,10 @@ const displayValue = computed(() => {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    width: 28px;
+    height: 28px;
     background: rgba(255, 255, 255, 0.03);
-    border-radius: 8px;
+    border-radius: 6px;
     flex-shrink: 0;
 }
 
@@ -234,7 +245,7 @@ const displayValue = computed(() => {
 }
 
 .field-label {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.85);
 }
@@ -260,6 +271,11 @@ const displayValue = computed(() => {
 .field-empty {
     color: rgba(255, 255, 255, 0.3);
     font-style: italic;
+}
+
+.field-complex-hint {
+    color: #63e2b7;
+    font-size: 11px;
 }
 
 .field-actions {

@@ -19,13 +19,13 @@
       <n-grid :cols="3" :x-gap="12" :y-gap="12">
         <!-- 固定显示的 AI 指令 -->
         <n-gi>
-          <MetaFormItem :meta="AI_ORDER_META" v-model:modelValue="level.unitG.allDefault.aiOrder" :show-label="true" />
+          <MetaFormItem :meta="AI_ORDER_META" v-model:modelValue="level.unitG.allDefault!.aiOrder" :show-label="true" />
         </n-gi>
 
         <!-- 动态生成的已添加属性 -->
         <n-gi v-for="meta in activeExtraProperties" :key="meta.key">
           <div class="dynamic-property-item">
-            <MetaFormItem :meta="meta" v-model:modelValue="level.unitG.allDefault[meta.key]" :show-label="true" />
+            <MetaFormItem :meta="meta" v-model:modelValue="level.unitG.allDefault![meta.key]" :show-label="true" />
             <!-- 删除按钮 -->
             <n-button quaternary circle size="tiny" type="error" class="delete-btn" @click="removeProperty(meta.key)">
               <template #icon><n-icon>
@@ -45,7 +45,7 @@
 
     <n-collapse v-model:expanded-names="expandedNames" arrow-placement="right" :default-expanded-names="[]"
       style="margin-top: 20px;">
-      <n-collapse-item v-for="(group, gIdx) in level.unitG.unitOrders" :key="gIdx" :name="group.id" class="group-item"
+      <n-collapse-item v-for="(group, gIdx) in level.unitG?.unitOrders ?? []" :key="gIdx" :name="group.id" class="group-item"
         :id="`units-${group.id}`">
         <template #header>
           <n-space style="padding: 10px">
@@ -156,12 +156,12 @@ const expandedNames = ref<string[]>([]);
 
 const handleAddGroup = () => {
   const newGroup = new UnitOrderDefine();
-  newGroup.id = "group_" + (level.value?.unitG.unitOrders.length ?? 0 + 1);
-  level.value?.unitG.unitOrders.push(newGroup);
+  newGroup.id = "group_" + ((level.value?.unitG?.unitOrders?.length ?? 0) + 1);
+  level.value?.unitG?.unitOrders?.push(newGroup);
 };
 
 const handleRemoveGroup = (idx: number) => {
-  level.value?.unitG.unitOrders.splice(idx, 1);
+  level.value?.unitG?.unitOrders?.splice(idx, 1);
 };
 
 const handleAddUnit = (group: UnitOrderDefine) => {
@@ -190,7 +190,7 @@ const ALL_AVAILABLE_METAS = computed(() => {
 const activeExtraProperties = computed(() => {
   if (!level.value?.unitG?.allDefault) return [];
   return ALL_AVAILABLE_METAS.value.filter(meta =>
-    level.value?.unitG.allDefault[meta.key] !== undefined && meta.key !== 'aiOrder'
+    level.value?.unitG?.allDefault?.[meta.key] !== undefined && meta.key !== 'aiOrder'
   );
 });
 
@@ -203,7 +203,9 @@ const handleAddProperty = (key: string) => {
     if (meta.type === 'number') defaultValue = 1;
     if (meta.type === 'boolean') defaultValue = true;
 
-    if (level.value) level.value.unitG.allDefault[key] = defaultValue;
+    if (level.value?.unitG?.allDefault) {
+      level.value.unitG.allDefault[key] = defaultValue;
+    }
   }
 };
 
@@ -211,7 +213,7 @@ const handleAddProperty = (key: string) => {
 const addPropertyOptions = computed(() => {
   // 只列出还没有被添加的属性
   return ALL_AVAILABLE_METAS.value
-    .filter(meta => level.value?.unitG.allDefault[meta.key] === undefined)
+    .filter(meta => level.value?.unitG?.allDefault?.[meta.key] === undefined)
     .map(meta => ({
       label: `${meta.label}`,
       key: meta.key
@@ -220,7 +222,9 @@ const addPropertyOptions = computed(() => {
 
 // 移除属性
 const removeProperty = (key: string) => {
-  if (level.value) level.value.unitG.allDefault[key] = undefined;
+  if (level.value?.unitG?.allDefault) {
+    level.value.unitG.allDefault[key] = undefined;
+  }
 };
 
 /**
@@ -232,7 +236,7 @@ useSectionNavigator<any>({
   // 汇总所有可跳转的目标：组 ID 或 单位名称
   list: () => {
     if (!level.value) return [];
-    const groups = level.value.unitG.unitOrders;
+    const groups = level.value.unitG?.unitOrders ?? [];
     const units = groups.flatMap(g => g.arr);
     return [...groups, ...units];
   },
@@ -245,7 +249,7 @@ useSectionNavigator<any>({
     // 如果找到的是具体的单位 (特征是有 cnName 属性)
     else if ('cnName' in item) {
       // 找到该单位属于哪个组
-      const parentGroup = level.value?.unitG.unitOrders.find(g => g.arr.includes(item));
+      const parentGroup = level.value?.unitG?.unitOrders?.find(g => g.arr.includes(item));
       if (parentGroup) {
         expandedNames.value = [parentGroup.id || '']; // 展开父组
       }

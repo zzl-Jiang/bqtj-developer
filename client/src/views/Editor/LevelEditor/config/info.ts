@@ -1,6 +1,12 @@
 // client/src/views/Editor/LevelEditor/config/info.ts
 
-export const LEVEL_INFO_METAS = {
+import type { LevelMetaItem } from './types';
+
+export const LEVEL_INFO_METAS: {
+  runtime: LevelMetaItem[];
+  restrictions: LevelMetaItem[];
+  misc: LevelMetaItem[];
+} = {
   // 基础运行逻辑
   runtime: [
     {
@@ -38,7 +44,7 @@ export const LEVEL_INFO_METAS = {
       label: '视野覆盖 (sightCover)',
       type: 'number',
       desc: `小视野遮罩。
-      后可加命令 (order) hideSightCover 关闭遮罩"`
+      后可加命令 (order) hideSightCover 关闭遮罩`
     },
     {
       key: 'dropNoGravityTime',
@@ -64,7 +70,7 @@ export const LEVEL_INFO_METAS = {
     {
       key: 'noPartnerB',
       label: '禁用队友 (noPartnerB)',
-      type: 'switch' 
+      type: 'switch'
     },
     {
       key: 'noPetB',
@@ -114,7 +120,7 @@ export const LEVEL_INFO_METAS = {
       type: 'switch',
       desc: `初始进入关卡时玩家无法操作。
       通常用以配合剧情演绎。
-      后面需要加命令 (order) openInput 开启玩家操作"`
+      后面需要加命令 (order) openInput 开启玩家操作`
     },
     {
       key: 'noRestartB',
@@ -125,16 +131,12 @@ export const LEVEL_INFO_METAS = {
       key: 'dumB',
       label: '非正式关卡 (dumB)',
       type: 'switch',
-      disabled: true,
-      fixedValue: true,
       desc: '该属性在预览模式下被引擎强制设为开启 (true)。\n由于 TempGetter 限制，无法在外部加载时关闭非正式模式设置。'
     },
     {
       key: 'overBackB',
       label: '返回界面 (overBackB)',
       type: 'switch',
-      disabled: true,
-      fixedValue: true,
       desc: '该属性在预览模式下被引擎强制设为开启 (true)。\n关卡结束后将返回原本界面。'
     }
   ],
@@ -174,7 +176,6 @@ export const LEVEL_INFO_METAS = {
       key: 'diy',
       label: '自定义逻辑 (diy)',
       type: 'string',
-      disabled: true,
       desc: '非官方开发者白名单 ID 无法生效。引擎在加载时会清空此字段。'
     },
     {

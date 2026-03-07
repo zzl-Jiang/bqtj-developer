@@ -30,7 +30,7 @@ export const validateLevel = (level: LevelDefine, index: number): ValidationErro
     })
   }
 
-  if (level.unitG.unitOrders.length === 0) {
+  if ((level.unitG?.unitOrders?.length ?? 0) === 0) {
     errors.push({
       module: 'level',
       targetId: targetId,
@@ -40,7 +40,7 @@ export const validateLevel = (level: LevelDefine, index: number): ValidationErro
     })
   }
 
-  if (level.eventG.groups.length === 0) {
+  if ((level.eventG?.groups?.length ?? 0) === 0) {
     errors.push({
       module: 'level',
       targetId: targetId,

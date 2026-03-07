@@ -4,10 +4,10 @@
     <n-grid :cols="3" :x-gap="12" :y-gap="8">
       <n-gi v-for="meta in TARGET_META" :key="meta.key">
         <!-- 注意：这里 v-model 绑定的是 selectedSkill.target[key] -->
-        <MetaFormItem 
+        <MetaFormItem
           :meta="meta"
           :show-label="true"
-          v-model:model-value="selectedSkill.target[meta.key]" 
+          v-model:model-value="selectedSkill.target![meta.key]"
         />
       </n-gi>
     </n-grid>

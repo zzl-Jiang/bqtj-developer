@@ -14,61 +14,66 @@
                     @click="selectCategory(category.id)"
                 />
             </div>
-
-            <!-- 帮助面板 -->
-            <HelperPanel
-                :category="currentCategory"
-                :fields="currentCategoryFields"
-                :wiki-link="currentCategory?.id"
-                :tips="currentTips"
-            />
         </div>
 
         <!-- 分隔线 -->
         <div class="divider" />
 
-        <!-- 底部：字段编辑区 -->
-        <div class="wizard-bottom">
-            <!-- 筛选栏 -->
-            <div class="filter-bar">
-                <n-radio-group v-model:value="importanceFilter" size="small">
-                    <n-radio-button value="all">全部</n-radio-button>
-                    <n-radio-button value="core">核心</n-radio-button>
-                    <n-radio-button value="advanced">进阶</n-radio-button>
-                </n-radio-group>
+        <!-- 底部：字段编辑区 + 帮助面板并排 -->
+        <div class="wizard-main">
+            <!-- 左侧：筛选栏 + 字段卡片 -->
+            <div class="wizard-left">
+                <!-- 筛选栏 -->
+                <div class="filter-bar">
+                    <n-radio-group v-model:value="importanceFilter" size="small">
+                        <n-radio-button value="all">全部</n-radio-button>
+                        <n-radio-button value="core">核心</n-radio-button>
+                        <n-radio-button value="advanced">进阶</n-radio-button>
+                    </n-radio-group>
 
-                <n-input
-                    v-model:value="searchQuery"
-                    placeholder="搜索字段..."
-                    size="small"
-                    clearable
-                    style="width: 200px"
-                >
-                    <template #prefix>
-                        <n-icon :component="SearchOutline" />
-                    </template>
-                </n-input>
+                    <n-input
+                        v-model:value="searchQuery"
+                        placeholder="搜索字段..."
+                        size="small"
+                        clearable
+                        style="width: 200px"
+                    >
+                        <template #prefix>
+                            <n-icon :component="SearchOutline" />
+                        </template>
+                    </n-input>
+                </div>
+
+                <!-- 字段卡片网格 -->
+                <div v-if="filteredFields.length > 0" class="fields-grid">
+                    <FieldCard
+                        v-for="field in filteredFields"
+                        :key="field.key"
+                        :meta="field"
+                        :value="getFieldValue(field.key)"
+                        @click="openFieldEditor(field)"
+                        @edit="openFieldEditor(field)"
+                    />
+                </div>
+
+                <!-- 空状态 -->
+                <div v-else class="empty-fields">
+                    <n-empty description="暂无匹配字段">
+                        <template #icon>
+                            <n-icon :component="SearchOutline" />
+                        </template>
+                    </n-empty>
+                </div>
             </div>
 
-            <!-- 字段卡片网格 -->
-            <div v-if="filteredFields.length > 0" class="fields-grid">
-                <FieldCard
-                    v-for="field in filteredFields"
-                    :key="field.key"
-                    :meta="field"
-                    :value="getFieldValue(field.key)"
-                    @click="openFieldEditor(field)"
-                    @edit="openFieldEditor(field)"
+            <!-- 右侧：帮助面板 -->
+            <div class="wizard-right">
+                <HelperPanel
+                    :category="currentCategory"
+                    :fields="currentCategoryFields"
+                    :wiki-link="currentCategory?.id"
+                    :tips="currentTips"
                 />
-            </div>
-
-            <!-- 空状态 -->
-            <div v-else class="empty-fields">
-                <n-empty description="暂无匹配字段">
-                    <template #icon>
-                        <n-icon :component="SearchOutline" />
-                    </template>
-                </n-empty>
             </div>
         </div>
 
@@ -161,6 +166,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
     'update:data': [value: any];
+    'edit:complex': [field: BulletMetaItem, data: any];
 }>();
 
 // 状态
@@ -281,6 +287,11 @@ function getFieldValue(key: string): any {
 }
 
 function openFieldEditor(field: BulletMetaItem) {
+    // 复杂字段触发特殊事件，由父组件处理
+    if (field.isComplex) {
+        emit('edit:complex', field, props.data);
+        return;
+    }
     editingField.value = field;
     editingData.value = props.data;
     showFieldModal.value = true;
@@ -324,43 +335,27 @@ function getWikiLink(link: string): string {
     overflow: hidden;
 }
 
-/* 上半部分：分类和帮助面板 */
+/* 上半部分：分类卡片 */
 .wizard-top {
-    display: flex;
     flex: 0 0 auto;
-    max-height: 320px;
-    min-height: 240px;
+    padding: 12px 16px;
 }
 
 .category-grid {
-    flex: 1;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    padding: 16px;
-    overflow-y: auto;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
     .category-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
-@media (max-width: 900px) {
-    .wizard-top {
-        flex-direction: column;
-    }
-
+@media (max-width: 1100px) {
     .category-grid {
         grid-template-columns: repeat(2, 1fr);
-        max-height: 200px;
-    }
-
-    .helper-panel {
-        width: 100%;
-        border-left: none;
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
 }
 
@@ -369,32 +364,70 @@ function getWikiLink(link: string): string {
     height: 1px;
     background: rgba(255, 255, 255, 0.05);
     margin: 0 16px;
+    flex-shrink: 0;
 }
 
-/* 下半部分：字段编辑区 */
-.wizard-bottom {
+/* 下半部分：主内容区（左右布局） */
+.wizard-main {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    min-height: 0;
+}
+
+/* 左侧：字段编辑区 */
+.wizard-left {
     flex: 1;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     padding: 16px;
+    min-width: 0;
+}
+
+/* 右侧：帮助面板 */
+.wizard-right {
+    width: 300px;
+    flex-shrink: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+    overflow-y: auto;
+}
+
+@media (max-width: 1200px) {
+    .wizard-right {
+        width: 260px;
+    }
+}
+
+@media (max-width: 900px) {
+    .wizard-main {
+        flex-direction: column;
+    }
+
+    .wizard-right {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        max-height: 200px;
+    }
 }
 
 .filter-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     flex-shrink: 0;
 }
 
 .fields-grid {
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px;
     overflow-y: auto;
     padding-right: 8px;
+    align-content: start;
 }
 
 .empty-fields {

@@ -137,7 +137,7 @@ export const useModStore = defineStore('mod', {
 
       // 放入列表并选中
       this.skillList.push(newSkill);
-      this.activeIndexes.level = this.skillList.length - 1;
+      this.activeIndexes.skill = this.skillList.length - 1;
     },
     removeSkill(index: number) {
       this.skillList.splice(index, 1);

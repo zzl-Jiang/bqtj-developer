@@ -1,4 +1,6 @@
-export const DROP_BASIC_METAS = [
+import type { DropMetaItem } from './types';
+
+export const DROP_BASIC_METAS: DropMetaItem[] = [
     { key: 'cnName', label: '显示名称', type: 'string' },
     { key: 'name', label: '内部标识 (name)', type: 'string' },
     {
@@ -16,21 +18,21 @@ export const DROP_BASIC_METAS = [
     { key: 'text', label: '掉落提示文本', type: 'string' }
 ];
 
-export const DROP_VISUAL_METAS = [
+export const DROP_VISUAL_METAS: DropMetaItem[] = [
     { key: 'imgUrl', label: '切片路径 (imgUrl)', type: 'string' },
     { key: 'imgRandom', label: '随机切片范围', type: 'number', desc: '数值大于0时开启 imgUrl + (1~N)' },
     { key: 'lightImg', label: '环境光效路径', type: 'string' },
     { key: 'smallMapColor', label: '小地图颜色', type: 'string', desc: '如 0xff0000' }
 ];
 
-export const DROP_LOGIC_METAS = [
+export const DROP_LOGIC_METAS: DropMetaItem[] = [
     { key: 'lifetime', label: '生命周期 (s)', type: 'number', desc: '-1 为永久' },
     { key: 'noFollowHeroB', label: '禁止跟随英雄', type: 'switch' },
     { key: 'keyB', label: '关键物品', type: 'switch' },
     { key: 'extraSkill', label: '附加技能', type: 'string' }
 ];
 
-export const DROP_PROBABILITY_METAS = [
+export const DROP_PROBABILITY_METAS: DropMetaItem[] = [
     { key: 'normalPro', label: '普通怪掉率', type: 'number', desc: '0-1 之间的小数' },
     { key: 'superPro', label: '精英怪掉率', type: 'number', desc: '0-1 之间的小数' },
     { key: 'bossPro', label: '首领掉率', type: 'number', desc: '0-1 之间的小数' },

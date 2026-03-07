@@ -9,13 +9,18 @@
 export type ImportanceLevel = 'core' | 'advanced' | 'optional';
 
 /**
+ * 复杂字段类型
+ */
+export type ComplexFieldType = 'object' | 'array' | 'eventG' | 'unitG' | 'rectG';
+
+/**
  * 字段元数据项
  * 用于配置编辑器中各个字段的展示和编辑方式
  */
 export interface BulletMetaItem {
     key: string;
     label: string;
-    type: 'string' | 'number' | 'select' | 'multi_select' | 'switch' | 'color' | 'point';
+    type: 'string' | 'number' | 'select' | 'multi_select' | 'switch' | 'color' | 'point' | 'select_png';
     desc?: string;
     options?: { label: string; value: any; desc?: string }[];
     placeholder?: string;
@@ -39,6 +44,15 @@ export interface BulletMetaItem {
 
     /** 关联字段key列表 */
     relatedFields?: string[];
+
+    /** 是否为复杂字段（对象、数组或特殊结构） */
+    isComplex?: boolean;
+
+    /** 复杂字段类型 */
+    complexType?: ComplexFieldType;
+
+    /** 复杂字段的描述文本（显示在卡片上） */
+    complexDesc?: string;
 }
 
 /**
