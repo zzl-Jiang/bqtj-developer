@@ -128,6 +128,7 @@ const completionColor = computed(() => {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    min-width: 0;
 }
 
 .category-card:hover {
@@ -193,6 +194,39 @@ const completionColor = computed(() => {
     overflow: hidden;
 }
 
+/* 中等屏幕双列布局优化 */
+@media (max-width: 1200px) {
+    .category-card {
+        padding: 14px;
+        gap: 12px;
+    }
+
+    .card-icon-wrapper {
+        width: 48px;
+        height: 48px;
+    }
+
+    .card-icon-wrapper :deep(.n-icon) {
+        font-size: 24px !important;
+    }
+
+    .card-title {
+        font-size: 14px;
+    }
+
+    .card-desc {
+        font-size: 11px;
+        -webkit-line-clamp: 2;
+        line-height: 1.4;
+    }
+
+    .progress-label,
+    .progress-value,
+    .field-count {
+        font-size: 10px;
+    }
+}
+
 .progress-wrapper {
     margin-top: auto;
 }
@@ -246,5 +280,57 @@ const completionColor = computed(() => {
     height: 40%;
     border-radius: 0 2px 2px 0;
     opacity: 0.8;
+}
+
+/* 小屏幕响应式调整 - 紧凑模式，隐藏描述和进度 */
+@media (max-width: 640px) {
+    .category-card {
+        padding: 10px 12px;
+        gap: 10px;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .card-icon-wrapper {
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+        border-radius: 8px;
+    }
+
+    .card-icon-wrapper :deep(.n-icon) {
+        font-size: 18px !important;
+    }
+
+    .card-content {
+        gap: 0;
+        min-width: 0;
+        overflow: visible;
+    }
+
+    .card-header {
+        flex-wrap: nowrap;
+        gap: 8px;
+        overflow: hidden;
+    }
+
+    .card-title {
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1;
+    }
+
+    .completion-tag {
+        flex-shrink: 0;
+    }
+
+    /* 隐藏描述、进度条和字段数量 */
+    .card-desc,
+    .progress-wrapper,
+    .field-count {
+        display: none;
+    }
 }
 </style>

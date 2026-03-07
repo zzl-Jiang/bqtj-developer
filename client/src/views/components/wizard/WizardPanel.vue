@@ -82,7 +82,7 @@
             v-model:show="showFieldModal"
             :title="editingField?.label"
             preset="card"
-            style="width: 480px"
+            class="field-edit-modal"
             :bordered="false"
             segmented
         >
@@ -339,7 +339,13 @@ function getWikiLink(link: string): string {
 /* 上半部分：分类卡片 */
 .wizard-top {
     flex: 0 0 auto;
-    padding: 12px 16px;
+    padding: 16px;
+}
+
+@media (max-width: 1200px) {
+    .wizard-top {
+        padding: 12px;
+    }
 }
 
 .category-grid {
@@ -354,9 +360,26 @@ function getWikiLink(link: string): string {
     }
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
     .category-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .category-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .wizard-top {
+        padding: 8px 12px;
     }
 }
 
@@ -396,7 +419,11 @@ function getWikiLink(link: string): string {
 
 @media (max-width: 1200px) {
     .wizard-right {
-        width: 260px;
+        width: 220px;
+    }
+
+    .wizard-left {
+        padding: 12px;
     }
 }
 
@@ -419,16 +446,35 @@ function getWikiLink(link: string): string {
     align-items: center;
     margin-bottom: 12px;
     flex-shrink: 0;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+@media (max-width: 640px) {
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-bar .n-input {
+        width: 100% !important;
+    }
 }
 
 .fields-grid {
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 8px;
     overflow-y: auto;
     padding-right: 8px;
     align-content: start;
+}
+
+@media (max-width: 640px) {
+    .fields-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .empty-fields {
@@ -481,5 +527,18 @@ function getWikiLink(link: string): string {
 
 .field-wiki-link:hover {
     background: rgba(24, 160, 88, 0.15);
+}
+
+/* 字段编辑对话框响应式 */
+:global(.field-edit-modal) {
+    width: 480px;
+    max-width: 90vw;
+}
+
+@media (max-width: 640px) {
+    :global(.field-edit-modal) {
+        width: 100%;
+        max-width: 95vw;
+    }
 }
 </style>
