@@ -4,6 +4,43 @@ import type { Changelog } from '../types/changelog';
 
 export const UPDATES_DATA: Changelog[] = [
   {
+    version: 'v0.6.2',
+    date: '2026-03-07',
+    isMajor: false,
+    blocks: [
+      { type: 'title', content: '向导模式上线：降低编辑器使用门槛' },
+      { type: 'text', content: '针对不熟悉游戏源码的普通玩家，ArmsEditor 新增向导模式。通过卡片式分类导航、重要性分级、详细帮助文档，让武器编辑变得简单直观。' },
+      {
+        type: 'feature',
+        title: 'ArmsEditor 向导模式',
+        desc: '新增向导模式，与专业模式并存。7个分类卡片（基础属性、核心战斗、伤害系统、运动特效、行为标志、视觉资源、进阶配置），每个显示完成度和字段计数。',
+        tag: '编辑器'
+      },
+      {
+        type: 'feature',
+        title: '字段重要性分级',
+        desc: '所有字段按重要程度标记：核心（必须配置）、进阶（可选增强）、可选（细节调整）。帮助用户优先关注关键属性。',
+        tag: '体验'
+      },
+      {
+        type: 'feature',
+        title: '内置帮助系统',
+        desc: '右侧帮助面板显示分类说明、字段详细解释、示例值。集成 huijiwiki 链接，可跳转到更详细的教程页面。',
+        tag: '文档'
+      },
+      {
+        type: 'list', content: [
+          '分类卡片展示配置进度条（实时更新）',
+          '字段卡片显示当前值或"未配置"状态',
+          '点击字段弹出编辑对话框，支持详细说明查看',
+          '筛选栏可按重要性和关键词搜索字段',
+          '扩展 BulletMetaItem 类型，支持 group/importance/docContent/wikiLink 等字段'
+        ]
+      },
+      { type: 'action', label: '体验向导模式', module: 'arms' }
+    ]
+  },
+  {
     version: 'v0.6.1',
     date: '2026-03-07',
     isMajor: false,
