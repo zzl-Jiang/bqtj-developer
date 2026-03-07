@@ -146,7 +146,8 @@ import {
   SKILL_BASE_FIELDS,
   SKILL_LOGIC_FIELDS,
   SKILL_TARGET_FIELDS,
-  SKILL_FLAG_FIELDS
+  SKILL_FLAG_FIELDS,
+  SKILL_VISUAL_FIELDS
 } from './config';
 import type { SkillMetaItem } from './config/types';
 
@@ -176,18 +177,7 @@ const showXmlDrawer = ref(false);
 
 // 处理复杂字段编辑
 function handleComplexEdit(field: BulletMetaItem, _data: any) {
-  if (field.key === 'target') {
-    complexFieldType.value = 'target';
-    showComplexDrawer.value = true;
-  } else if (
-    field.key === 'addSkillEffectImg' ||
-    field.key === 'meEffectImg' ||
-    field.key === 'targetEffectImg' ||
-    field.key === 'pointEffectImg' ||
-    field.key === 'otherEffectImg' ||
-    field.key === 'stateEffectImg' ||
-    field.key === 'stateEffectImg2'
-  ) {
+  if (field.key === 'visualResources') {
     complexFieldType.value = 'visuals';
     showComplexDrawer.value = true;
   }
@@ -210,7 +200,8 @@ const allFields = computed(() => {
     ...SKILL_BASE_FIELDS,
     ...SKILL_LOGIC_FIELDS,
     ...SKILL_TARGET_FIELDS,
-    ...SKILL_FLAG_FIELDS
+    ...SKILL_FLAG_FIELDS,
+    ...SKILL_VISUAL_FIELDS
   ];
   return allMetas.map(enhanceFieldMeta);
 });

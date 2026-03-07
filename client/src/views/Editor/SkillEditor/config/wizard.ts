@@ -30,7 +30,7 @@ export const SKILL_WIZARD_CATEGORIES: CategoryConfig[] = [
         icon: 'LocateOutline',
         iconColor: '#70c0e8',
         description: '技能作用的目标选择规则，包括目标阵营、选择模式、数量限制等。',
-        fields: ['target']
+        fields: ['target', 'chooseType', 'camp', 'unitType', 'systemType', 'limitNum', 'noMeB', 'noMainB', 'noExistB', 'targetMustLiveB', 'arenaB', 'noVehicleB', 'noRaceType', 'bodyName', 'alert']
     },
     {
         id: 'flags',
@@ -46,7 +46,7 @@ export const SKILL_WIZARD_CATEGORIES: CategoryConfig[] = [
         icon: 'ImageOutline',
         iconColor: '#e88080',
         description: '技能相关的图像、音效等视觉表现资源，如技能特效、受击效果、状态图标等。',
-        fields: ['addSkillEffectImg', 'meEffectImg', 'targetEffectImg', 'pointEffectImg', 'otherEffectImg', 'stateEffectImg', 'stateEffectImg2']
+        fields: ['visualResources']
     }
 ];
 
@@ -455,6 +455,15 @@ export const SKILL_WIZARD_FIELD_CONFIG: Record<string, Partial<SkillMetaItem>> =
         complexType: 'object',
         complexDesc: '点击配置状态生效视觉特效2',
         docContent: '第二组状态生效视觉特效，用于需要多种特效叠加的情况。'
+    },
+
+    // ===== 视觉资源合并字段 =====
+    visualResources: {
+        importance: 'optional',
+        isComplex: true,
+        complexType: 'object',
+        complexDesc: '点击配置视觉资源',
+        docContent: '配置技能的各类视觉特效，包括技能释放特效、受击效果、状态图标等。包含7个图片字段：addSkillEffectImg（技能添加特效）、meEffectImg（自身特效）、targetEffectImg（目标特效）、pointEffectImg（生效点特效）、otherEffectImg（其他特效）、stateEffectImg（状态特效1）、stateEffectImg2（状态特效2）。'
     }
 };
 

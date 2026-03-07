@@ -410,6 +410,22 @@ export const SKILL_LOGIC_FIELDS: SkillMetaItem[] = [
   }
 ];
 
+/** 视觉资源字段（向导模式合并显示） */
+export const SKILL_VISUAL_FIELDS: SkillMetaItem[] = [
+  {
+    key: 'visualResources',
+    label: '视觉资源配置',
+    type: 'string',
+    group: 'visuals',
+    importance: 'optional',
+    desc: '技能相关的图像、音效等视觉表现资源。',
+    docContent: '配置技能的各类视觉特效，包括技能释放特效、受击效果、状态图标等。',
+    isComplex: true,
+    complexType: 'object',
+    complexDesc: '点击配置视觉资源'
+  }
+];
+
 /** 功能标志字段 */
 export const SKILL_FLAG_FIELDS: SkillMetaItem[] = [
   {
@@ -625,9 +641,7 @@ export const SKILL_TARGET_FIELDS: SkillMetaItem[] = [
     options: Opts.TARGET_OPTIONS,
     desc: '选择作为参考的目标。\n如果只有单个特定目标，直接在此处选择即可。\n注意，该页面只有这一个属性是必选的。',
     docContent: '技能作用的目标选择配置，包括目标阵营、选择模式、数量限制、排除规则等详细设置。',
-    isComplex: true,
-    complexType: 'object',
-    complexDesc: '点击配置目标选择规则'
+    exampleValue: 'me'
   },
   {
     key: 'chooseType',
