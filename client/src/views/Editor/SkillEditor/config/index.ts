@@ -1,20 +1,38 @@
 // client/src/views/Editor/SkillEditor/config/index.ts
+// 技能编辑器配置统一导出
 
-import { BASE_META } from './base';
-import { LOGIC_META } from './logic';
-import { FLAG_META } from './flags';
-import { TARGET_META } from './target';
-
-// 导出单独的模块，方便 Section 组件直接使用
-export { BASE_META, LOGIC_META, FLAG_META, TARGET_META };
-
-// 导出所有下拉选项和类型
-export * from './options';
+// 类型定义
 export * from './types';
 
-// 合并后的总 Meta，用于一些需要遍历所有字段的场景
-export const SKILL_UI_META = [
-  ...BASE_META,
-  ...LOGIC_META,
-  ...FLAG_META
+// 选项数据
+export * from './options';
+
+// 字段配置（统一规范格式）
+export {
+  SKILL_BASE_FIELDS,
+  SKILL_LOGIC_FIELDS,
+  SKILL_FLAG_FIELDS,
+  SKILL_TARGET_FIELDS
+} from './fields';
+
+// 向导模式配置
+export {
+  SKILL_WIZARD_CATEGORIES,
+  SKILL_WIZARD_FIELD_CONFIG,
+  enhanceFieldMeta
+} from './wizard';
+
+// 合并后的总字段配置（用于需要遍历所有字段的场景）
+import {
+  SKILL_BASE_FIELDS,
+  SKILL_LOGIC_FIELDS,
+  SKILL_FLAG_FIELDS,
+  SKILL_TARGET_FIELDS
+} from './fields';
+
+export const SKILL_ALL_FIELDS = [
+  ...SKILL_BASE_FIELDS,
+  ...SKILL_LOGIC_FIELDS,
+  ...SKILL_FLAG_FIELDS,
+  ...SKILL_TARGET_FIELDS
 ];
