@@ -112,11 +112,17 @@
       </div>
     </n-collapse-transition>
 
-    <!-- 导出区域 -->
+    <!-- 导入/导出区域 -->
     <div class="premium-card">
       <div class="card-header export-header">
-        <div class="header-title">全量 XML 导出</div>
+        <div class="header-title">项目导入/导出</div>
         <n-space>
+          <n-button secondary type="info" @click="showImportDialog = true" class="action-btn">
+            <template #icon>
+              <n-icon><DownloadOutline /></n-icon>
+            </template>
+            导入 XML
+          </n-button>
           <n-button secondary type="info" @click="downloadXml" class="action-btn">下载文件</n-button>
           <n-button type="primary" @click="copyFullXml" class="action-btn primary-glow">一键复制</n-button>
         </n-space>
@@ -127,6 +133,9 @@
         </n-scrollbar>
       </div>
     </div>
+
+    <!-- 导入对话框 -->
+    <ModImportDialog v-model:show="showImportDialog" />
   </div>
 </template>
 
@@ -145,17 +154,20 @@ import {
   InformationCircleOutline,
   ShieldCheckmarkOutline,
   AlertCircleOutline,
-  ChevronForwardOutline
+  ChevronForwardOutline,
+  DownloadOutline
 } from '@vicons/ionicons5';
 import { useModStore } from '../../store/useModStore';
 import { useMessage } from 'naive-ui';
 import { useValidator } from './Validators';
+import ModImportDialog from '../components/ModImportDialog.vue';
 
 const { allErrors, errorCount } = useValidator();
 const { navigateToError } = useNavigation();
 const modStore = useModStore();
 const message = useMessage();
 const showDiagnostics = ref(false);
+const showImportDialog = ref(false);
 
 const statistics = computed(() => [
   { label: '关卡设计', value: modStore.levelList.length, icon: LayersOutline, color: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)' },
