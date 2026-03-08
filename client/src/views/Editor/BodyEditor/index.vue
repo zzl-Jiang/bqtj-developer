@@ -1,6 +1,6 @@
 <!-- client/src/views/Editor/BodyEditor/index.vue -->
 <template>
-  <EditorLayout :has-selection="!!selectedBody" empty-text="请在左侧选择单位或点击新增">
+  <EditorLayout :has-selection="!!selectedBody" empty-text="请在左侧或上方选择单位或点击新增">
     <template #sidebar>
       <ModuleSidebar
         title="单位列表"

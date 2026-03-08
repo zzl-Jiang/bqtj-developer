@@ -1,6 +1,6 @@
 <!-- client/src/views/Editor/SayEditor/index.vue -->
 <template>
-  <EditorLayout :has-selection="!!selectedSayList" empty-text="请选择对话组或点击新增">
+  <EditorLayout :has-selection="!!selectedSayList" empty-text="请在左侧或上方选择对话或点击新增">
     <template #sidebar>
       <ModuleSidebar
         title="对话组"

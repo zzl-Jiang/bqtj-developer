@@ -1,6 +1,6 @@
 <!-- client/src/views/Editor/SkillEditor/index.vue -->
 <template>
-  <EditorLayout :has-selection="!!selectedSkill" empty-text="请在左侧选择技能或点击新增">
+  <EditorLayout :has-selection="!!selectedSkill" empty-text="请在左侧或上方选择技能或点击新增">
     <!-- 侧边栏 -->
     <template #sidebar>
       <ModuleSidebar

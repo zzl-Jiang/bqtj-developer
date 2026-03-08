@@ -1,6 +1,6 @@
 <!-- client/src/views/Editor/BulletEditor/index.vue -->
 <template>
-    <EditorLayout :has-selection="selectedIndex !== null" empty-text="请选择或创建一个子弹进行编辑">
+    <EditorLayout :has-selection="selectedIndex !== null" empty-text="请在左侧或上方选择子弹或点击新增">
         <template #sidebar>
             <ModuleSidebar
                 title="子弹列表"

@@ -1,6 +1,6 @@
 <!-- client/src/views/Editor/LevelEditor/index.vue -->
 <template>
-  <EditorLayout :has-selection="!!selectedLevel" empty-text="请在左侧选择关卡或点击新增">
+  <EditorLayout :has-selection="!!selectedLevel" empty-text="请在左侧或上方选择关卡或点击新增">
     <template #sidebar>
       <ModuleSidebar
         title="关卡"

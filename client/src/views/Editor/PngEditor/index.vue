@@ -1,6 +1,6 @@
 <!-- client/src/views/Editor/PngEditor/index.vue -->
 <template>
-  <EditorLayout :has-selection="!!selectedPng" empty-text="请在左侧选择图片资源或点击新增">
+  <EditorLayout :has-selection="!!selectedPng" empty-text="请在左侧或上方选择图片资源或点击新增">
     <template #sidebar>
       <ModuleSidebar
         title="资源列表"

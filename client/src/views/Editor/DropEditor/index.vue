@@ -1,5 +1,5 @@
 <template>
-    <EditorLayout :has-selection="selectedIndex !== null" empty-text="请选择或创建一个掉落项进行编辑">
+    <EditorLayout :has-selection="selectedIndex !== null" empty-text="请在左侧或上方选择掉落或点击新增">
         <template #sidebar>
             <ModuleSidebar
                 title="掉落列表"
