@@ -265,7 +265,14 @@ function resetState() {
 }
 
 function handleBeforeUpload(options: any) {
-    const file = options.file;
+    // Naive UI的file是UploadFileInfo对象，实际File在file属性中
+    const fileInfo = options.file;
+    const actualFile = fileInfo.file || fileInfo;
+
+    if (!actualFile) {
+        message.error('文件对象无效');
+        return false;
+    }
 
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -275,7 +282,7 @@ function handleBeforeUpload(options: any) {
     reader.onerror = () => {
         message.error('读取文件失败');
     };
-    reader.readAsText(file);
+    reader.readAsText(actualFile);
 
     return false;
 }

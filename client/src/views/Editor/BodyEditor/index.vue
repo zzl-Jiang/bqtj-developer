@@ -7,11 +7,9 @@
         :menu-options="menuOptions"
         v-model:model-value="selectedIndex"
         show-xml-button
-        show-import-button
         @add="addBody"
         @delete="removeBody"
         @view-xml="showXmlDrawer = true"
-        @import="showImportDialog = true"
       />
     </template>
 
@@ -111,12 +109,6 @@
           />
         </template>
 
-        <!-- 导入对话框 -->
-        <ImportDialog
-          v-model:show="showImportDialog"
-          target-module="body"
-          @import="handleImportBodies"
-        />
       </div>
     </template>
   </EditorLayout>
@@ -134,8 +126,6 @@ import { useEditorModeStore } from '../../../store/useEditorModeStore';
 import EditorLayout from '../../components/EditorLayout.vue';
 import ModuleSidebar from '../../components/ModuleSidebar.vue';
 import WizardPanel from '../../components/wizard/WizardPanel.vue';
-import ImportDialog from '../../components/ImportDialog.vue';
-import type { BodyDefine } from '../../../models/body/BodyDefine';
 
 // 导入所有 Section 组件
 import BodyBasicSection from './sections/BodyBasicSection.vue';
@@ -173,9 +163,6 @@ const activeTab = ref('basic');
 // XML 预览抽屉状态
 const showXmlDrawer = ref(false);
 
-// 导入对话框状态
-const showImportDialog = ref(false);
-
 // 复制 XML
 const copyXml = () => {
   if (selectedBody.value) {
@@ -183,21 +170,6 @@ const copyXml = () => {
     message.success('已复制到剪贴板');
   }
 };
-
-// 处理导入数据
-function handleImportBodies(bodies: BodyDefine[]) {
-  if (!bodies.length) return;
-
-  // 将导入的单位添加到列表中
-  for (const body of bodies) {
-    modStore.bodyList.push(body);
-  }
-
-  // 选中新导入的第一个单位
-  selectedIndex.value = modStore.bodyList.length - bodies.length;
-
-  message.success(`成功导入 ${bodies.length} 个单位`);
-}
 
 // 向导模式配置
 const categories = BODY_WIZARD_CATEGORIES;
