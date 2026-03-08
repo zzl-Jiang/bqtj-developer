@@ -21,7 +21,7 @@
       <n-form :label-width="80" label-placement="top">
         <n-grid cols="1 s:2 m:3" :x-gap="24" responsive="screen">
           <n-gi>
-            <n-form-item label="Mod ID">
+            <n-form-item label="关卡集 ID">
               <n-input v-model:value="modStore.info.id" placeholder="唯一标识符" class="premium-input" />
             </n-form-item>
           </n-gi>
@@ -37,7 +37,7 @@
           </n-gi>
         </n-grid>
         <n-form-item label="项目简介 (支持 HTML)">
-          <n-input v-model:value="modStore.info.description" type="textarea" placeholder="描述您的 Mod 特色..."
+          <n-input v-model:value="modStore.info.description" type="textarea" placeholder="描述您的关卡特色..."
             :autosize="{ minRows: 2 }" class="premium-input" />
         </n-form-item>
       </n-form>
@@ -212,7 +212,7 @@ const downloadXml = () => {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `${modStore.info.id || 'mod'}.xml`;
+  a.download = `${modStore.info.id || 'level'}.xml`;
   a.click();
   URL.revokeObjectURL(url);
 };

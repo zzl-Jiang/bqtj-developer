@@ -1,8 +1,55 @@
 // client/src/data/updates.ts
 
-import type { Changelog } from '../types/changelog';
+import type { Changelog, LogBlock } from '../types/changelog';
+
+// 导入功能v0.7.0更新内容
+const V070_BLOCKS: LogBlock[] = [
+  { type: 'title', content: 'XML导入功能' },
+  { type: 'text', content: '新增XML导入功能，支持从外部文件导入关卡、对话、单位等数据。可以直接导入原版示例文件或其他编辑器创建的XML文件，方便用户继续编辑和修改。' },
+  {
+    type: 'feature',
+    title: '通用XML解析器',
+    desc: '新增XmlImportService服务，支持解析标准关卡文件格式(<data><father><gather>...)。自动检测文件类型，将外部XML转换为编辑器内部模型。',
+    tag: '核心'
+  },
+  {
+    type: 'feature',
+    title: '关卡数据导入',
+    desc: '支持导入关卡定义，包括基础属性(name/cnName/descrip)、场景标签(sceneLabel)、关卡信息(info)、发兵组(unitG)、区域(rectG)、事件(eventG)等完整配置。',
+    tag: '关卡'
+  },
+  {
+    type: 'feature',
+    title: '对话数据导入',
+    desc: '支持导入对话列表(sayList)，自动解析对话目标(target)和内容(content)，转换为编辑器对话模型。',
+    tag: '对话'
+  },
+  {
+    type: 'feature',
+    title: '单位数据导入',
+    desc: '支持导入单位定义(body)，包括基础信息(name/cnName/raceType)、运动属性(maxVx)、AI配置(armsNumber/skillArr)、碰撞体积(hitRect)等。',
+    tag: '单位'
+  },
+  {
+    type: 'feature',
+    title: '可视化导入界面',
+    desc: '新增ImportDialog组件，提供拖拽上传、解析预览、错误提示等功能。支持在关卡、对话、单位编辑器中通过"导入XML"按钮打开。',
+    tag: 'UI'
+  },
+  {
+    type: 'action',
+    label: '前往试用',
+    module: 'level'
+  }
+];
 
 export const UPDATES_DATA: Changelog[] = [
+  {
+    version: 'v0.7.0',
+    date: '2026-03-08',
+    isMajor: true,
+    blocks: V070_BLOCKS
+  },
   {
     version: 'v0.6.5',
     date: '2026-03-08',

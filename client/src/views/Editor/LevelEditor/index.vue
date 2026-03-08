@@ -7,9 +7,11 @@
         :menu-options="menuOptions"
         v-model:model-value="selectedIndex"
         show-xml-button
+        show-import-button
         @add="addLevel"
         @delete="removeLevel"
         @view-xml="showXmlDrawer = true"
+        @import="showImportDialog = true"
       />
     </template>
 
@@ -112,6 +114,13 @@
             class="flex-1"
           />
         </template>
+
+        <!-- 导入对话框 -->
+        <ImportDialog
+          v-model:show="showImportDialog"
+          target-module="level"
+          @import="handleImportLevels"
+        />
       </div>
     </template>
   </EditorLayout>
@@ -125,10 +134,12 @@ import { useResponsive } from '../../../hooks/useResponsive';
 import EditorLayout from '../../components/EditorLayout.vue';
 import ModuleSidebar from '../../components/ModuleSidebar.vue';
 import WizardPanel from '../../components/wizard/WizardPanel.vue';
+import ImportDialog from '../../components/ImportDialog.vue';
 import { useModStore } from '../../../store/useModStore';
 import { useEditorModeStore } from '../../../store/useEditorModeStore';
 import { ref, watch, computed } from 'vue';
 import type { BulletMetaItem } from '../../Editor/BulletEditor/config/types';
+import type { LevelDefine } from '../../../models/level/LevelDefine';
 
 import LevelBasicSection from './sections/LevelBasicSection.vue';
 import UnitGroupSection from './sections/UnitGroupSection.vue';
@@ -159,6 +170,24 @@ const activeTab = ref('basic');
 
 // XML 预览抽屉状态
 const showXmlDrawer = ref(false);
+
+// 导入对话框状态
+const showImportDialog = ref(false);
+
+// 处理导入数据
+function handleImportLevels(levels: LevelDefine[]) {
+  if (!levels.length) return;
+
+  // 将导入的关卡添加到列表中
+  for (const level of levels) {
+    modStore.levelList.push(level);
+  }
+
+  // 选中新导入的第一个关卡
+  selectedIndex.value = modStore.levelList.length - levels.length;
+
+  message.success(`成功导入 ${levels.length} 个关卡`);
+}
 
 // 复制 XML
 const copyXml = () => {

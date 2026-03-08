@@ -48,20 +48,28 @@
     </div>
 
     <!-- 底部工具栏 -->
-    <div v-if="modelValue !== null && showXmlButton" class="sidebar-footer">
-      <n-button type="primary" block ghost size="small" @click="$emit('view-xml')">
-        <template #icon>
-          <n-icon><CodeOutline /></n-icon>
-        </template>
-        查看 XML
-      </n-button>
+    <div class="sidebar-footer">
+      <n-space vertical size="small">
+        <n-button v-if="showImportButton" type="info" block ghost size="small" @click="$emit('import')">
+          <template #icon>
+            <n-icon><DownloadOutline /></n-icon>
+          </template>
+          导入 XML
+        </n-button>
+        <n-button v-if="modelValue !== null && showXmlButton" type="primary" block ghost size="small" @click="$emit('view-xml')">
+          <template #icon>
+            <n-icon><CodeOutline /></n-icon>
+          </template>
+          查看 XML
+        </n-button>
+      </n-space>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { inject } from 'vue';
-import { AddOutline, TrashOutline, CodeOutline } from '@vicons/ionicons5';
+import { AddOutline, TrashOutline, CodeOutline, DownloadOutline } from '@vicons/ionicons5';
 
 interface MenuOption {
   key: string | number;
@@ -74,9 +82,10 @@ const props = defineProps<{
   menuOptions: MenuOption[];
   modelValue: string | number | null;
   showXmlButton?: boolean;
+  showImportButton?: boolean;
 }>();
 
-const emit = defineEmits(['add', 'delete', 'view-xml', 'update:modelValue']);
+const emit = defineEmits(['add', 'delete', 'view-xml', 'import', 'update:modelValue']);
 
 // 注入关闭抽屉的方法
 const closeMobileDrawer = inject<() => void>('closeMobileDrawer', () => {});
