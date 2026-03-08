@@ -194,7 +194,7 @@ const handleSelect = (key: string | number) => {
 /* 中等屏幕下调整内边距 */
 @media (max-width: 1023px) {
   .sidebar-header {
-    padding: 14px 16px;
+    padding: 12px 14px;
   }
 
   .header-title {
@@ -202,11 +202,11 @@ const handleSelect = (key: string | number) => {
   }
 
   .menu-wrapper {
-    padding: 8px;
+    padding: 6px;
   }
 
   .menu-item {
-    padding: 10px 12px;
+    padding: 8px 10px;
   }
 
   .menu-item-label {
@@ -215,6 +215,22 @@ const handleSelect = (key: string | number) => {
 
   .sidebar-footer {
     padding: 10px 12px;
+  }
+}
+
+/* 小屏幕下进一步减小边距 */
+@media (max-width: 640px) {
+  .sidebar-header {
+    padding: 10px 12px;
+  }
+
+  .menu-wrapper {
+    padding: 4px;
+  }
+
+  .menu-item {
+    padding: 8px 10px;
+    border-radius: 8px;
   }
 }
 

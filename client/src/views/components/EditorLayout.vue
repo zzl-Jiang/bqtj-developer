@@ -24,10 +24,11 @@
     <div class="main-container">
       <!-- 移动端菜单按钮 -->
       <div v-if="isMobile" class="mobile-header">
-        <n-button quaternary circle @click="mobileDrawerVisible = true">
+        <n-button type="primary" secondary round @click="mobileDrawerVisible = true" class="menu-btn">
           <template #icon>
-            <n-icon size="24"><MenuOutline /></n-icon>
+            <n-icon size="18"><MenuOutline /></n-icon>
           </template>
+          <span class="menu-text">选择项目</span>
         </n-button>
         <span class="mobile-title">编辑器</span>
       </div>
@@ -80,8 +81,8 @@ provide('closeMobileDrawer', () => {
 @media (max-width: 767px) {
   .editor-layout {
     grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 0 16px;
+    gap: 12px;
+    padding: 0 8px;
   }
 }
 
@@ -132,14 +133,23 @@ provide('closeMobileDrawer', () => {
 .mobile-header {
   display: flex;
   align-items: center;
-  padding: 12px 16px;
+  padding: 10px 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   background: rgba(255, 255, 255, 0.02);
+  gap: 10px;
+}
+
+.menu-btn {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.menu-text {
+  margin-left: 4px;
 }
 
 .mobile-title {
-  margin-left: 12px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
 }
 
@@ -157,7 +167,7 @@ provide('closeMobileDrawer', () => {
 /* 小屏幕下减少内边距 */
 @media (max-width: 767px) {
   .content-scroll {
-    padding: 16px;
+    padding: 12px;
   }
 }
 

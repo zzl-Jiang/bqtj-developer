@@ -285,21 +285,22 @@ const completionColor = computed(() => {
 /* 小屏幕响应式调整 - 紧凑模式，隐藏描述和进度 */
 @media (max-width: 640px) {
     .category-card {
-        padding: 10px 12px;
-        gap: 10px;
+        padding: 8px 10px;
+        gap: 8px;
         flex-direction: row;
         align-items: center;
-    }
-
-    .card-icon-wrapper {
-        width: 36px;
-        height: 36px;
-        flex-shrink: 0;
         border-radius: 8px;
     }
 
+    .card-icon-wrapper {
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+        border-radius: 6px;
+    }
+
     .card-icon-wrapper :deep(.n-icon) {
-        font-size: 18px !important;
+        font-size: 16px !important;
     }
 
     .card-content {
@@ -310,12 +311,12 @@ const completionColor = computed(() => {
 
     .card-header {
         flex-wrap: nowrap;
-        gap: 8px;
+        gap: 6px;
         overflow: hidden;
     }
 
     .card-title {
-        font-size: 14px;
+        font-size: 13px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -324,6 +325,9 @@ const completionColor = computed(() => {
 
     .completion-tag {
         flex-shrink: 0;
+        font-size: 10px;
+        padding: 0 6px;
+        height: 18px;
     }
 
     /* 隐藏描述、进度条和字段数量 */

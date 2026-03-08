@@ -375,11 +375,20 @@ function getWikiLink(link: string): string {
 @media (max-width: 640px) {
     .category-grid {
         grid-template-columns: 1fr;
-        gap: 8px;
+        gap: 6px;
     }
 
     .wizard-top {
-        padding: 8px 12px;
+        padding: 6px 8px;
+    }
+
+    .wizard-left {
+        padding: 8px;
+    }
+
+    .filter-bar {
+        margin-bottom: 8px;
+        gap: 6px;
     }
 }
 
