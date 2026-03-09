@@ -182,6 +182,9 @@ function handleComplexEdit(field: BulletMetaItem, _data: any) {
   if (field.key === 'visualResources') {
     complexFieldType.value = 'visuals';
     showComplexDrawer.value = true;
+  } else if (field.key === 'target') {
+    complexFieldType.value = 'target';
+    showComplexDrawer.value = true;
   }
 }
 

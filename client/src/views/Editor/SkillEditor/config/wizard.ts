@@ -120,7 +120,7 @@ export const SKILL_WIZARD_FIELD_CONFIG: Record<string, Partial<SkillMetaItem>> =
     },
     effectType: {
         importance: 'core',
-        docContent: '效果函数名称，调用实际AS3代码中的函数。每种效果有不同作用，详情见Wiki或效果说明面板。',
+        docContent: '注意，目前部分效果由 ai 生成，正在逐步梳理，可能存在问题，请谨慎参考。效果函数名称，调用实际AS3代码中的函数。每种效果有不同作用，详情见Wiki或效果说明面板。',
         exampleValue: 'healHpByValue',
         relatedFields: ['addType', 'value', 'mul']
     },

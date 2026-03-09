@@ -630,6 +630,11 @@ export const LEVEL_EVENT_METAS = {
     { label: '层级隐藏 (sceneMc:hide)', value: 'sceneMc:hide', desc: '隐藏特定的地图层。参数1:层级ID, 参数2:子元件名' },
     { label: '世界旋转180度 (roWorld180)', value: 'roWorld180', desc: '将画面完全颠倒' },
     { label: '添加通用特效 (addNormalEffect)', value: 'addNormalEffect', desc: '在指定点播放特效。参数1:路径, 参数2:坐标(x,y), 参数3:图层名' },
+    { label: '清除所有子弹 (clearAllBullet)', value: 'clearAllBullet', desc: '清除场上所有子弹' },
+    { label: '清除所有敌方子弹 (clearAllEnemyBullet)', value: 'clearAllEnemyBullet', desc: '清除场上所有敌方子弹' },
+    { label: '隐藏视野遮罩 (hideSightCover)', value: 'hideSightCover', desc: '隐藏视野限制遮罩' },
+    { label: '显示反向视野 (showInverSightCover)', value: 'showInverSightCover', desc: '显示反向视野遮罩' },
+    { label: '显示倍率视野 (showMultiplySightCover)', value: 'showMultiplySightCover', desc: '显示倍率视野遮罩' },
   ],
 
   /** 系统与操作选项 */
@@ -640,6 +645,19 @@ export const LEVEL_EVENT_METAS = {
     { label: '开启AI (setGamingAITrue)', value: 'setGamingAITrue', desc: '接管玩家角色，由AI控制' },
     { label: '关闭AI (setGamingAIFalse)', value: 'setGamingAIFalse', desc: '将控制权交还给玩家' },
     { label: '保存游戏 (save)', value: 'save', desc: '强制执行一次存档操作' },
+    { label: '播放音乐 (playMusic)', value: 'playMusic', desc: '播放指定背景音乐' },
+    { label: '播放音效 (playSound)', value: 'playSound', desc: '播放指定音效' },
+    { label: '设置数值 (setNumber)', value: 'setNumber', desc: '设置关卡数值变量' },
+    { label: '增加数值 (addNumber)', value: 'addNumber', desc: '增加关卡数值变量' },
+    { label: '弹出提示 (alert)', value: 'alert', desc: '显示弹窗提示' },
+    { label: '显示浮动提示 (tip)', value: 'tip', desc: '显示浮动文字提示' },
+    { label: '设置DIY字符串 (setDiyString)', value: 'setDiyString', desc: '设置DIY自定义字符串' },
+    { label: '删除事件组除我外 (delEventGroupExcludeMe)', value: 'delEventGroupExcludeMe', desc: '删除同一事件组中的其他事件' },
+    { label: 'P1死亡 (deathP1Die)', value: 'deathP1Die', desc: '强制P1进入死亡状态' },
+    { label: '测试死亡模式 (testDeath)', value: 'testDeath', desc: '开启测试死亡模式（仅本地有效）' },
+    { label: '隐藏Boss血条 (hideBossLifeBar)', value: 'hideBossLifeBar', desc: '隐藏Boss血条UI' },
+    { label: '添加触屏点击 (addTouch)', value: 'addTouch', desc: '添加触屏点击区域' },
+    { label: '触屏出键 (keyTouchId)', value: 'keyTouchId', desc: '触发指定触屏区域的按键' },
   ],
 
   /** 群体与附身选项 */
@@ -649,6 +667,17 @@ export const LEVEL_EVENT_METAS = {
     { label: '依据角色附身 (parasiticWeRolePan)', value: 'parasiticWeRolePan', desc: '根据关卡预设的角色自动附身' },
     { label: '所有队友死亡跪下 (allPartnerStru)', value: 'allPartnerStruNoStrikerWen', desc: '除P1外所有队友进入跪下动作' },
     { label: '所有队友重生 (allPartnerRebirth)', value: 'allPartnerRebirth', desc: '复活所有已阵亡的队友' },
+    { label: '所有我方英雄重生 (allWeHeroRebirth)', value: 'allWeHeroRebirth', desc: '复活所有我方英雄' },
+    { label: '恢复所有英雄头部 (recoverAllHeroHead)', value: 'recoverAllHeroHead', desc: '恢复所有英雄的头部显示' },
+    { label: '所有英雄不受击 (allHeroNoUnderHit)', value: 'allHeroNoUnderHit', desc: '所有英雄进入不受击状态' },
+    { label: '所有我方不受身 (allWeNoUnder)', value: 'allWeNoUnder', desc: '所有我方单位不受身' },
+    { label: 'P2附身 (P2EverParasitic)', value: 'P2EverParasitic', desc: 'P2附身到指定单位' },
+    { label: '永久附身 (everParasitic)', value: 'everParasitic', desc: '永久附身到指定单位' },
+    { label: '我方禁用装备 (weAllHeroNoEquip)', value: 'weAllHeroNoEquip', desc: '我方所有英雄无法更换装备' },
+    { label: '我方禁用射击 (weAllHeroNoShoot)', value: 'weAllHeroNoShoot', desc: '我方所有英雄无法射击' },
+    { label: '我方禁用技能 (weAllHeroNoSkill)', value: 'weAllHeroNoSkill', desc: '我方所有英雄无法使用技能' },
+    { label: '我方跟随Boss (weAllHeroFollowSumBoss)', value: 'weAllHeroFollowSumBoss', desc: '我方所有英雄跟随Boss' },
+    { label: '我方全换武器 (allWeSwapAdd)', value: 'allWeSwapAdd', desc: '我方所有英雄切换武器' },
   ],
 
   /** 单位操作选项 */
@@ -663,6 +692,10 @@ export const LEVEL_EVENT_METAS = {
         { label: '停止并清除状态 (stopAllClearState)', value: 'stopAllClearState', desc: '停止单位当前所有AI动作并清空Buff' },
         { label: '随机巡逻 (ai:patrolRandom)', value: 'ai:patrolRandom', desc: '单位在出生点附近随机移动' },
         { label: '锁定射击位置 (lockShootXY)', value: 'lockShootXY', desc: '单位瞄准并锁定特定坐标射击' },
+        { label: '设置P1 (setP1)', value: 'setP1', desc: '设置P1玩家' },
+        { label: '英雄隐藏坐标 (heroNoExistXY)', value: 'heroNoExistXY', desc: '英雄在指定坐标隐藏' },
+        { label: '隐藏单位到地板 (bodyHideInFloorMc)', value: 'bodyHideInFloorMc', desc: '将单位隐藏在地板层下' },
+        { label: '隐藏单位 (hideBody)', value: 'hideBody', desc: '隐藏指定单位' },
       ]
     },
     {
@@ -674,6 +707,8 @@ export const LEVEL_EVENT_METAS = {
         { label: '致死 (toDie)', value: 'toDie', desc: '让单位立即进入死亡状态' },
         { label: '直接删除 (toDel)', value: 'toDel', desc: '将单位直接从场上移除，不触发死亡动作' },
         { label: '跪地/受挫 (toStru)', value: 'toStru', desc: '让单位进入跪地挣扎状态' },
+        { label: '变蛇尾死亡 (killToSnakeTailDie)', value: 'killToSnakeTailDie', desc: '单位变为蛇尾后死亡' },
+        { label: '变蛇尾 (killToSnakeTail)', value: 'killToSnakeTail', desc: '单位变为蛇尾' },
       ]
     },
     {
@@ -687,6 +722,8 @@ export const LEVEL_EVENT_METAS = {
         { label: '静默 (silence)', value: 'silence', desc: '禁止单位使用技能' },
         { label: '不受伤 (noUnderHurt)', value: 'noUnderHurt', desc: '单位进入不被攻击硬直或不受伤害状态' },
         { label: '移动速度倍率 (moveSpeedMul)', value: 'moveSpeedMul', desc: '调整移动速度，如: 0.3' },
+        { label: '狂暴缺陷 (madDefect)', value: 'madDefect', desc: '狂暴缺陷状态' },
+        { label: '狂暴缺陷击杀 (madDefectKill)', value: 'madDefectKill', desc: '狂暴缺陷击杀' },
       ]
     },
     {
@@ -698,6 +735,18 @@ export const LEVEL_EVENT_METAS = {
         { label: '更换头部素材 (changeHead)', value: 'changeHead', desc: '改变单位头部贴图，如: WenJie:head' },
         { label: '添加身上特效 (addEffectInBody)', value: 'addEffectInBody', desc: '在单位中心挂载特效' },
         { label: '翻转朝向 (flipToRight)', value: 'flipToRight', desc: '强制单位转向右侧' },
+        { label: '更换部件 (changePart)', value: 'changePart', desc: '更换单位部件' },
+        { label: '恢复英雄装备图 (restoreHeroEquipImg)', value: 'restoreHeroEquipImg', desc: '恢复英雄装备外观' },
+      ]
+    },
+    {
+      label: '武器与装备',
+      type: 'group',
+      key: 'group-arms',
+      children: [
+        { label: '仅保留武器 (onlyKeepArms)', value: 'onlyKeepArms', desc: '仅保留指定武器，移除其他装备' },
+        { label: '武器编辑测试 (armsEditTest)', value: 'armsEditTest', desc: '武器编辑测试模式' },
+        { label: '武器编辑23 (armsEdit23)', value: 'armsEdit23', desc: '武器编辑23模式' },
       ]
     }
   ],
@@ -717,7 +766,48 @@ export const LEVEL_EVENT_METAS = {
     { label: '隐藏血条 (hideLifeBar)', value: 'hideLifeBar', desc: '隐藏玩家血条UI' },
     { label: '显示血条 (showLifeBar)', value: 'showLifeBar', desc: '显示玩家血条UI' },
     { label: '镜头聚焦 (cameraFocus)', value: 'cameraFocus', desc: '将镜头聚焦到指定单位。参数: 单位ID' },
-    { label: '镜头恢复 (cameraReset)', value: 'cameraReset', desc: '恢复镜头正常跟随' }
+    { label: '镜头恢复 (cameraReset)', value: 'cameraReset', desc: '恢复镜头正常跟随' },
+    { label: '开启对话 (say)', value: 'say', desc: '触发对话。格式: say; startList:对话名 (如 s1, s2)' },
+    { label: '关卡控制 (level)', value: 'level', desc: '关卡相关控制。格式: level; 子指令:参数 (如 showPointer:r_over)' },
+    { label: '全体单位 (allBody)', value: 'allBody', desc: '对所有单位执行操作。格式: allBody:筛选条件; 子指令:参数' },
+    { label: '任务 (task)', value: 'task', desc: '任务相关控制' },
+    { label: '完成当前记忆任务 (completeNowMenoryTask)', value: 'completeNowMenoryTask', desc: '完成当前记忆任务' },
+    { label: '世界地图 (worldMap)', value: 'worldMap', desc: '世界地图相关操作' },
+    { label: '随机蜘蛛网 (randomSpider)', value: 'randomSpider', desc: '生成随机蜘蛛网' },
+    { label: '添加单位地图蜘蛛 (addUnitMapSpider)', value: 'addUnitMapSpider', desc: '为单位添加地图蜘蛛网' },
+    { label: '掉落地图蜘蛛 (dropMapSpider)', value: 'dropMapSpider', desc: '掉落地图蜘蛛网' },
+    { label: '添加掉落 (addDrop)', value: 'addDrop', desc: '添加掉落物' },
+    { label: '添加P1掉落 (addDropP1)', value: 'addDropP1', desc: '为P1添加掉落物' },
+    { label: '添加物品 (addItems)', value: 'addItems', desc: '添加物品到背包' },
+    { label: '额外队友 (more)', value: 'more', desc: '添加额外队友' },
+    { label: '添加效果掉落停止 (addEffectDropStop)', value: 'addEffectDropStop', desc: '添加效果掉落并停止' },
+    { label: '无装备商店 (noWearShop)', value: 'noWearShop', desc: '禁止装备商店' },
+    { label: '武器 (arms)', value: 'arms', desc: '武器相关操作' },
+    { label: '单人模式提示 (alertIfMustSingle)', value: 'alertIfMustSingle', desc: '如果必须单人模式则提示' },
+    { label: '杀死编辑Boss事件 (killEditBossEvent)', value: 'killEditBossEvent', desc: '杀死编辑的Boss事件' },
+    { label: '塔胜利事件 (towerWinEvent)', value: 'towerWinEvent', desc: '塔模式胜利事件' },
+    { label: '无尽胜利事件 (unendWinEvent)', value: 'unendWinEvent', desc: '无尽模式胜利事件' },
+    { label: 'PK胜利事件 (pkWinEvent)', value: 'pkWinEvent', desc: 'PK模式胜利事件' },
+    { label: '添加Boss卡PK (addBossCardPK)', value: 'addBossCardPK', desc: '添加Boss卡PK' },
+    { label: 'Boss卡战斗胜利 (bcardBattleWin)', value: 'bcardBattleWin', desc: 'Boss卡战斗胜利' },
+    { label: '添加Boss卡战斗 (addBcardBattle)', value: 'addBcardBattle', desc: '添加Boss卡战斗' },
+    { label: '周狂Boss (weekMadboss)', value: 'weekMadboss', desc: '周常狂Boss模式' },
+    { label: '最后僵尸逃跑 (lastZomExcape)', value: 'lastZomExcape', desc: '最后僵尸逃跑' },
+    { label: '掉落僵尸技能 (dropZomSkill)', value: 'dropZomSkill', desc: '掉落僵尸技能' },
+    { label: '掉落僵尸控制 (dropZomControl)', value: 'dropZomControl', desc: '掉落僵尸控制' },
+    { label: '掉落僵尸敌人 (dropZomEnemy)', value: 'dropZomEnemy', desc: '掉落僵尸敌人' },
+    { label: '掉落道塔 (dropDaoTa)', value: 'dropDaoTa', desc: '掉落道塔' },
+    { label: '掉落道塔2 (dropDaoTa2)', value: 'dropDaoTa2', desc: '掉落道塔2' },
+    { label: '掉落Bwall青鲨 (dropBwallQingSha)', value: 'dropBwallQingSha', desc: '掉落Bwall青鲨' },
+    { label: '执行Bwall (doBwall)', value: 'doBwall', desc: '执行Bwall' },
+    { label: '南瓜Boss结束 (pumpkinBossOver)', value: 'pumpkinBossOver', desc: '南瓜Boss结束事件' },
+    { label: '绿色是1_矿场 (GreenIs1_mine)', value: 'GreenIs1_mine', desc: '绿色是1矿场事件' },
+    { label: '时间胶囊11_矿场 (timeCapsule11_mine)', value: 'timeCapsule11_mine', desc: '时间胶囊11矿场事件' },
+    { label: '进入虫洞 (inWormhole)', value: 'inWormhole', desc: '进入虫洞' },
+    { label: '西山1_1 (XiShan1_1)', value: 'XiShan1_1', desc: '西山1-1事件' },
+    { label: '疯狂战士秒 (madWarriorSec)', value: 'madWarriorSec', desc: '疯狂战士秒数' },
+    { label: '疯狂Boss电话 (madBossPhone)', value: 'madBossPhone', desc: '疯狂Boss电话事件' },
+    { label: '障碍物 (obstacle)', value: 'obstacle', desc: '障碍物相关' },
   ]
 };
 

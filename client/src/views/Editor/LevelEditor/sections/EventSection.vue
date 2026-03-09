@@ -144,6 +144,7 @@ import MetaFormItem from '../../../components/MetaFormItem.vue';
 import { EVENT_CONDITION_METAS } from '../config';
 import { LevelEventGroup } from '../../../../models/level/event/LevelEventDefineGroup';
 import { LevelEventDefine } from '../../../../models/level/event/LevelEventDefine';
+import { LevelEventConditionDefine } from '../../../../models/level/event/LevelEventConditionDefine';
 import { LevelEventOrderDefine } from '../../../../models/level/event/LevelEventOrderDefine';
 import ConditionBuilder from './event/ConditionBuilder.vue';
 import OrderBuilder from './event/OrderBuilder.vue';
@@ -177,6 +178,10 @@ const handleAddEvent = (group: LevelEventGroup, index?: number) => {
 };
 
 const editEvent = (event: LevelEventDefine) => {
+  // 确保事件的条件对象已初始化
+  if (!event.condition) {
+    event.condition = LevelEventConditionDefine.createDefault();
+  }
   editingEvent.value = event;
   showDrawer.value = true;
 };

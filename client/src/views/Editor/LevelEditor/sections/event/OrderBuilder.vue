@@ -189,7 +189,109 @@ const getParamPlaceholder = (orderValue: string): string => {
     'addEffectInBody': '特效路径',
     'showPointer': '区域ID',
     'shake': '震动幅度名',
-    'cameraFocus': '目标单位ID'
+    'cameraFocus': '目标单位ID',
+    'say': 'startList:对话名（如 s1）',
+    'level': '子指令:参数（如 showPointer:r_over）',
+    'allBody': '筛选条件; 子指令:参数',
+    'weAllHeroNoEquip': '无需参数',
+    'weAllHeroNoShoot': '无需参数',
+    'weAllHeroNoSkill': '无需参数',
+    'weAllHeroFollowSumBoss': '无需参数',
+    'clearAllBullet': '无需参数',
+    'clearAllEnemyBullet': '无需参数',
+    'hideSightCover': '无需参数',
+    'showInverSightCover': '无需参数',
+    'showMultiplySightCover': '无需参数',
+    'toPlotMode': '无需参数',
+    'openInput': '无需参数',
+    'closeInput': '无需参数',
+    'setGamingAITrue': '无需参数',
+    'setGamingAIFalse': '无需参数',
+    'save': '无需参数',
+    'mapToBlack': '无需参数',
+    'mapToNormal': '无需参数',
+    'roWorld180': '无需参数',
+    'win': '无需参数',
+    'fail': '无需参数',
+    'killAllEnemy': '无需参数',
+    'hideLifeBar': '无需参数',
+    'showLifeBar': '无需参数',
+    'cameraReset': '无需参数',
+    'clearHeroParasitic': '无需参数',
+    'parasiticWeRolePan': '无需参数',
+    'allPartnerStruNoStrikerWen': '无需参数',
+    'allPartnerRebirth': '无需参数',
+    'allWeHeroRebirth': '无需参数',
+    'recoverAllHeroHead': '无需参数',
+    'allHeroNoUnderHit': '无需参数',
+    'allWeNoUnder': '无需参数',
+    'allWeSwapAdd': '武器ID',
+    'setNumber': '变量名;数值',
+    'addNumber': '变量名;数值',
+    'playMusic': '音乐路径',
+    'playSound': '音效路径',
+    'alert': '提示内容',
+    'tip': '提示内容',
+    'setDiyString': 'key;value',
+    'delEventGroupExcludeMe': '无需参数',
+    'deathP1Die': '无需参数',
+    'testDeath': '无需参数',
+    'hideBossLifeBar': '无需参数',
+    'addTouch': '触屏类型;x,y;参数',
+    'keyTouchId': '触屏ID',
+    'setP1': '单位ID',
+    'heroNoExistXY': 'x,y',
+    'bodyHideInFloorMc': '单位ID',
+    'hideBody': '单位ID',
+    'killToSnakeTailDie': '单位ID',
+    'killToSnakeTail': '单位ID',
+    'madDefect': '单位ID',
+    'madDefectKill': '单位ID',
+    'changePart': '部件名;新部件值',
+    'restoreHeroEquipImg': '无需参数',
+    'onlyKeepArms': '武器ID',
+    'armsEditTest': '参数',
+    'armsEdit23': '参数',
+    'task': '任务操作;参数',
+    'completeNowMenoryTask': '无需参数',
+    'worldMap': '地图操作;参数',
+    'randomSpider': '无需参数',
+    'addUnitMapSpider': '单位ID',
+    'dropMapSpider': '区域ID',
+    'addDrop': '掉落配置ID;x,y',
+    'addDropP1': '掉落配置ID',
+    'addItems': '物品ID;数量',
+    'more': '队友ID',
+    'addEffectDropStop': '效果ID;x,y',
+    'noWearShop': '无需参数',
+    'arms': '武器操作;参数',
+    'alertIfMustSingle': '提示内容',
+    'killEditBossEvent': '无需参数',
+    'towerWinEvent': '无需参数',
+    'unendWinEvent': '无需参数',
+    'pkWinEvent': '无需参数',
+    'addBossCardPK': 'Boss卡ID',
+    'bcardBattleWin': '无需参数',
+    'addBcardBattle': '战斗配置',
+    'weekMadboss': '参数',
+    'lastZomExcape': '无需参数',
+    'dropZomSkill': '技能ID',
+    'dropZomControl': '控制ID',
+    'dropZomEnemy': '敌人ID',
+    'dropDaoTa': '道塔配置',
+    'dropDaoTa2': '道塔配置',
+    'dropBwallQingSha': '无需参数',
+    'doBwall': 'Bwall配置',
+    'pumpkinBossOver': '无需参数',
+    'GreenIs1_mine': '无需参数',
+    'timeCapsule11_mine': '无需参数',
+    'inWormhole': '虫洞配置',
+    'XiShan1_1': '无需参数',
+    'madWarriorSec': '秒数',
+    'madBossPhone': '电话配置',
+    'obstacle': '障碍物配置',
+    'P2EverParasitic': '目标单位ID',
+    'everParasitic': '目标单位ID',
   };
   return placeholders[orderValue] || '请输入参数，多个参数用分号分隔';
 };
@@ -204,8 +306,8 @@ const parseRaw = (text: string) => {
   }
 
   const meta = ORDER_METAS.find(m => {
-    // 检查一级匹配 (如 createUnit:, body:)
-    const primaryMatch = text.startsWith(m.value + ':') || text.startsWith(m.value + ';');
+    // 检查一级匹配 (如 createUnit:, body: 或纯命令如 weAllHeroNoEquip)
+    const primaryMatch = text.startsWith(m.value + ':') || text.startsWith(m.value + ';') || text === m.value;
     if (primaryMatch) return true;
 
     // 检查二级匹配 (遍历 fields 里的 select options)
@@ -230,14 +332,14 @@ const parseRaw = (text: string) => {
       const parsed = meta.parse(text);
       Object.assign(fieldsData, parsed);
     } else {
-      // 默认解析：提取参数部分（作为单个字符串）
-      const prefix = meta.value + ':';
-      const prefix2 = meta.value + ';';
+      // 默认解析：提取参数部分（支持冒号和分号两种分隔符）
+      const prefixColon = meta.value + ':';
+      const prefixSemicolon = meta.value + ';';
       let params = '';
-      if (text.startsWith(prefix)) {
-        params = text.substring(prefix.length);
-      } else if (text.startsWith(prefix2)) {
-        params = text.substring(prefix2.length);
+      if (text.startsWith(prefixColon)) {
+        params = text.substring(prefixColon.length);
+      } else if (text.startsWith(prefixSemicolon)) {
+        params = text.substring(prefixSemicolon.length);
       }
       // 简单指令直接使用 params 字段存储完整参数
       fieldsData.params = params;
@@ -249,6 +351,12 @@ const parseRaw = (text: string) => {
   }
 };
 
+// 使用分号作为分隔符的指令列表
+const SEMICOLON_COMMANDS = ['say', 'level', 'allBody'];
+
+// 无需参数的指令列表
+const NO_PARAM_COMMANDS = ['weAllHeroNoEquip', 'weAllHeroNoShoot', 'weAllHeroNoSkill', 'weAllHeroFollowSumBoss', 'clearAllBullet', 'clearAllEnemyBullet', 'hideSightCover', 'showInverSightCover', 'showMultiplySightCover', 'toPlotMode', 'openInput', 'closeInput', 'setGamingAITrue', 'setGamingAIFalse', 'save', 'mapToBlack', 'mapToNormal', 'roWorld180', 'win', 'fail', 'killAllEnemy', 'hideLifeBar', 'showLifeBar', 'cameraReset', 'clearHeroParasitic', 'parasiticWeRolePan', 'allPartnerStruNoStrikerWen', 'allPartnerRebirth', 'allWeHeroRebirth', 'recoverAllHeroHead', 'allHeroNoUnderHit', 'allWeNoUnder', 'delEventGroupExcludeMe', 'deathP1Die', 'testDeath', 'hideBossLifeBar', 'restoreHeroEquipImg', 'noWearShop', 'completeNowMenoryTask', 'killEditBossEvent', 'towerWinEvent', 'unendWinEvent', 'pkWinEvent', 'bcardBattleWin', 'lastZomExcape', 'dropBwallQingSha', 'pumpkinBossOver', 'GreenIs1_mine', 'timeCapsule11_mine', 'XiShan1_1', 'randomSpider'];
+
 // 从 UI 同步到 Raw 字符串
 const syncToRaw = () => {
   if (currentMeta.value) {
@@ -256,9 +364,15 @@ const syncToRaw = () => {
     if (typeof currentMeta.value.build === 'function') {
       newText = currentMeta.value.build(fieldsData);
     } else {
-      // 默认构建：指令名:参数
+      // 默认构建：指令名 或 指令名:参数 或 指令名;参数
       const params = fieldsData.params || '';
-      newText = params ? `${currentMeta.value.value}:${params}` : `${currentMeta.value.value}:`;
+      // 如果是不需要参数的指令，直接返回命令名
+      if (NO_PARAM_COMMANDS.includes(currentMeta.value.value)) {
+        newText = currentMeta.value.value;
+      } else {
+        const separator = SEMICOLON_COMMANDS.includes(currentMeta.value.value) ? ';' : ':';
+        newText = params ? `${currentMeta.value.value}${separator}${params}` : `${currentMeta.value.value}${separator}`;
+      }
     }
     localXmlText.value = newText;
     emit('update:modelValue', newText);

@@ -418,9 +418,16 @@ export class SkillDefine {
     });
 
     // 子对象与嵌套
-    if (this.target?.toXml()) {
-      xml += `      ${this.target.toXml()}\n`;
-    };
+    // target 可能是 SkillTargetDefine 对象或字符串
+    if (this.target) {
+      if (this.target instanceof SkillTargetDefine) {
+        const targetXml = this.target.toXml();
+        if (targetXml) xml += `      ${targetXml}\n`;
+      } else if (typeof this.target === 'string') {
+        // target 是字符串（如 'me', 'me,near,enemy'）
+        xml += `      <target>${this.target}</target>\n`;
+      }
+    }
 
     // 图像组
     const imgTags = ["addSkillEffectImg", "meEffectImg", "targetEffectImg", "pointEffectImg", "otherEffectImg", "stateEffectImg", "stateEffectImg2"];

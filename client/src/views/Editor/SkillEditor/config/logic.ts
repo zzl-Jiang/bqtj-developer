@@ -91,7 +91,8 @@ export const LOGIC_META: SkillMetaItem[] = [
     type: 'select',
     options: Opts.EFFECT_TYPE_OPTIONS,
     group: 'logic',
-    desc: `这里其实是调用实际 as3 代码中的函数名称。\n每种效果详情见右边“AS3 效果说明”。
+    desc: `注意，目前部分效果由 ai 生成，正在逐步梳理，可能存在问题，请谨慎参考。
+    这里其实是调用实际 as3 代码中的函数名称。\n每种效果详情见右边“AS3 效果说明”。
     注意部分效果会随着 addType 的选项而发生改变。
     【即时】效果对应 instant 生效；
     【状态】效果对应 state 生效；

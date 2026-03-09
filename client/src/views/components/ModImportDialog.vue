@@ -3,7 +3,7 @@
     <n-modal
         v-model:show="visible"
         preset="card"
-        title="导入 Mod 文件"
+        title="导入关卡集文件"
         :style="{ maxWidth: '700px', width: '90vw' }"
         :bordered="false"
         size="huge"
@@ -31,7 +31,7 @@
                                 <FolderOpenOutline />
                             </n-icon>
                             <p class="upload-text">点击或拖拽 XML 文件到此处</p>
-                            <p class="upload-hint">支持导入完整的 Mod 文件（包含关卡、对话、单位等）</p>
+                            <p class="upload-hint">支持导入完整的关卡集文件（包含关卡、对话、单位等）</p>
                         </div>
                     </n-upload-dragger>
                 </n-upload>
@@ -42,34 +42,88 @@
                 <div v-if="parseResult" class="preview-section">
                     <!-- 文件信息 -->
                     <n-card title="文件信息" size="small" class="preview-card">
-                        <n-descriptions :column="2" size="small">
-                            <n-descriptions-item label="ID">{{ parseResult.meta.id || '未设置' }}</n-descriptions-item>
-                            <n-descriptions-item label="名称">{{ parseResult.meta.cnName || '未设置' }}</n-descriptions-item>
-                            <n-descriptions-item label="作者">{{ parseResult.meta.author || '未设置' }}</n-descriptions-item>
-                            <n-descriptions-item label="描述">
+                        <n-grid :cols="2" :x-gap="16" :y-gap="8">
+                            <n-grid-item>
+                                <n-text depth="3">ID</n-text>
+                                <div>{{ parseResult.meta.id || '未设置' }}</div>
+                            </n-grid-item>
+                            <n-grid-item>
+                                <n-text depth="3">名称</n-text>
+                                <div>{{ parseResult.meta.cnName || '未设置' }}</div>
+                            </n-grid-item>
+                            <n-grid-item>
+                                <n-text depth="3">作者</n-text>
+                                <div>{{ parseResult.meta.author || '未设置' }}</div>
+                            </n-grid-item>
+                            <n-grid-item>
+                                <n-text depth="3">描述</n-text>
                                 <n-ellipsis :line-clamp="1">{{ parseResult.meta.description || '无' }}</n-ellipsis>
-                            </n-descriptions-item>
-                        </n-descriptions>
+                            </n-grid-item>
+                        </n-grid>
                     </n-card>
 
                     <!-- 数据统计 -->
                     <n-card title="数据统计" size="small" class="preview-card">
-                        <n-space justify="space-around" class="stat-row">
-                            <n-statistic label="关卡数量" :value="parseResult.stats.levelCount">
-                                <template #prefix>
-                                    <n-icon color="#18a058"><MapOutline /></n-icon>
-                                </template>
-                            </n-statistic>
-                            <n-statistic label="对话数量" :value="parseResult.stats.sayListCount">
-                                <template #prefix>
-                                    <n-icon color="#70c0e8"><ChatbubbleOutline /></n-icon>
-                                </template>
-                            </n-statistic>
-                            <n-statistic label="单位数量" :value="parseResult.stats.bodyCount">
-                                <template #prefix>
-                                    <n-icon color="#f2c97d"><PersonOutline /></n-icon>
-                                </template>
-                            </n-statistic>
+                        <n-grid :cols="4" :x-gap="8" :y-gap="16" class="stat-row">
+                            <n-grid-item>
+                                <n-statistic label="关卡" :value="parseResult.stats.levelCount">
+                                    <template #prefix>
+                                        <n-icon color="#18a058"><MapOutline /></n-icon>
+                                    </template>
+                                </n-statistic>
+                            </n-grid-item>
+                            <n-grid-item>
+                                <n-statistic label="对话" :value="parseResult.stats.sayListCount">
+                                    <template #prefix>
+                                        <n-icon color="#70c0e8"><ChatbubbleOutline /></n-icon>
+                                    </template>
+                                </n-statistic>
+                            </n-grid-item>
+                            <n-grid-item>
+                                <n-statistic label="单位" :value="parseResult.stats.bodyCount">
+                                    <template #prefix>
+                                        <n-icon color="#f2c97d"><PersonOutline /></n-icon>
+                                    </template>
+                                </n-statistic>
+                            </n-grid-item>
+                            <n-grid-item>
+                                <n-statistic label="技能" :value="parseResult.stats.skillCount">
+                                    <template #prefix>
+                                        <n-icon color="#ff69b4"><FlashOutline /></n-icon>
+                                    </template>
+                                </n-statistic>
+                            </n-grid-item>
+                            <n-grid-item>
+                                <n-statistic label="武器" :value="parseResult.stats.armsCount">
+                                    <template #prefix>
+                                        <n-icon color="#ff8c00"><HammerOutline /></n-icon>
+                                    </template>
+                                </n-statistic>
+                            </n-grid-item>
+                            <n-grid-item>
+                                <n-statistic label="子弹" :value="parseResult.stats.bulletCount">
+                                    <template #prefix>
+                                        <n-icon color="#a0a0a0"><CubeOutline /></n-icon>
+                                    </template>
+                                </n-statistic>
+                            </n-grid-item>
+                            <n-grid-item>
+                                <n-statistic label="图片" :value="parseResult.stats.pngCount">
+                                    <template #prefix>
+                                        <n-icon color="#00ced1"><ImagesOutline /></n-icon>
+                                    </template>
+                                </n-statistic>
+                            </n-grid-item>
+                            <n-grid-item>
+                                <n-statistic label="掉落" :value="parseResult.stats.dropCount">
+                                    <template #prefix>
+                                        <n-icon color="#dda0dd"><LayersOutline /></n-icon>
+                                    </template>
+                                </n-statistic>
+                            </n-grid-item>
+                        </n-grid>
+                        <n-divider />
+                        <n-space justify="center">
                             <n-statistic label="总计" :value="parseResult.stats.totalCount">
                                 <template #prefix>
                                     <n-icon><AppsOutline /></n-icon>
@@ -119,6 +173,69 @@
                         </n-list>
                     </n-card>
 
+                    <n-card v-if="parseResult.data.skills.length > 0" title="技能列表" size="small" class="preview-card">
+                        <n-list size="small">
+                            <n-list-item v-for="(skill, i) in parseResult.data.skills.slice(0, 5)" :key="i">
+                                <n-thing :title="skill.cnName || skill.name" :description="skill.effectType"
+                                    :title-extra="skill.conditionType"
+                                />
+                            </n-list-item>
+                            <n-list-item v-if="parseResult.data.skills.length > 5">
+                                <n-text depth="3">还有 {{ parseResult.data.skills.length - 5 }} 个技能...</n-text>
+                            </n-list-item>
+                        </n-list>
+                    </n-card>
+
+                    <n-card v-if="parseResult.data.arms.length > 0" title="武器列表" size="small" class="preview-card">
+                        <n-list size="small">
+                            <n-list-item v-for="(arms, i) in parseResult.data.arms.slice(0, 5)" :key="i">
+                                <n-thing :title="arms.cnName || arms.name" :description="arms.armsType"
+                                    :title-extra="arms.color"
+                                />
+                            </n-list-item>
+                            <n-list-item v-if="parseResult.data.arms.length > 5">
+                                <n-text depth="3">还有 {{ parseResult.data.arms.length - 5 }} 个武器...</n-text>
+                            </n-list-item>
+                        </n-list>
+                    </n-card>
+
+                    <n-card v-if="parseResult.data.bullets.length > 0" title="子弹列表" size="small" class="preview-card">
+                        <n-list size="small">
+                            <n-list-item v-for="(bullet, i) in parseResult.data.bullets.slice(0, 5)" :key="i">
+                                <n-thing :title="bullet.cnName || bullet.name" :description="bullet.hitType"
+                                    :title-extra="bullet.attackType"
+                                />
+                            </n-list-item>
+                            <n-list-item v-if="parseResult.data.bullets.length > 5">
+                                <n-text depth="3">还有 {{ parseResult.data.bullets.length - 5 }} 个子弹...</n-text>
+                            </n-list-item>
+                        </n-list>
+                    </n-card>
+
+                    <n-card v-if="parseResult.data.pngs.length > 0" title="图片列表" size="small" class="preview-card">
+                        <n-list size="small">
+                            <n-list-item v-for="(png, i) in parseResult.data.pngs.slice(0, 5)" :key="i">
+                                <n-thing :title="png.name" :description="png.url" />
+                            </n-list-item>
+                            <n-list-item v-if="parseResult.data.pngs.length > 5">
+                                <n-text depth="3">还有 {{ parseResult.data.pngs.length - 5 }} 个图片...</n-text>
+                            </n-list-item>
+                        </n-list>
+                    </n-card>
+
+                    <n-card v-if="parseResult.data.drops.length > 0" title="掉落列表" size="small" class="preview-card">
+                        <n-list size="small">
+                            <n-list-item v-for="(drop, i) in parseResult.data.drops.slice(0, 5)" :key="i">
+                                <n-thing :title="drop.cnName || drop.name" :description="drop.secType"
+                                    :title-extra="drop.type"
+                                />
+                            </n-list-item>
+                            <n-list-item v-if="parseResult.data.drops.length > 5">
+                                <n-text depth="3">还有 {{ parseResult.data.drops.length - 5 }} 个掉落...</n-text>
+                            </n-list-item>
+                        </n-list>
+                    </n-card>
+
                     <!-- 警告和错误 -->
                     <n-alert v-if="parseResult.warnings.length > 0" type="warning" title="警告" class="preview-alert"
                     >
@@ -149,9 +266,30 @@
                 >
                     <template #default>
                         <n-space vertical align="center">
-                            <n-tag v-if="importedLevels > 0" type="success">关卡: {{ importedLevels }} 个</n-tag>
-                            <n-tag v-if="importedSayLists > 0" type="info">对话: {{ importedSayLists }} 个</n-tag>
-                            <n-tag v-if="importedBodies > 0" type="warning">单位: {{ importedBodies }} 个</n-tag>
+                            <n-space v-if="importedLevels > 0" justify="center">
+                                <n-tag type="success">关卡: {{ importedLevels }} 个</n-tag>
+                            </n-space>
+                            <n-space v-if="importedSayLists > 0" justify="center">
+                                <n-tag type="info">对话: {{ importedSayLists }} 个</n-tag>
+                            </n-space>
+                            <n-space v-if="importedBodies > 0" justify="center">
+                                <n-tag type="warning">单位: {{ importedBodies }} 个</n-tag>
+                            </n-space>
+                            <n-space v-if="importedSkills > 0" justify="center">
+                                <n-tag type="error">技能: {{ importedSkills }} 个</n-tag>
+                            </n-space>
+                            <n-space v-if="importedArms > 0" justify="center">
+                                <n-tag type="warning">武器: {{ importedArms }} 个</n-tag>
+                            </n-space>
+                            <n-space v-if="importedBullets > 0" justify="center">
+                                <n-tag>子弹: {{ importedBullets }} 个</n-tag>
+                            </n-space>
+                            <n-space v-if="importedPngs > 0" justify="center">
+                                <n-tag type="info">图片: {{ importedPngs }} 个</n-tag>
+                            </n-space>
+                            <n-space v-if="importedDrops > 0" justify="center">
+                                <n-tag type="success">掉落: {{ importedDrops }} 个</n-tag>
+                            </n-space>
                         </n-space>
                     </template>
                     <template #footer>
@@ -182,6 +320,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
+import { plainToInstance } from 'class-transformer';
 import {
     NModal,
     NSteps,
@@ -190,8 +329,6 @@ import {
     NUploadDragger,
     NIcon,
     NCard,
-    NDescriptions,
-    NDescriptionsItem,
     NEllipsis,
     NStatistic,
     NSpace,
@@ -203,6 +340,9 @@ import {
     NAlert,
     NButton,
     NResult,
+    NGrid,
+    NGridItem,
+    NDivider,
     useMessage
 } from 'naive-ui';
 import {
@@ -210,10 +350,24 @@ import {
     MapOutline,
     ChatbubbleOutline,
     PersonOutline,
-    AppsOutline
+    AppsOutline,
+    FlashOutline,
+    HammerOutline,
+    ImagesOutline,
+    CubeOutline,
+    LayersOutline
 } from '@vicons/ionicons5';
 import { modImportService, type ModImportResult } from '../../services/ModImportService';
 import { useModStore } from '../../store/useModStore';
+import { LevelDefine } from '../../models/level/LevelDefine';
+import { SayListDefine } from '../../models/say/SayListDefine';
+import { BodyDefine } from '../../models/body/BodyDefine';
+import { SkillDefine } from '../../models/skill/SkillDefine';
+import { SkillTargetDefine } from '../../models/skill/SkillTargetDefine';
+import { ArmsDefine } from '../../models/arms/ArmsDefine';
+import { BulletDefine } from '../../models/bullet/BulletDefine';
+import { PngDefine } from '../../models/png/PngDefine';
+import { DropDefine } from '../../models/drop/DropDefine';
 
 const props = defineProps<{
     show: boolean;
@@ -236,6 +390,11 @@ const importedCount = ref(0);
 const importedLevels = ref(0);
 const importedSayLists = ref(0);
 const importedBodies = ref(0);
+const importedSkills = ref(0);
+const importedArms = ref(0);
+const importedBullets = ref(0);
+const importedPngs = ref(0);
+const importedDrops = ref(0);
 
 const visible = computed({
     get: () => props.show,
@@ -262,6 +421,11 @@ function resetState() {
     importedLevels.value = 0;
     importedSayLists.value = 0;
     importedBodies.value = 0;
+    importedSkills.value = 0;
+    importedArms.value = 0;
+    importedBullets.value = 0;
+    importedPngs.value = 0;
+    importedDrops.value = 0;
 }
 
 function handleBeforeUpload(options: any) {
@@ -315,7 +479,8 @@ async function handleImport() {
 
         // 导入关卡
         if (data.levels.length > 0) {
-            for (const level of data.levels) {
+            for (const levelData of data.levels) {
+                const level = plainToInstance(LevelDefine, levelData);
                 modStore.levelList.push(level);
             }
             importedLevels.value = data.levels.length;
@@ -323,7 +488,8 @@ async function handleImport() {
 
         // 导入对话
         if (data.sayLists.length > 0) {
-            for (const sayList of data.sayLists) {
+            for (const sayListData of data.sayLists) {
+                const sayList = plainToInstance(SayListDefine, sayListData);
                 modStore.sayList.push(sayList);
             }
             importedSayLists.value = data.sayLists.length;
@@ -331,13 +497,92 @@ async function handleImport() {
 
         // 导入单位
         if (data.bodies.length > 0) {
-            for (const body of data.bodies) {
+            for (const bodyData of data.bodies) {
+                const body = plainToInstance(BodyDefine, bodyData);
                 modStore.bodyList.push(body);
             }
             importedBodies.value = data.bodies.length;
         }
 
-        importedCount.value = importedLevels.value + importedSayLists.value + importedBodies.value;
+        // 导入技能 (使用 plainToInstance 确保嵌套对象正确转换)
+        if (data.skills.length > 0) {
+            console.log(`[Import Debug] 开始导入 ${data.skills.length} 个技能`);
+            for (let i = 0; i < data.skills.length; i++) {
+                const skillData = data.skills[i]!;
+                console.log(`[Import Debug] 技能 ${i} 转换前:`, {
+                    name: skillData.name,
+                    target: (skillData as any).target,
+                    targetType: typeof (skillData as any).target,
+                    targetConstructor: (skillData as any).target?.constructor?.name
+                });
+
+                const skill = plainToInstance(SkillDefine, skillData);
+                console.log(`[Import Debug] 技能 ${i} plainToInstance 后:`, {
+                    name: skill.name,
+                    target: skill.target,
+                    targetType: typeof skill.target,
+                    targetConstructor: skill.target?.constructor?.name,
+                    isSkillTargetDefine: skill.target instanceof SkillTargetDefine
+                });
+
+                // 确保 target 是 SkillTargetDefine 实例
+                if (skill.target && typeof skill.target === 'object' && !(skill.target instanceof SkillTargetDefine)) {
+                    console.log(`[Import Debug] 技能 ${i} 需要转换 target`);
+                    const targetObj = skill.target as Record<string, any>;
+                    skill.target = plainToInstance(SkillTargetDefine, targetObj);
+                    console.log(`[Import Debug] 技能 ${i} target 转换后:`, {
+                        target: skill.target,
+                        targetConstructor: skill.target?.constructor?.name,
+                        isSkillTargetDefine: skill.target instanceof SkillTargetDefine,
+                        hasToXml: typeof (skill.target as any)?.toXml === 'function'
+                    });
+                }
+
+                modStore.skillList.push(skill);
+            }
+            importedSkills.value = data.skills.length;
+            console.log(`[Import Debug] 技能导入完成，共 ${data.skills.length} 个`);
+        }
+
+        // 导入武器
+        if (data.arms.length > 0) {
+            for (const armsData of data.arms) {
+                const arms = plainToInstance(ArmsDefine, armsData);
+                modStore.armsList.push(arms);
+            }
+            importedArms.value = data.arms.length;
+        }
+
+        // 导入子弹
+        if (data.bullets.length > 0) {
+            for (const bulletData of data.bullets) {
+                const bullet = plainToInstance(BulletDefine, bulletData);
+                modStore.bulletList.push(bullet);
+            }
+            importedBullets.value = data.bullets.length;
+        }
+
+        // 导入图片
+        if (data.pngs.length > 0) {
+            for (const pngData of data.pngs) {
+                const png = plainToInstance(PngDefine, pngData);
+                modStore.pngList.push(png);
+            }
+            importedPngs.value = data.pngs.length;
+        }
+
+        // 导入掉落
+        if (data.drops.length > 0) {
+            for (const dropData of data.drops) {
+                const drop = plainToInstance(DropDefine, dropData);
+                modStore.dropList.push(drop);
+            }
+            importedDrops.value = data.drops.length;
+        }
+
+        importedCount.value = importedLevels.value + importedSayLists.value + importedBodies.value +
+            importedSkills.value + importedArms.value + importedBullets.value +
+            importedPngs.value + importedDrops.value;
 
         // 更新项目元数据
         if (parseResult.value.meta.id) {
