@@ -9,11 +9,22 @@ import { RocketOutline, TimeOutline, HomeOutline, BuildOutline, PersonOutline, C
 import { UPDATES_DATA } from './data/updates'
 import UpdateLogRenderer from './views/components/UpdateLogRenderer.vue'
 import { useEditorModeStore } from './store/useEditorModeStore'
+import { useResponsive } from './hooks/useResponsive'
 
 const route = useRoute()
 const showChangelog = ref(false)
 const hasNewUpdate = ref(false)
 const isSidebarCollapsed = ref(true)
+
+// 响应式布局
+const { isMobile, isSmallScreen } = useResponsive()
+
+// 更新日志弹窗左侧目录宽度
+const changelogSiderWidth = computed(() => {
+  if (isMobile.value) return 100  // 手机：100px
+  if (isSmallScreen.value) return 120  // 小平板：120px
+  return 160  // 桌面：160px
+})
 
 // 全局编辑器模式
 const editorModeStore = useEditorModeStore()
@@ -351,25 +362,36 @@ body {
 
             <!-- 全局日志弹窗 -->
             <n-modal v-model:show="showChangelog" preset="card"
-              style="width: 900px; border-radius: 20px; background: rgba(24, 24, 28, 0.95); backdrop-filter: blur(20px);"
+              :style="{
+                width: isMobile ? '95%' : (isSmallScreen ? '90%' : '900px'),
+                maxWidth: '900px',
+                borderRadius: isMobile ? '12px' : '20px',
+                background: 'rgba(24, 24, 28, 0.95)',
+                backdropFilter: 'blur(20px)'
+              }"
               title="开发历程与更新日志">
-              <n-layout has-sider style="height: 60vh; max-height: 600px; background: transparent;">
+              <n-layout has-sider style="height: 60vh; max-height: 600px; background: transparent;" :sider-placement="isMobile ? 'right' : 'left'">
                 <!-- 左侧版本列表 -->
-                <n-layout-sider width="160" style="background: transparent;">
+                <n-layout-sider :width="changelogSiderWidth" style="background: transparent;" :collapsed-width="changelogSiderWidth">
                   <n-scrollbar>
                     <n-menu :options="versionMenuOptions" :value="activeVersionIdx"
-                      @update:value="(v: number) => activeVersionIdx = v" />
+                      @update:value="(v: number) => activeVersionIdx = v"
+                      :style="{ fontSize: isMobile ? '12px' : '14px' }" />
                   </n-scrollbar>
                 </n-layout-sider>
 
                 <!-- 右侧内容渲染区 -->
                 <n-layout-content style="padding: 0 5px; background: transparent;">
                   <n-scrollbar>
-                    <div style="padding: 20px 32px;">
+                    <div :style="{ padding: isMobile ? '12px 16px' : '20px 32px' }">
                       <div
-                        style="margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 16px;">
-                        <n-space align="baseline" :size="12">
-                          <n-h1 style="margin: 0; font-size: 28px;">{{ currentLog.version }}</n-h1>
+                        :style="{
+                          marginBottom: isMobile ? '16px' : '24px',
+                          borderBottom: '1px solid rgba(255,255,255,0.08)',
+                          paddingBottom: isMobile ? '12px' : '16px'
+                        }">
+                        <n-space align="baseline" :size="isMobile ? 8 : 12">
+                          <n-h1 :style="{ margin: 0, fontSize: isMobile ? '20px' : '28px' }">{{ currentLog.version }}</n-h1>
                           <n-tag :type="currentLog.isMajor ? 'warning' : 'info'" size="small" round>
                             {{ currentLog.isMajor ? '重大更新' : '常规优化' }}
                           </n-tag>
