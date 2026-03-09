@@ -2,6 +2,39 @@
 
 import type { Changelog, LogBlock } from '../types/changelog';
 
+// 技能导入修复v0.7.1更新内容
+const V071_BLOCKS: LogBlock[] = [
+  { type: 'title', content: '技能导入功能修复与补全' },
+  { type: 'text', content: '本次更新重点修复了技能导入时effectType字段无法正确解析的问题，并基于AS3源代码全面补全了effectType选项列表，确保导入功能能够正常识别和处理各类技能XML。' },
+  {
+    type: 'feature',
+    title: '修复effectType导入问题',
+    desc: '修复了XmlEntityParser使用小写字段名导致无法匹配驼峰命名effectType的问题。现在在ModImportService中特殊处理effectType字段，确保导入时能够正确解析并赋值。',
+    tag: '修复'
+  },
+  {
+    type: 'feature',
+    title: '补全effectType选项列表',
+    desc: '基于4个AS3源代码文件（InstantEffectCtrl.as、InstantEffectCtrlSec.as、StateEffectCtrl.as、StateEffectCtrlSec.as）全面提取并补全了619个effectType函数定义，涵盖即时效果、状态效果、特殊技能等完整分类。',
+    tag: '数据'
+  },
+  {
+    type: 'feature',
+    title: '优化目标选择导入',
+    desc: '增强了skill.target字段的导入兼容性，支持简单字符串格式（如<target>me</target>）和复杂对象格式，自动解析逗号分隔的目标参数并映射到SkillTargetDefine对象。',
+    tag: '导入'
+  },
+  {
+    type: 'list', content: [
+      '从AS3源代码完整提取了所有static effectType函数',
+      'EFFECT_TYPE_OPTIONS从约160个扩展到619个选项',
+      '修复了XmlEntityParser大小写字段名不匹配的问题',
+      '新增了对简单字符串格式target的解析支持',
+      '排除了内部工具函数（如doEffect、startLevel等）'
+    ]
+  }
+];
+
 // 导入功能v0.7.0更新内容
 const V070_BLOCKS: LogBlock[] = [
   { type: 'title', content: 'XML导入功能' },
@@ -44,6 +77,12 @@ const V070_BLOCKS: LogBlock[] = [
 ];
 
 export const UPDATES_DATA: Changelog[] = [
+  {
+    version: 'v0.7.1',
+    date: '2026-03-09',
+    isMajor: false,
+    blocks: V071_BLOCKS
+  },
   {
     version: 'v0.7.0',
     date: '2026-03-08',
